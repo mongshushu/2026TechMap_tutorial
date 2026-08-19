@@ -1,0 +1,61 @@
+@Tutorial(time: 30) {
+    @Intro(title: "04. Add One-Stroke Rules") {
+        Add the first one-stroke rule: from the current tile, the next tile must be one step away horizontally or vertically.
+
+        Language: [한국어](/2026TechMap_tutorial/CubeOneStrokePuzzleKO/tutorials/cube-one-stroke-puzzle-ko/04-foundation-gamestore-and-neighbor-rule/).
+    }
+
+    @Section(title: "Add a neighbor check") {
+        @ContentAndMedia {
+            The puzzle needs to know whether two tiles are next to each other.
+
+            `isNeighbor(from:to:)` uses argument labels so the call reads like a sentence: ask whether the current tile can move to the next tile.
+        }
+
+        @Steps {
+            @Step {
+                Add `isNeighbor(from:to:)` to your board model code.
+
+                @Code(name: "PuzzleModels.swift", file: "04-NeighborRule.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+
+            @Step {
+                Check the two allowed cases: one row apart with the same column, or one column apart with the same row.
+            }
+        }
+    }
+
+    @Section(title: "Block invalid selection") {
+        @ContentAndMedia {
+            When the user touches a tile, the game should not immediately accept it. First, the game checks whether the tile has already been visited and whether it is a neighbor.
+
+            This tutorial uses beginner-readable `if` statements first. If the same logic becomes repeated later, that is the right time to refactor.
+        }
+
+        @Steps {
+            @Step {
+                Add the playable-tile check, current-tile check, visited-tile check, neighbor check, path update, completion check, and render call in `selectTile`.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "04-CanSelect.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+        }
+    }
+
+    @Section(title: "Trace the information") {
+        @ContentAndMedia {
+            The information flow is: get `tileID`, ask whether it can be selected, then update the path if the answer is true.
+
+            This is the same structure you will reuse when the tile comes from a 3D cube surface touch.
+        }
+
+        @Steps {
+            @Step {
+                Explain the flow in your own words before moving on: `tileID -> can select? -> update path`.
+            }
+        }
+    }
+}

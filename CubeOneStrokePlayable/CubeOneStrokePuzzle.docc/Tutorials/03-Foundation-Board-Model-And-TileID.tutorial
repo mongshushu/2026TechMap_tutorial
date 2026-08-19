@@ -1,0 +1,67 @@
+@Tutorial(time: 25) {
+    @Intro(title: "03. Model the Board") {
+        Create data types that can describe both the first 2x2 board and the later 3x3 board independently from SpriteKit drawing code.
+
+        Language: [한국어](/2026TechMap_tutorial/CubeOneStrokePuzzleKO/tutorials/cube-one-stroke-puzzle-ko/03-foundation-board-model-and-tileid/).
+    }
+
+    @Section(title: "Create TileID") {
+        @ContentAndMedia {
+            A visible tile node is not enough for game logic. The game also needs a value that says which row and column the tile represents.
+
+            `TileID` is that value. It connects what you see on screen to the rules that decide whether a move is allowed.
+        }
+
+        @Steps {
+            @Step {
+                Create `PuzzleModels.swift`. Add `TileID` with `row`, `column`, and a reusable `name`. Add `CubeFace` in the same code step because stages need to know which cube face owns the board.
+
+                @Code(name: "PuzzleModels.swift", file: "03-TileID.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+
+            @Step {
+                Notice that `TileID` conforms to `Hashable`. This lets you put visited tiles into `Set<TileID>`.
+            }
+        }
+    }
+
+    @Section(title: "Create BoardPlan") {
+        @ContentAndMedia {
+            `BoardPlan` stores the setup for one puzzle: where the player starts, where they should finish, and which tiles are blocked.
+
+            `boardSize` tells the app how many cells wide and tall this board is. Start with `2` for the 2x2 learning board, then use `3` when the tutorial expands to 3x3.
+
+            `cubeFace` tells the app which cube face holds this stage. `coordinateLayout` and `labelCorrection` handle mirrored coordinates and labels after the SpriteKit scene becomes a cube-face texture.
+
+            Keep the model small at this stage. Do not add cube topology, multiple face rules, or advanced abstractions until the tutorial actually needs them.
+        }
+
+        @Steps {
+            @Step {
+                Add coordinate layout, label correction, tile edge, and `BoardPlan` to the same file. These are the model facts later drawing and touch conversion code will read.
+
+                @Code(name: "PuzzleModels.swift", file: "03-BoardPlan.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+
+            @Step {
+                Read the stored properties and helpers out loud: title, board size, cube face, coordinate correction, start tile, goal tile, blocked tiles, playable count, bounds check, and playable check. Those are the minimum facts needed for the first playable board.
+            }
+        }
+    }
+
+    @Section(title: "Check the result") {
+        @ContentAndMedia {
+            At the end of this tutorial, SpriteKit still draws the tiles, but Foundation model types describe what those tiles mean and how large the current board is.
+        }
+
+        @Steps {
+            @Step {
+                Keep drawing code and board model code in separate files. The separation makes the next rule step easier to follow.
+            }
+        }
+    }
+}

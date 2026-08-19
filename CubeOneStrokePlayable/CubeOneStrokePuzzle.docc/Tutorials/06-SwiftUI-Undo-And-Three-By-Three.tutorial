@@ -1,0 +1,69 @@
+@Tutorial(time: 30) {
+    @Intro(title: "06. Add Undo and Expand Stages") {
+        Add a simple undo action, then move the playable cube stages to 3x3 boards.
+
+        Language: [한국어](/2026TechMap_tutorial/CubeOneStrokePuzzleKO/tutorials/cube-one-stroke-puzzle-ko/06-swiftui-undo-and-three-by-three/).
+    }
+
+    @Section(title: "Undo the last tile") {
+        @ContentAndMedia {
+            Undo removes the most recent tile from the path.
+
+            Write the logic in a beginner-readable order: guard the start tile, remove the last tile, set the new current tile, clear completion, render, then update the debug text.
+        }
+
+        @Steps {
+            @Step {
+                Add `undoLastStep()` to remove the last tile from the path and redraw the board.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "06-UndoRemove.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+
+            @Step {
+                Update `canUndo` and wire the SwiftUI undo button to `undoLastStep()`.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "06-UndoCurrent.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+        }
+    }
+
+    @Section(title: "Use 3x3 cube stages") {
+        @ContentAndMedia {
+            The earlier 2x2 board is a learning step. It keeps the relationship between `SKTileMapNode`, `SKTileSet`, and `SKTileGroup` easy to see.
+
+            For the cube version, make every playable stage 3x3. The same `BoardPlan` structure expands the SpriteKit tile map and SceneKit touch conversion when `boardSize` becomes `3`.
+
+            Add two or three 3x3 stages now. Do not build every possible cube-face relationship yet. The goal is to switch between a few playable puzzles on neighboring faces.
+        }
+
+        @Steps {
+            @Step {
+                Add a `StageCatalog` that returns a small list of boards.
+
+                @Code(name: "PuzzleModels.swift", file: "06-StageCatalog.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+
+            @Step {
+                Keep each stage readable: title, boardSize, start tile, goal tile, and blocked tiles.
+            }
+        }
+    }
+
+    @Section(title: "Check the result") {
+        @ContentAndMedia {
+            You should be able to undo a move, finish a 3x3 stage, then continue into another 3x3 stage on a neighboring cube face.
+        }
+
+        @Steps {
+            @Step {
+                If the undo code feels long, keep it long for now. This tutorial favors clarity before compression.
+            }
+        }
+    }
+}

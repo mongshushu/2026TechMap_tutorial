@@ -1,0 +1,67 @@
+@Tutorial(time: 25) {
+    @Intro(title: "03. 보드 모델 만들기") {
+        SpriteKit drawing 코드와 분리해서 2x2와 3x3 보드를 모두 설명할 수 있는 데이터 타입을 만듭니다.
+
+        언어 전환: [English](/2026TechMap_tutorial/CubeOneStrokePuzzle/tutorials/cube-one-stroke-puzzle/03-foundation-board-model-and-tileid/).
+    }
+
+    @Section(title: "TileID 만들기") {
+        @ContentAndMedia {
+            화면에 보이는 tile node만으로는 게임 규칙을 만들기 어렵습니다. 게임은 tile이 몇 번째 줄, 몇 번째 칸인지 값으로 알고 있어야 합니다.
+
+            `TileID`는 그 주소 역할을 합니다. 화면에서 보이는 tile과 이동 규칙을 연결하는 값입니다.
+        }
+
+        @Steps {
+            @Step {
+                `PuzzleModels.swift` 파일을 만듭니다. `row`, `column`, 재사용 가능한 `name`을 가진 `TileID`를 추가합니다. stage가 어느 cube face에 속하는지도 알아야 하므로 같은 코드 단계에서 `CubeFace`도 추가합니다.
+
+                @Code(name: "PuzzleModels.swift", file: "03-TileID.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
+            }
+
+            @Step {
+                `TileID`가 `Hashable`을 따르는 점을 확인합니다. 이 덕분에 지나온 tile을 `Set<TileID>`에 넣을 수 있습니다.
+            }
+        }
+    }
+
+    @Section(title: "BoardPlan 만들기") {
+        @ContentAndMedia {
+            `BoardPlan`은 퍼즐 하나의 설정을 저장합니다. 시작 tile, 목표 tile, 막힌 tile을 압니다.
+
+            `boardSize`는 이 board가 몇 칸짜리인지 알려줍니다. 처음에는 `2`를 넣어 2x2로 학습하고, 뒤에서 `3`을 넣어 3x3으로 확장합니다.
+
+            `cubeFace`는 이 stage가 큐브의 어느 면에 붙는지 알려줍니다. `coordinateLayout`과 `labelCorrection`은 큐브에 붙였을 때 좌표와 글자가 뒤집혀 보이는 문제를 보정하기 위한 값입니다.
+
+            지금은 모델을 작게 유지합니다. 여러 face, full cube topology 같은 기능은 실제로 필요해지는 장에서 추가합니다.
+        }
+
+        @Steps {
+            @Step {
+                같은 파일에 coordinate layout, label correction, tile edge, `BoardPlan`을 추가합니다. 나중에 drawing 코드와 touch conversion 코드가 읽을 model 정보입니다.
+
+                @Code(name: "PuzzleModels.swift", file: "03-BoardPlan.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
+            }
+
+            @Step {
+                저장 프로퍼티와 helper를 소리 내어 읽어봅니다. title, board size, cube face, coordinate correction, start tile, goal tile, blocked tiles, playable count, bounds check, playable check. 이것이 첫 playable board에 필요한 최소 정보입니다.
+            }
+        }
+    }
+
+    @Section(title: "결과 확인하기") {
+        @ContentAndMedia {
+            이 장을 마치면 SpriteKit은 여전히 tile을 그리지만, Foundation 모델 타입이 그 tile의 의미와 board 크기를 설명합니다.
+        }
+
+        @Steps {
+            @Step {
+                drawing 코드와 board model 코드를 서로 다른 파일에 둡니다. 이 분리가 다음 규칙 단계를 이해하기 쉽게 만듭니다.
+            }
+        }
+    }
+}

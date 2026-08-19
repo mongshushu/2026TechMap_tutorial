@@ -1,0 +1,83 @@
+@Tutorial(time: 20) {
+    @Intro(title: "02. 2x2 TileMap 만들기") {
+        SpriteKit의 `SKTileMapNode`, `SKTileSet`, `SKTileGroup`을 사용해서 가장 작은 playable board인 2x2 화면을 만듭니다.
+
+        언어 전환: [English](/2026TechMap_tutorial/CubeOneStrokePuzzle/tutorials/cube-one-stroke-puzzle/02-spritekit-tiles-and-touch-names/).
+    }
+
+    @Section(title: "타일 팔레트 준비하기") {
+        @ContentAndMedia {
+            `SKTileGroup`은 한 칸이 어떤 모습으로 보일지 정한 tile 모양입니다. 예를 들어 빈 칸, 지나간 칸, 현재 칸, 완료된 칸을 서로 다른 `SKTileGroup`으로 둡니다.
+
+            이 프로젝트의 색 규칙은 단순하게 고정합니다. 현재 선택한 칸은 `.blue`, 지나간 칸과 완료된 face의 모든 칸은 `.systemTeal`입니다. 완료된 face도 단색 material로 덮지 않고, 네모 타일과 테두리가 남아 있는 TileMap으로 보여줍니다.
+
+            `SKTileSet`은 그런 `SKTileGroup`들을 모아둔 팔레트입니다. 먼저 팔레트를 만들어두고, 그 다음 `SKTileMapNode`의 각 칸이 팔레트 안의 어떤 tile group을 참조할지 정합니다.
+        }
+
+        @Steps {
+            @Step {
+                빈 칸, 막힌 칸, 지나간 칸, 현재 칸, 완료된 칸을 나타내는 `SKTileGroup`을 만듭니다. tile group을 `SKTileSet` 하나로 묶고, 색이 채워진 `UIImage`를 `SKTileGroup`으로 바꾸는 helper를 추가합니다.
+
+                @Code(name: "SpriteKitFaceScene.swift", file: "02-TilePalette.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
+            }
+        }
+    }
+
+    @Section(title: "2x2 격자 만들기") {
+        @ContentAndMedia {
+            `SKTileMapNode`는 여러 칸을 가진 격자 node입니다. 칸 하나하나를 별도 `SKShapeNode`로 직접 만들지 않고, tile map이 행과 열을 관리하게 합니다.
+
+            이 단계에서는 일부러 2x2로 시작합니다. SpriteKit의 tile map 구조와 SceneKit 표면 터치 연결을 먼저 작게 이해하고, 나중에 같은 구조를 3x3으로 키웁니다.
+
+            큐브 face 위에서는 제목, 상태 문구, path 연결선이 오히려 시각을 복잡하게 만듭니다. 그래서 큐브에 붙는 최종 SpriteKit scene에는 사각형 타일과 좌표 label만 남깁니다.
+        }
+
+        @Steps {
+            @Step {
+                board 크기, tile map, tile label, tile role, label color helper를 만듭니다. `SKTileMapNode`는 `board.boardSize`를 columns와 rows에 사용하고, 그 다음 각 칸에 어떤 `SKTileGroup`을 보여줄지 지정합니다.
+
+                @Code(name: "SpriteKitFaceScene.swift", file: "02-TwoByTwoTileMap.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
+            }
+
+            @Step {
+                path를 선으로 연결하는 코드는 여기서는 추가하지 않습니다. 선택 상태는 선이 아니라 타일 색 변화로 보여주므로, 바뀌는 코드는 `drawTileMap` 안에 모입니다.
+            }
+        }
+    }
+
+    @Section(title: "tileID와 연결 생각하기") {
+        @ContentAndMedia {
+            예전처럼 tile 하나하나가 전부 별도 node라면 `node.name`을 읽어 `tile_0_0` 같은 이름을 확인할 수 있습니다. 하지만 `SKTileMapNode`에서는 격자 전체가 하나의 node이고, 각 칸은 row와 column으로 구분합니다.
+
+            그래서 이 프로젝트에서는 `TileID(row:column:)`을 tile의 주소로 사용합니다. 나중에 SceneKit 큐브 표면을 터치하면 `textureCoordinates`가 0부터 1 사이의 2D 좌표를 주고, 그 좌표를 2x2 또는 3x3의 row와 column으로 바꿔 `TileID`를 얻습니다.
+
+            큐브 면에 texture로 붙이면 face 방향에 따라 글자가 좌우 또는 상하로 반전될 수 있습니다. 그래서 각 stage는 `coordinateLayout`과 `labelCorrection`을 가집니다. 하나는 터치 좌표를 tile 주소로 다시 정렬하고, 다른 하나는 화면에 보이는 label이 읽히도록 보정합니다.
+        }
+
+        @Steps {
+            @Step {
+                지금은 tile map의 칸을 눈으로 확인합니다. 정확한 3D 터치 좌표 변환은 SceneKit 장에서 연결합니다.
+            }
+        }
+    }
+
+    @Section(title: "결과 확인하기") {
+        @ContentAndMedia {
+            화면에는 2x2 SpriteKit tile map이 보여야 합니다. 색 차이는 기능 차이를 눈으로 확인하기 위한 학습 장치입니다.
+
+            `SKTileMapNode`에서는 row `0`이 아래쪽 행입니다. 화면의 각 칸에 보이는 `(0,0)`, `(0,1)` 같은 label은 이 칸이 어떤 `TileID`로 이어질지 미리 보여주는 표시입니다.
+
+            @Image(source: expected-02-tilemap.svg, alt: "2x2 SKTileMapNode가 SKTileSet 팔레트의 SKTileGroup을 참조하는 모습.")
+        }
+
+        @Steps {
+            @Step {
+                2x2에서 이해할 핵심 흐름을 말로 확인합니다. `SKTileGroup`은 칸의 모양, `SKTileSet`은 팔레트, `SKTileMapNode`는 격자입니다.
+            }
+        }
+    }
+}

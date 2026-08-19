@@ -1,0 +1,83 @@
+@Tutorial(time: 20) {
+    @Intro(title: "02. Build a 2x2 Tile Map") {
+        Use SpriteKit's `SKTileMapNode`, `SKTileSet`, and `SKTileGroup` to build the smallest playable board: a 2x2 tile map.
+
+        Language: [한국어](/2026TechMap_tutorial/CubeOneStrokePuzzleKO/tutorials/cube-one-stroke-puzzle-ko/02-spritekit-tiles-and-touch-names/).
+    }
+
+    @Section(title: "Prepare a tile palette") {
+        @ContentAndMedia {
+            An `SKTileGroup` describes how one kind of tile should look. For example, empty, visited, current, and completed tiles can each have a different tile group.
+
+            This project keeps the color rule simple. The current tile is `.blue`; visited tiles and every tile on a completed face are `.systemTeal`. A completed face is not replaced with one flat teal material; it stays a tile map with square cells and borders.
+
+            An `SKTileSet` collects those tile groups into a palette. After the palette exists, each cell in an `SKTileMapNode` can point to one tile group from that palette.
+        }
+
+        @Steps {
+            @Step {
+                Create tile groups for empty, blocked, visited, current, and completed cells. Collect the tile groups in one `SKTileSet`, and add the helper that turns a filled `UIImage` into an `SKTileGroup`.
+
+                @Code(name: "SpriteKitFaceScene.swift", file: "02-TilePalette.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+        }
+    }
+
+    @Section(title: "Create the 2x2 grid") {
+        @ContentAndMedia {
+            `SKTileMapNode` is a grid node. Instead of drawing each square as a separate `SKShapeNode`, the tile map owns the rows and columns.
+
+            This tutorial starts with 2x2 on purpose. Learn the SpriteKit tile map structure and the SceneKit surface-touch connection while the board is small, then expand the same structure to 3x3 later.
+
+            On the cube face, titles, status text, and path lines make the surface harder to read. The final SpriteKit texture keeps only square tiles and coordinate labels.
+        }
+
+        @Steps {
+            @Step {
+                Create the board metrics, tile map, tile label, tile role, and label color helpers. The `SKTileMapNode` uses `board.boardSize` for both columns and rows, then assigns one `SKTileGroup` to each cell.
+
+                @Code(name: "SpriteKitFaceScene.swift", file: "02-TwoByTwoTileMap.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+
+            @Step {
+                Do not add a path line here. Selection state is shown by tile color instead of by connecting strokes, so the changed code is all inside `drawTileMap`.
+            }
+        }
+    }
+
+    @Section(title: "Connect the idea to tileID") {
+        @ContentAndMedia {
+            If every tile were a separate node, you could read `node.name` to recover a name such as `tile_0_0`. With `SKTileMapNode`, the whole grid is one node, and each cell is identified by row and column instead.
+
+            This project uses `TileID(row:column:)` as the tile address. Later, when a SceneKit cube face is tapped, `textureCoordinates` gives a 2D position from `0` to `1`, and that position becomes a `TileID` on the current 2x2 or 3x3 board.
+
+            When a SpriteKit scene becomes a texture on a cube face, labels can appear mirrored or upside down depending on the face direction. Each stage therefore stores a `coordinateLayout` for touch-to-tile remapping and a `labelCorrection` for readable labels.
+        }
+
+        @Steps {
+            @Step {
+                For now, check the visible tile map. The precise 3D touch conversion is connected in the SceneKit chapter.
+            }
+        }
+    }
+
+    @Section(title: "Check the result") {
+        @ContentAndMedia {
+            You should see a 2x2 SpriteKit tile map. The different colors are a learning aid so each tile role is visible.
+
+            In `SKTileMapNode`, row `0` is the bottom row. The labels such as `(0,0)` and `(0,1)` preview the `TileID` address each cell will use.
+
+            @Image(source: expected-02-tilemap.svg, alt: "A 2x2 SKTileMapNode using SKTileGroup values from an SKTileSet palette.")
+        }
+
+        @Steps {
+            @Step {
+                Say the core relationship out loud: `SKTileGroup` is a tile appearance, `SKTileSet` is the palette, and `SKTileMapNode` is the grid.
+            }
+        }
+    }
+}

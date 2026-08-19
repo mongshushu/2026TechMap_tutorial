@@ -1,0 +1,27 @@
+<svg width="960" height="540" viewBox="0 0 960 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="960" height="540" fill="#0F1115"/>
+  <text x="90" y="82" fill="#F7F7F7" font-family="Helvetica, Arial, sans-serif" font-size="34" font-weight="700">2x2 SKTileMapNode</text>
+  <text x="90" y="124" fill="#C7CDD8" font-family="Helvetica, Arial, sans-serif" font-size="22">Each cell points to one SKTileGroup from an SKTileSet palette.</text>
+  <g transform="translate(122 170)">
+    <rect x="0" y="0" width="128" height="128" rx="12" fill="#FFFFFF" stroke="#111111" stroke-width="5"/>
+    <rect x="128" y="0" width="128" height="128" rx="12" fill="#FFD60A" stroke="#111111" stroke-width="5"/>
+    <rect x="0" y="128" width="128" height="128" rx="12" fill="#0A84FF" stroke="#111111" stroke-width="5"/>
+    <rect x="128" y="128" width="128" height="128" rx="12" fill="#FFFFFF" stroke="#111111" stroke-width="5"/>
+    <text x="64" y="72" text-anchor="middle" fill="#111111" font-family="Menlo, monospace" font-size="24" font-weight="700">1,0</text>
+    <text x="192" y="72" text-anchor="middle" fill="#111111" font-family="Menlo, monospace" font-size="24" font-weight="700">1,1</text>
+    <text x="64" y="200" text-anchor="middle" fill="#FFFFFF" font-family="Menlo, monospace" font-size="24" font-weight="700">0,0</text>
+    <text x="192" y="200" text-anchor="middle" fill="#111111" font-family="Menlo, monospace" font-size="24" font-weight="700">0,1</text>
+    <text x="64" y="232" text-anchor="middle" fill="#DDEBFF" font-family="Helvetica, Arial, sans-serif" font-size="18">current</text>
+    <text x="192" y="104" text-anchor="middle" fill="#111111" font-family="Helvetica, Arial, sans-serif" font-size="18">goal</text>
+  </g>
+  <g transform="translate(500 180)">
+    <rect x="0" y="0" width="320" height="210" rx="14" fill="#1C2028" stroke="#363C48" stroke-width="2"/>
+    <text x="28" y="50" fill="#FFFFFF" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="700">SKTileSet palette</text>
+    <circle cx="44" cy="88" r="14" fill="#FFFFFF"/>
+    <text x="74" y="96" fill="#C7CDD8" font-family="Helvetica, Arial, sans-serif" font-size="20">empty SKTileGroup</text>
+    <circle cx="44" cy="126" r="14" fill="#0A84FF"/>
+    <text x="74" y="134" fill="#C7CDD8" font-family="Helvetica, Arial, sans-serif" font-size="20">current SKTileGroup</text>
+    <circle cx="44" cy="164" r="14" fill="#FFD60A"/>
+    <text x="74" y="172" fill="#C7CDD8" font-family="Helvetica, Arial, sans-serif" font-size="20">goal SKTileGroup</text>
+  </g>
+</svg>

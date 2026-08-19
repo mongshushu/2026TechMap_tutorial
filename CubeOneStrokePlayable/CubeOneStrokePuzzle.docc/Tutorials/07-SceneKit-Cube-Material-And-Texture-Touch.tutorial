@@ -1,0 +1,111 @@
+@Tutorial(time: 35) {
+    @Intro(title: "07. Put SpriteKit on a SceneKit Cube") {
+        Put SpriteKit puzzle scenes on multiple faces of an `SCNBox`, then convert a 3D surface tap into the current stage's 2D tile coordinate.
+
+        Language: [한국어](/2026TechMap_tutorial/CubeOneStrokePuzzleKO/tutorials/cube-one-stroke-puzzle-ko/07-scenekit-cube-material-and-texture-touch/).
+    }
+
+    @Section(title: "Create the cube material") {
+        @ContentAndMedia {
+            SceneKit draws the cube. SpriteKit draws the puzzle face.
+
+            The bridge between them is an `SCNMaterial`: set the material's diffuse contents to a SpriteKit scene.
+
+            This version does not swap every stage onto one face. Each stage is attached to a different cube face. A completed face is not replaced with one flat `.systemTeal` material; it remains a tile map where every square tile is `.systemTeal`.
+        }
+
+        @Steps {
+            @Step {
+                Create one material per face whose contents are a SpriteKit scene, then put those face materials into the `SCNBox` material array.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "07-Material.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+        }
+    }
+
+    @Section(title: "Find the tapped surface") {
+        @ContentAndMedia {
+            `SCNView.hitTest` asks SceneKit which 3D object is under the user's finger.
+
+            The result tells you which node and which material face was hit, so you can ignore taps on faces that do not belong to the current stage.
+        }
+
+        @Steps {
+            @Step {
+                Run a hit test from the tap location.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "07-HitTest.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+
+            @Step {
+                In the same hit-test code, check that the hit result belongs to the cube and to the current stage's cube face.
+            }
+        }
+    }
+
+    @Section(title: "Convert surface position to TileID") {
+        @ContentAndMedia {
+            `textureCoordinates(withMappingChannel:)` is the key technique. It converts the 3D surface hit into a 2D coordinate between `0` and `1`.
+
+            Multiplying that coordinate by the current board's `boardSize` turns the surface position into a row and column. The same code works for the learning 2x2 board and for the final 3x3 cube faces.
+
+            If a face direction mirrors the texture, use `coordinateLayout` to remap raw row and column values. Use `labelCorrection` so the coordinate labels stay readable on the cube.
+
+            @Image(source: expected-07-cube-touch.svg, alt: "A cube surface touch converted into a 2D tile coordinate.")
+        }
+
+        @Steps {
+            @Step {
+                Convert the texture coordinate into `row` and `column` for the current board size.
+
+                @Code(name: "PuzzleModels.swift", file: "07-TextureCoordinateToTileID.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+
+            @Step {
+                Read the final two lines of the hit-test code: they convert the texture coordinate into a `TileID`, then send it into the same selection logic you already built.
+            }
+        }
+    }
+
+    @Section(title: "Advance only across a shared edge") {
+        @ContentAndMedia {
+            Each stage already has a `cubeFace`. Add only the edge facts the transition needs: which edge the current stage exits from, which edge the next stage enters from, and whether the start and goal tiles sit on those edges.
+
+            This version does not build the full cube topology. The playable path only needs two explicit links: `front.right -> right.left` and `right.top -> top.right`.
+        }
+
+        @Steps {
+            @Step {
+                `TileEdge`, `entryEdge`, and `exitEdge` were added to `BoardPlan` in the model step. Now also check whether the current stage's final tile sits on `exitEdge` and the next stage's starting tile sits on `entryEdge`.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "07-EdgeTransition.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+
+            @Step {
+                Read the final assignment in the code: `canAdvanceStage` turns on only when the puzzle is complete, the next stage shares the matching cube edge, and both tiles sit on their edges.
+            }
+        }
+    }
+
+    @Section(title: "Keep the scope focused") {
+        @ContentAndMedia {
+            This version does not implement full folded cube topology for all six faces.
+
+            The first playable goal is narrower: start on the front face, leave completed faces as `.systemTeal` tile maps, and place the next stage on a neighboring face that touches the previous goal edge.
+        }
+
+        @Steps {
+            @Step {
+                Keep full six-face topology as a later refactor. In this first playable tutorial, explicitly place only the few neighboring faces used by the stages.
+            }
+        }
+    }
+}

@@ -1,0 +1,45 @@
+@Tutorials(name: "Cube One-Stroke Puzzle KO") {
+    @Intro(title: "큐브 한붓그리기 퍼즐") {
+        SwiftUI, SpriteKit, SceneKit을 연결해서 큐브 여러 면에 stage를 붙이고, 2x2로 tile map 구조를 먼저 익힌 뒤 큐브 버전에서는 3x3 board를 사용하는 한국어 튜토리얼입니다.
+
+        언어 전환: [English](/2026TechMap_tutorial/CubeOneStrokePuzzle/tutorials/cubeonestrokepuzzle/).
+
+        이 한국어 카탈로그 이름은 `CubeOneStrokePuzzleKO`입니다. GitHub Pages로 정적 배포할 때도 `--hosting-base-path CubeOneStrokePuzzleKO`를 사용해서 카탈로그 루트 이름과 base path를 맞춥니다.
+    }
+
+    @Chapter(name: "SpriteKit 기초") {
+        @Image(source: chapter-spritekit.svg, alt: "SpriteKit 타일 네 개와 SpriteKit 텍스트.")
+
+        SpriteKit의 scene, container layer, `SKTileMapNode`, `SKTileSet`, `SKTileGroup` 구조를 먼저 확인합니다.
+
+        @TutorialReference(tutorial: "doc:01-SpriteKit-Scene-And-Container-Layers")
+        @TutorialReference(tutorial: "doc:02-SpriteKit-Tiles-And-Touch-Names")
+    }
+
+    @Chapter(name: "퍼즐 규칙") {
+        @Image(source: chapter-foundation.svg, alt: "퍼즐 데이터 규칙을 나타내는 연결된 원.")
+
+        Foundation 값 타입으로 tile 주소와 한붓그리기 이동 규칙을 만듭니다.
+
+        @TutorialReference(tutorial: "doc:03-Foundation-Board-Model-And-TileID")
+        @TutorialReference(tutorial: "doc:04-Foundation-GameStore-And-Neighbor-Rule")
+    }
+
+    @Chapter(name: "SwiftUI 연결") {
+        @Image(source: chapter-swiftui.svg, alt: "간단한 SwiftUI 화면과 컨트롤.")
+
+        SwiftUI 화면이 같은 상태를 유지하고 버튼으로 퍼즐 상태를 제어하게 연결합니다.
+
+        @TutorialReference(tutorial: "doc:05-SwiftUI-StateObject-And-Scene-Connection")
+        @TutorialReference(tutorial: "doc:06-SwiftUI-Undo-And-Three-By-Three")
+    }
+
+    @Chapter(name: "SceneKit 큐브") {
+        @Image(source: chapter-scenekit.svg, alt: "SceneKit 텍스트 옆의 큐브.")
+
+        SceneKit 큐브 여러 면에 SpriteKit 퍼즐을 붙이고 3D 표면 터치를 현재 stage의 tile 선택으로 바꿉니다.
+
+        @TutorialReference(tutorial: "doc:07-SceneKit-Cube-Material-And-Texture-Touch")
+        @TutorialReference(tutorial: "doc:08-SceneKit-Rotation-Mode")
+    }
+}

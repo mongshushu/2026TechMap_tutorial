@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+  <rect width="1200" height="720" fill="#f5f5f7"/>
+  <polygon points="525,145 805,285 525,430 245,285" fill="#0a84ff"/>
+  <polygon points="805,285 805,535 525,675 525,430" fill="#30b0c7"/>
+  <polygon points="245,285 525,430 525,675 245,535" fill="#64d2ff"/>
+  <line x1="345" y1="235" x2="625" y2="375" stroke="#ffffff" stroke-width="8" opacity="0.9"/>
+  <line x1="445" y1="185" x2="725" y2="325" stroke="#ffffff" stroke-width="8" opacity="0.9"/>
+  <line x1="345" y1="335" x2="625" y2="475" stroke="#ffffff" stroke-width="8" opacity="0.9"/>
+  <circle cx="575" cy="350" r="26" fill="#ff375f"/>
+  <text x="920" y="335" text-anchor="middle" fill="#1c1c1e" font-family="Helvetica, Arial, sans-serif" font-size="34" font-weight="700">textureCoordinates</text>
+  <text x="920" y="385" text-anchor="middle" fill="#636366" font-family="Helvetica, Arial, sans-serif" font-size="28">3D tap to 2D tile</text>
+</svg>

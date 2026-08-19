@@ -1,0 +1,69 @@
+@Tutorial(time: 30) {
+    @Intro(title: "06. 되돌리기와 stage 확장하기") {
+        간단한 undo 동작을 추가하고, 큐브에서 플레이할 stage를 3x3 board로 맞춥니다.
+
+        언어 전환: [English](/2026TechMap_tutorial/CubeOneStrokePuzzle/tutorials/cube-one-stroke-puzzle/06-swiftui-undo-and-three-by-three/).
+    }
+
+    @Section(title: "마지막 tile 되돌리기") {
+        @ContentAndMedia {
+            undo는 path에서 가장 최근 tile을 제거합니다.
+
+            초보자가 읽기 쉬운 순서로 작성합니다. 시작 칸인지 막고, 마지막 tile을 제거하고, 새 current tile을 정하고, 완료 상태를 풀고, 다시 그리고, debug text를 바꿉니다.
+        }
+
+        @Steps {
+            @Step {
+                `undoLastStep()`을 추가해서 path에서 마지막 tile을 제거하고 board를 다시 그립니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "06-UndoRemove.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
+            }
+
+            @Step {
+                `canUndo`를 갱신하고 SwiftUI undo button을 `undoLastStep()`에 연결합니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "06-UndoCurrent.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
+            }
+        }
+    }
+
+    @Section(title: "3x3 cube stage 사용하기") {
+        @ContentAndMedia {
+            앞의 2x2 board는 학습용 단계입니다. `SKTileMapNode`, `SKTileSet`, `SKTileGroup`의 관계를 작은 화면에서 먼저 보기 위한 장치입니다.
+
+            큐브 버전에서는 플레이 가능한 모든 stage를 3x3으로 맞춥니다. 같은 `BoardPlan` 구조에 `boardSize: 3`을 넣으면 SpriteKit tile map과 SceneKit 터치 변환이 같은 방식으로 확장됩니다.
+
+            지금은 두세 개의 3x3 stage만 추가합니다. 모든 cube face 관계를 미리 만들지 않습니다. 목표는 모서리와 맞닿은 몇 개의 playable puzzle을 전환하는 것입니다.
+        }
+
+        @Steps {
+            @Step {
+                작은 board 목록을 반환하는 `StageCatalog`를 추가합니다.
+
+                @Code(name: "PuzzleModels.swift", file: "06-StageCatalog.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
+            }
+
+            @Step {
+                각 stage를 읽기 쉽게 유지합니다. title, boardSize, start tile, goal tile, blocked tiles만 확인합니다.
+            }
+        }
+    }
+
+    @Section(title: "결과 확인하기") {
+        @ContentAndMedia {
+            이제 move를 undo할 수 있고, 3x3 stage를 완료한 뒤 모서리와 맞닿은 다른 cube face의 3x3 stage로 이동할 수 있어야 합니다.
+        }
+
+        @Steps {
+            @Step {
+                undo 코드가 길게 느껴져도 지금은 그대로 둡니다. 이 튜토리얼은 압축보다 명확함을 먼저 봅니다.
+            }
+        }
+    }
+}

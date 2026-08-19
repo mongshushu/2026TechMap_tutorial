@@ -1,0 +1,45 @@
+@Tutorials(name: "Cube One-Stroke Puzzle") {
+    @Intro(title: "Cube One-Stroke Puzzle") {
+        Connect SwiftUI, SpriteKit, and SceneKit to place one-stroke puzzle stages on multiple cube faces, learning the tile map structure with 2x2 first and using 3x3 boards for the cube version.
+
+        Language: [한국어](/2026TechMap_tutorial/CubeOneStrokePuzzleKO/tutorials/cubeonestrokepuzzleko/).
+
+        이 카탈로그 이름은 `CubeOneStrokePuzzle`입니다. GitHub Pages로 정적 배포할 때도 `--hosting-base-path CubeOneStrokePuzzle`을 사용해서 루트 이름과 base path를 맞춥니다.
+    }
+
+    @Chapter(name: "SpriteKit Foundations") {
+        @Image(source: chapter-spritekit.svg, alt: "Four colored SpriteKit tiles with SpriteKit text.")
+
+        Start with SpriteKit scenes, container layers, `SKTileMapNode`, `SKTileSet`, and `SKTileGroup`.
+
+        @TutorialReference(tutorial: "doc:01-SpriteKit-Scene-And-Container-Layers")
+        @TutorialReference(tutorial: "doc:02-SpriteKit-Tiles-And-Touch-Names")
+    }
+
+    @Chapter(name: "Puzzle Logic") {
+        @Image(source: chapter-foundation.svg, alt: "Two connected circles representing puzzle data rules.")
+
+        Model tile addresses and one-stroke movement rules with Foundation value types.
+
+        @TutorialReference(tutorial: "doc:03-Foundation-Board-Model-And-TileID")
+        @TutorialReference(tutorial: "doc:04-Foundation-GameStore-And-Neighbor-Rule")
+    }
+
+    @Chapter(name: "SwiftUI Connection") {
+        @Image(source: chapter-swiftui.svg, alt: "A simplified SwiftUI screen with stacked controls.")
+
+        Keep shared state alive in SwiftUI and control puzzle state with buttons.
+
+        @TutorialReference(tutorial: "doc:05-SwiftUI-StateObject-And-Scene-Connection")
+        @TutorialReference(tutorial: "doc:06-SwiftUI-Undo-And-Three-By-Three")
+    }
+
+    @Chapter(name: "SceneKit Cube") {
+        @Image(source: chapter-scenekit.svg, alt: "A stylized cube beside SceneKit text.")
+
+        Attach SpriteKit puzzles to multiple SceneKit cube faces and convert 3D surface taps into tile selections for the current stage.
+
+        @TutorialReference(tutorial: "doc:07-SceneKit-Cube-Material-And-Texture-Touch")
+        @TutorialReference(tutorial: "doc:08-SceneKit-Rotation-Mode")
+    }
+}

@@ -1,0 +1,71 @@
+@Tutorial(time: 25) {
+    @Intro(title: "05. Connect SwiftUI State") {
+        Keep one shared view model alive in SwiftUI, then pass it into the SceneKit view.
+
+        Language: [한국어](/2026TechMap_tutorial/CubeOneStrokePuzzleKO/tutorials/cube-one-stroke-puzzle-ko/05-swiftui-stateobject-and-scene-connection/).
+    }
+
+    @Section(title: "Create one view model") {
+        @ContentAndMedia {
+            SwiftUI recalculates the body when state changes. If the game store is recreated every time, the path can disappear.
+
+            `@StateObject` means this screen creates the object once and keeps it alive while the screen exists.
+        }
+
+        @Steps {
+            @Step {
+                Open `ContentView.swift`.
+            }
+
+            @Step {
+                Create the shared view model with `@StateObject`.
+
+                @Code(name: "ContentView.swift", file: "05-StateObject.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+        }
+    }
+
+    @Section(title: "Pass it to SceneKit") {
+        @ContentAndMedia {
+            `SceneKitCubeView(viewModel: viewModel)` means the SceneKit view receives the same object from the outside.
+
+            This is the bridge that lets a 3D tap update SwiftUI text, button state, and SpriteKit colors.
+        }
+
+        @Steps {
+            @Step {
+                Create `SceneKitCubeView` as a `UIViewRepresentable`. This wrapper owns the `SCNView`, connects tap and pan gestures, and sends those gestures back into the view model.
+
+                @Code(name: "SceneKitCubeView.swift", file: "05-SceneKitCubeView.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+
+            @Step {
+                Add the SceneKit view, reset button, undo button, and next button to the SwiftUI layout.
+
+                @Code(name: "ContentView.swift", file: "05-SceneKitView.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+
+            @Step {
+                Confirm that SwiftUI controls and SceneKit rendering now read from the same source of truth.
+            }
+        }
+    }
+
+    @Section(title: "Check the result") {
+        @ContentAndMedia {
+            You should now have one shared state object rather than separate stores for the buttons and the 3D scene.
+        }
+
+        @Steps {
+            @Step {
+                If a state value changes in the view model, the SwiftUI screen can redraw with the new value.
+            }
+        }
+    }
+}

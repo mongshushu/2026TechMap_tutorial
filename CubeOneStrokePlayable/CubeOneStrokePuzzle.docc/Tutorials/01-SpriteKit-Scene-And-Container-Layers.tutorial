@@ -1,0 +1,63 @@
+@Tutorial(time: 20) {
+    @Intro(title: "01. Build the SpriteKit Face Scene") {
+        Create the SpriteKit scene that will later become a texture on each SceneKit cube face.
+
+        Language: [한국어](/2026TechMap_tutorial/CubeOneStrokePuzzleKO/tutorials/cube-one-stroke-puzzle-ko/01-spritekit-scene-and-container-layers/).
+    }
+
+    @Section(title: "Create the scene file") {
+        @ContentAndMedia {
+            Start with the smallest useful SpriteKit screen. `SKScene` is the 2D stage where nodes appear, move, and react.
+
+            In this tutorial, `SpriteKitFaceScene.swift` will later become a texture that can appear on multiple faces of the SceneKit cube.
+        }
+
+        @Steps {
+            @Step {
+                Create a new Swift file named `SpriteKitFaceScene.swift`. Add an `SKScene` subclass and set `scaleMode` so the scene resizes with its container.
+
+                @Code(name: "SpriteKitFaceScene.swift", file: "01-SceneInit.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+        }
+    }
+
+    @Section(title: "Add render layers") {
+        @ContentAndMedia {
+            Add separate layers before drawing tiles and labels. A layer is not a visible rectangle or text. It is an empty group that holds other nodes.
+
+            This scene is used as a cube-face texture, so it does not keep a title HUD inside the SpriteKit surface. The SwiftUI screen shows the title and status text outside the cube. The SpriteKit face keeps only puzzle tiles and coordinate labels.
+        }
+
+        @Steps {
+            @Step {
+                Add `BoardRenderMode` so the same scene can render active, completed, and future faces. Then add `show(board:pathTileIDs:currentTileID:mode:)`. This method clears the previous drawing, creates `tileLayer` and `labelLayer`, then calls the tile and label drawing helpers.
+
+                @Code(name: "SpriteKitFaceScene.swift", file: "01-RenderLayers.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+
+            @Step {
+                Read the call order carefully: clear old nodes, create layers, calculate board metrics, then draw tiles and labels. That order keeps each render pass predictable.
+            }
+        }
+    }
+
+    @Section(title: "Check the result") {
+        @ContentAndMedia {
+            You should have a SpriteKit scene that can redraw one cube face from board data.
+
+            `zPosition` controls front-to-back order. A larger number appears in front of a smaller number.
+
+            @Image(source: expected-01-spritekit-scene.svg, alt: "A SpriteKit face scene with tileLayer below labelLayer.")
+        }
+
+        @Steps {
+            @Step {
+                Keep `tileLayer` and `labelLayer` in the file. They keep tile visuals and coordinate labels separate without adding extra architecture.
+            }
+        }
+    }
+}

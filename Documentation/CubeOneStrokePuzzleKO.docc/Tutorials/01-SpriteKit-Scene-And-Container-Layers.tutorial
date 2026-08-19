@@ -1,0 +1,63 @@
+@Tutorial(time: 20) {
+    @Intro(title: "01. SpriteKit face scene 만들기") {
+        나중에 SceneKit 큐브 각 면의 texture가 될 SpriteKit scene을 만듭니다.
+
+        언어 전환: [English](/2026TechMap_tutorial/CubeOneStrokePuzzle/tutorials/cube-one-stroke-puzzle/01-spritekit-scene-and-container-layers/).
+    }
+
+    @Section(title: "scene 파일 만들기") {
+        @ContentAndMedia {
+            가장 작은 SpriteKit 화면부터 시작합니다. `SKScene`은 node가 나타나고, 움직이고, 반응하는 2D 무대입니다.
+
+            이 튜토리얼에서 `SpriteKitFaceScene.swift`는 나중에 SceneKit 큐브 여러 면에 붙는 texture가 됩니다.
+        }
+
+        @Steps {
+            @Step {
+                `SpriteKitFaceScene.swift`라는 새 Swift 파일을 만듭니다. `SKScene` 하위 클래스를 만들고, scene이 담기는 공간에 맞게 크기가 바뀌도록 `scaleMode`를 설정합니다.
+
+                @Code(name: "SpriteKitFaceScene.swift", file: "01-SceneInit.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
+            }
+        }
+    }
+
+    @Section(title: "render layer 추가하기") {
+        @ContentAndMedia {
+            tile과 label을 바로 scene에 올리기 전에 layer를 나눕니다. layer는 보이는 사각형이나 글자가 아닙니다. 다른 node를 담는 빈 그룹입니다.
+
+            이 scene은 큐브 face texture로 쓰이므로 SpriteKit 표면 안에 제목 HUD를 남기지 않습니다. 제목과 상태 문구는 SwiftUI 화면이 큐브 밖에서 보여주고, SpriteKit face에는 puzzle tile과 좌표 label만 남깁니다.
+        }
+
+        @Steps {
+            @Step {
+                같은 scene이 active, completed, future face를 그릴 수 있도록 `BoardRenderMode`를 추가합니다. 이어서 `show(board:pathTileIDs:currentTileID:mode:)`를 추가합니다. 이 method는 이전 그림을 지우고, `tileLayer`와 `labelLayer`를 만든 뒤 tile과 label drawing helper를 호출합니다.
+
+                @Code(name: "SpriteKitFaceScene.swift", file: "01-RenderLayers.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
+            }
+
+            @Step {
+                호출 순서를 읽어봅니다. 이전 node를 지우고, layer를 만들고, board 크기를 계산한 다음, tile과 label을 그립니다. 이 순서가 render pass를 예측 가능하게 만듭니다.
+            }
+        }
+    }
+
+    @Section(title: "결과 확인하기") {
+        @ContentAndMedia {
+            board data를 받아 큐브 한 면을 다시 그릴 수 있는 SpriteKit scene이 준비되었습니다.
+
+            `zPosition`은 앞뒤 표시 순서를 정합니다. 숫자가 클수록 앞에 보입니다.
+
+            @Image(source: expected-01-spritekit-scene.svg, alt: "tileLayer 위에 labelLayer가 올라간 SpriteKit face scene.")
+        }
+
+        @Steps {
+            @Step {
+                `tileLayer`와 `labelLayer`는 유지합니다. tile 모양과 좌표 label을 분리하면 별도 구조를 크게 만들지 않아도 화면을 관리하기 쉽습니다.
+            }
+        }
+    }
+}

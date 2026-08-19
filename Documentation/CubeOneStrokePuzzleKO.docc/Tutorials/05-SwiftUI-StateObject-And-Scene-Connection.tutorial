@@ -1,0 +1,71 @@
+@Tutorial(time: 25) {
+    @Intro(title: "05. SwiftUI 상태 연결하기") {
+        SwiftUI에서 공유 view model 하나를 유지하고, 그 view model을 SceneKit view에 전달합니다.
+
+        언어 전환: [English](/2026TechMap_tutorial/CubeOneStrokePuzzle/tutorials/cube-one-stroke-puzzle/05-swiftui-stateobject-and-scene-connection/).
+    }
+
+    @Section(title: "view model 하나 만들기") {
+        @ContentAndMedia {
+            SwiftUI는 상태가 바뀌면 body를 다시 계산합니다. game store가 매번 새로 만들어지면 path가 사라질 수 있습니다.
+
+            `@StateObject`는 이 화면이 object를 한 번 만들고, 화면이 살아 있는 동안 유지한다는 뜻입니다.
+        }
+
+        @Steps {
+            @Step {
+                `ContentView.swift`를 엽니다.
+            }
+
+            @Step {
+                `@StateObject`로 공유 view model을 만듭니다.
+
+                @Code(name: "ContentView.swift", file: "05-StateObject.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
+            }
+        }
+    }
+
+    @Section(title: "SceneKit에 전달하기") {
+        @ContentAndMedia {
+            `SceneKitCubeView(viewModel: viewModel)`은 SceneKit view가 바깥에서 이미 만들어진 같은 object를 받는다는 뜻입니다.
+
+            이 연결 덕분에 3D 터치 결과가 SwiftUI 문구, 버튼 상태, SpriteKit 색상으로 이어질 수 있습니다.
+        }
+
+        @Steps {
+            @Step {
+                `SceneKitCubeView`를 `UIViewRepresentable`로 만듭니다. 이 wrapper는 `SCNView`를 만들고, tap/pan gesture를 연결한 뒤, gesture를 view model로 다시 보냅니다.
+
+                @Code(name: "SceneKitCubeView.swift", file: "05-SceneKitCubeView.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
+            }
+
+            @Step {
+                SwiftUI layout에 SceneKit view, reset button, undo button, next button을 추가합니다.
+
+                @Code(name: "ContentView.swift", file: "05-SceneKitView.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
+            }
+
+            @Step {
+                SwiftUI controls와 SceneKit rendering이 같은 source of truth를 읽고 있는지 확인합니다.
+            }
+        }
+    }
+
+    @Section(title: "결과 확인하기") {
+        @ContentAndMedia {
+            이제 버튼과 3D scene이 서로 다른 store를 보는 것이 아니라 하나의 공유 상태 object를 봅니다.
+        }
+
+        @Steps {
+            @Step {
+                view model의 상태값이 바뀌면 SwiftUI 화면도 새 값으로 다시 그려질 수 있습니다.
+            }
+        }
+    }
+}

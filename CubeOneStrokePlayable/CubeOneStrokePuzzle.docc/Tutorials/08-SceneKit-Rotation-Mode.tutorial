@@ -1,0 +1,83 @@
+@Tutorial(time: 30) {
+    @Intro(title: "08. Handle Rotation Mode") {
+        Separate puzzle tapping from cube rotation so the player can inspect neighboring cube faces without changing the path.
+
+        Language: [한국어](/2026TechMap_tutorial/CubeOneStrokePuzzleKO/tutorials/cube-one-stroke-puzzle-ko/08-scenekit-rotation-mode/).
+    }
+
+    @Section(title: "Lock puzzle taps during rotation") {
+        @ContentAndMedia {
+            Tapping and dragging both begin with touch input. If puzzle selection and cube rotation are active at the same time, the player can accidentally change the path while trying to rotate the cube.
+
+            Use a toggle-style rotation mode. When it is on, tile selection returns early.
+        }
+
+        @Steps {
+            @Step {
+                Add an early return to the tap handler, and update the debug text so the player understands why the tap did not select a tile.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-RotationTapGuard.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+        }
+    }
+
+    @Section(title: "Rotate only in rotation mode") {
+        @ContentAndMedia {
+            Pan gestures should rotate the cube only while rotation mode is active.
+
+            When rotation mode is active, the cube also scales down slightly so the user gets a visible mode change.
+
+            In this project, rotation mode is not just for inspecting the cube. After completing the current face, the player uses it to find the next stage on a neighboring face. When rotation mode is off, taps update the puzzle path. When it is on, tile selection is locked.
+
+            @Image(source: expected-08-rotation-mode.svg, alt: "Rotation mode toggle on, with tile selection locked.")
+        }
+
+        @Steps {
+            @Step {
+                Add the rotation mode setter and SwiftUI toggle. This is the code that scales the cube down while rotation mode is active.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift and ContentView.swift", file: "08-RotationModeGuard.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+
+            @Step {
+                Guard the pan handler so it does nothing while rotation mode is off, then rotate the cube from the drag translation.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-RotationPan.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+
+            @Step {
+                Turn rotation mode off and confirm that taps select tiles again.
+            }
+        }
+    }
+
+    @Section(title: "Auto-rotate to the next face") {
+        @ContentAndMedia {
+            When the app moves to the next stage, the puzzle data already points to a different `cubeFace`. Now rotate the cube so that face comes into view.
+
+            Use `SCNAction.rotateTo` here. `rotateTo` does not add more rotation to the current angle. It sends the node toward a final absolute angle.
+
+            `rotateBy` adds a relative rotation from wherever the cube is now. If the player has already turned the cube in rotation mode, relative rotation can accumulate and leave the displayed face out of sync with the stage. Because each stage has a fixed target face, `rotateTo` is simpler.
+        }
+
+        @Steps {
+            @Step {
+                Add a helper that maps each `CubeFace` to a display angle, then rotates the cube to that angle. In the same code, update `goToNextStage()` so it calls `rotateCube(to: currentBoard.cubeFace)` after `loadStage(at:)`.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-AutoRotateToFace.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "Preview placeholder for the screen after adding this code.")
+            }
+
+            @Step {
+                `usesShortestUnitArc: true` asks SceneKit to use a direct path from the current orientation to the target orientation. You do not need to memorize it yet; for now, remember it as the option that helps the cube avoid taking a long way around.
+            }
+        }
+    }
+}
