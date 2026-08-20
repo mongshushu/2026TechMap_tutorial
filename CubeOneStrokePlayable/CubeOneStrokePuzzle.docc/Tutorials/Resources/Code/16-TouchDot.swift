@@ -12,6 +12,3 @@ private func showTouchDot(at position: SCNVector3) {
     let remove = SCNAction.removeFromParentNode()
     dotNode.runAction(SCNAction.sequence([wait, fade, remove]))
 }
-
-let hitResult = hitResults[0]
-showTouchDot(at: hitResult.worldCoordinates)

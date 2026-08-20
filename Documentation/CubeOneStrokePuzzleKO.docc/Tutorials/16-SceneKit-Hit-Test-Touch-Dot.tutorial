@@ -14,7 +14,7 @@
 
         @Steps {
             @Step {
-                `hitResult.worldCoordinates` 위치에 작은 `SCNSphere`를 추가하고, 잠깐 기다린 뒤 사라지게 합니다.
+                `hitResult.worldCoordinates` 위치에 작은 `SCNSphere`를 추가하는 helper를 만듭니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "16-TouchDot.swift")
             }
@@ -31,6 +31,8 @@
         @Steps {
             @Step {
                 `handleTap`에서 hit result를 얻은 직후 `showTouchDot(at: hitResult.worldCoordinates)`를 호출합니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "16-CallTouchDot.swift")
             }
         }
     }

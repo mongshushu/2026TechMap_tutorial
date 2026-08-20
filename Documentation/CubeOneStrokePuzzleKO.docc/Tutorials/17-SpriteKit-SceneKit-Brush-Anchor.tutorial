@@ -23,16 +23,36 @@
         @ContentAndMedia {
             brush를 SpriteKit face texture 안에 그리면 큐브 표면 그림의 일부가 됩니다. 하지만 여기서는 선택된 tile 위에 떠 있는 marker처럼 보여야 합니다.
 
-            그래서 작은 `SCNPlane`을 만들고, 그 plane의 material에 `BrushMarker` 이미지를 붙입니다. 이 plane을 가진 `brushNode`는 처음에는 숨겨두고, tile 선택에 성공했을 때만 보이게 합니다.
+            그래서 작은 `SCNPlane`을 만들고, 그 plane의 material에 `BrushMarker` 이미지를 붙입니다. 여기까지는 brush를 표시할 node와 anchor만 만든 상태입니다.
         }
 
         @Steps {
             @Step {
-                brush node를 설정합니다. `SCNBillboardConstraint`는 카메라가 움직여도 brush plane이 카메라 쪽을 바라보게 합니다.
+                먼저 `SceneKitPuzzleViewModel` 안에 brush marker로 사용할 node를 추가합니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-BrushAnchor.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-BrushNodeProperty.swift")
+            }
 
-                @Image(source: preview-placeholder.svg, alt: "선택된 tile 중앙에 brush marker가 보이는 preview 자리.")
+            @Step {
+                brush image를 붙일 `SCNPlane`을 만들고, 그 plane을 `brushNode.geometry`로 설정합니다. 아직 선택된 tile이 없으므로 `brushNode.isHidden`은 `true`로 둡니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-BrushPlaneNode.swift")
+            }
+        }
+    }
+
+    @Section(title: "billboard constraint 추가하기") {
+        @ContentAndMedia {
+            anchor만 만들면 brush는 큐브 표면 위 특정 위치에 놓일 수 있습니다. 하지만 큐브를 회전했을 때 brush plane이 옆으로 누워 보이거나 읽기 어려운 방향을 바라볼 수 있습니다.
+
+            `SCNBillboardConstraint`는 SceneKit node가 카메라를 바라보게 하는 constraint입니다. 이 장에서 brush는 3D 공간에 떠 있는 marker지만, 사용자는 2D 아이콘처럼 읽어야 하므로 billboard 처리가 필요합니다.
+        }
+
+        @Steps {
+            @Step {
+                `brushNode.isHidden = true` 아래, `scene.rootNode.addChildNode(brushNode)` 위에 billboard constraint를 추가합니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-BillboardConstraint.swift")
             }
         }
     }
@@ -42,18 +62,24 @@
             SceneKit과 SpriteKit의 연결은 brush image 자체가 아니라 `TileID`로 합니다.
 
             SceneKit hitTest는 표면 터치를 `textureCoordinates`로 바꾸고, SpriteKit puzzle logic은 그 좌표를 `TileID`로 바꿉니다. selection이 성공하면 그 `TileID`의 중앙을 계산해서 SceneKit `brushNode.position`으로 사용합니다.
-
-            지금은 `textureCoordinates`가 터치한 칸을 찾는 데 쓰이고, `TileID`가 선택된 칸을 기억하는 이름표이며, brush가 그 이름표의 중앙으로 이동한다고 이해하면 충분합니다.
         }
 
         @Steps {
             @Step {
+                raw hit point가 아니라 selected `TileID`의 center로 `brushNode`를 옮기는 helper를 추가합니다. 위치 계산에 실패하면 brush를 숨기고 끝냅니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-MoveBrushToTileCenter.swift")
+            }
+
+            @Step {
                 tile 선택이 성공한 뒤에만 `moveBrush(to:on:)`을 호출합니다. 이동할 수 없는 tile을 터치했을 때 brush가 움직이면 선택이 성공한 것처럼 보이므로, 실패한 선택에서는 brush 위치를 바꾸지 않습니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-MoveBrushAfterSelection.swift")
             }
         }
     }
 
-    @Section(title: "tile 중앙으로 이동하기") {
+    @Section(title: "tile 중앙 marker 확인하기") {
         @ContentAndMedia {
             이번 장에서는 선택된 tile을 보여주는 최종 UX marker를 추가했습니다.
 
@@ -63,6 +89,12 @@
         }
 
         @Steps {
+            @Step {
+                preview에서는 brush가 선택된 tile 중앙에 올라가고, 큐브를 회전해도 아이콘처럼 읽히는지 먼저 확인합니다.
+
+                @Image(source: expected-17-brush-anchor.svg, alt: "선택된 tile 중앙에 SceneKit brush node가 놓이고 카메라를 바라보는 결과 preview.")
+            }
+
             @Step {
                 brush가 터치 지점이 아니라 tile 중앙에 오는지, 이동할 수 없는 tile을 터치했을 때 brush가 움직이지 않는지, 큐브를 회전해도 brush image가 카메라를 바라보는지 확인합니다.
             }

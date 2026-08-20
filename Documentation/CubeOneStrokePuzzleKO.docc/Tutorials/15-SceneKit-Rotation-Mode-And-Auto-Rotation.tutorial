@@ -14,10 +14,15 @@
 
         @Steps {
             @Step {
-                rotation mode guard를 추가합니다. rotation mode ON은 큐브 보기, rotation mode OFF는 퍼즐 선택으로 구분합니다.
+                rotation mode ON일 때 tap으로 tile이 선택되지 않도록 guard를 추가합니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-RotationTapGuard.swift")
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-RotationPan.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "15-RotationTapGuard.swift")
+            }
+
+            @Step {
+                rotation mode ON일 때만 drag로 큐브가 회전하도록 pan handler를 막아 둡니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "15-RotationPan.swift")
             }
         }
     }
@@ -33,7 +38,7 @@
             @Step {
                 `setRotationModeEnabled(_:)`에서 rotation mode가 켜졌을 때는 `0.82`, 꺼졌을 때는 `1.0` scale을 사용합니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift and ContentView.swift", file: "08-RotationModeGuard.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift and ContentView.swift", file: "15-RotationModeGuard.swift")
             }
         }
     }
@@ -49,7 +54,7 @@
             @Step {
                 `displayAngle(for:)`로 face별 목표 각도를 정하고, `rotateCube(to:)`에서 `SCNAction.rotateTo`를 실행합니다. `goToNextStage()`에서는 다음 stage를 불러온 뒤 `currentBoard.cubeFace`를 목표로 회전합니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-AutoRotateToFace.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "15-AutoRotateToFace.swift")
             }
         }
     }

@@ -12,10 +12,15 @@
 
         @Steps {
             @Step {
-                Add the rotation-mode guards.
+                Add the tap guard so rotation mode does not select tiles.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-RotationTapGuard.swift")
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-RotationPan.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "15-RotationTapGuard.swift")
+            }
+
+            @Step {
+                Add the pan guard so dragging rotates the cube only in rotation mode.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "15-RotationPan.swift")
             }
         }
     }
@@ -29,7 +34,7 @@
             @Step {
                 Use `SCNAction.scale` in `setRotationModeEnabled(_:)`.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift and ContentView.swift", file: "08-RotationModeGuard.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift and ContentView.swift", file: "15-RotationModeGuard.swift")
             }
         }
     }
@@ -43,7 +48,7 @@
             @Step {
                 Map each `CubeFace` to a display angle, then rotate to `currentBoard.cubeFace` after loading the next stage.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-AutoRotateToFace.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "15-AutoRotateToFace.swift")
             }
         }
     }

@@ -7,6 +7,8 @@
 
     @Section(title: "Add the BrushMarker asset") {
         @ContentAndMedia {
+            The brush is not drawn into the SpriteKit face texture. It is a separate SceneKit node placed above the cube surface.
+
             Add the attached paintbrush image to `Assets.xcassets` as `BrushMarker`. The SceneKit material loads it with `UIImage(named: "BrushMarker")`.
         }
 
@@ -19,14 +21,36 @@
 
     @Section(title: "Make a SceneKit brush node") {
         @ContentAndMedia {
-            The brush is not drawn into the SpriteKit face texture. It is a separate SceneKit node placed above the cube surface. `SCNBillboardConstraint` keeps the brush facing the camera.
+            Create a small `SCNPlane`, assign the `BrushMarker` image to its material, and attach it to `brushNode`. At this point, the app has a node and an anchor, but it does not yet have billboard behavior.
         }
 
         @Steps {
             @Step {
-                Create a small `SCNPlane`, assign the `BrushMarker` image to its material, and attach it to `brushNode`.
+                Add a SceneKit node for the brush marker.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-BrushAnchor.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-BrushNodeProperty.swift")
+            }
+
+            @Step {
+                Add the image plane and hide the brush until a tile is selected.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-BrushPlaneNode.swift")
+            }
+        }
+    }
+
+    @Section(title: "Add the billboard constraint") {
+        @ContentAndMedia {
+            Anchoring the brush puts it at a 3D position, but it does not guarantee that the icon faces the camera. If the cube rotates, the plane can turn sideways or become hard to read.
+
+            `SCNBillboardConstraint` keeps the brush node facing the camera. That makes the 3D marker read like a 2D icon.
+        }
+
+        @Steps {
+            @Step {
+                Add the billboard constraint below `brushNode.isHidden = true` and above `scene.rootNode.addChildNode(brushNode)`.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-BillboardConstraint.swift")
             }
         }
     }
@@ -38,7 +62,15 @@
 
         @Steps {
             @Step {
+                Add the helper that moves the brush to the selected tile center.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-MoveBrushToTileCenter.swift")
+            }
+
+            @Step {
                 Move the brush only after successful selection. Failed taps may show the touch dot, but they should not move the brush.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-MoveBrushAfterSelection.swift")
             }
         }
     }
@@ -49,6 +81,12 @@
         }
 
         @Steps {
+            @Step {
+                Check the preview first: the brush sits at the selected tile center and reads like a camera-facing icon.
+
+                @Image(source: expected-17-brush-anchor.svg, alt: "A selected tile center marker that faces the camera while the cube rotates.")
+            }
+
             @Step {
                 Confirm the brush appears at the tile center, does not move on invalid selections, and continues to face the camera while the cube rotates.
             }

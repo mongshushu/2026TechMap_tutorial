@@ -12,7 +12,7 @@
 
         @Steps {
             @Step {
-                Add `showTouchDot(at:)` and call it after reading the first hit result.
+                Add `showTouchDot(at:)`.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "16-TouchDot.swift")
             }
@@ -25,6 +25,12 @@
         }
 
         @Steps {
+            @Step {
+                Call `showTouchDot(at: hitResult.worldCoordinates)` after reading the first hit result.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "16-CallTouchDot.swift")
+            }
+
             @Step {
                 Tap the cube and confirm the dot appears near the touch point rather than at the center of a tile.
             }
