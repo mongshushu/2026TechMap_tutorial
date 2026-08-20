@@ -19,8 +19,6 @@
                 빈 칸, 막힌 칸, 지나간 칸, 현재 칸, 완료된 칸을 나타내는 `SKTileGroup`을 만듭니다. tile group을 `SKTileSet` 하나로 묶고, 색이 채워진 `UIImage`를 `SKTileGroup`으로 바꾸는 helper를 추가합니다.
 
                 @Code(name: "SpriteKitFaceScene.swift", file: "02-TilePalette.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
             }
         }
     }
@@ -39,8 +37,6 @@
                 board 크기, tile map, tile label, tile role, label color helper를 만듭니다. `SKTileMapNode`는 `board.boardSize`를 columns와 rows에 사용하고, 그 다음 각 칸에 어떤 `SKTileGroup`을 보여줄지 지정합니다.
 
                 @Code(name: "SpriteKitFaceScene.swift", file: "02-TwoByTwoTileMap.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
             }
 
             @Step {

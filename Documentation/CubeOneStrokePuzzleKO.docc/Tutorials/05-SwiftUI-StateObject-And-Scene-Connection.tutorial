@@ -21,8 +21,6 @@
                 `@StateObject`로 공유 view model을 만듭니다.
 
                 @Code(name: "ContentView.swift", file: "05-StateObject.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
             }
         }
     }
@@ -39,16 +37,12 @@
                 `SceneKitCubeView`를 `UIViewRepresentable`로 만듭니다. 이 wrapper는 `SCNView`를 만들고, tap/pan gesture를 연결한 뒤, gesture를 view model로 다시 보냅니다.
 
                 @Code(name: "SceneKitCubeView.swift", file: "05-SceneKitCubeView.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
             }
 
             @Step {
                 SwiftUI layout에 SceneKit view, reset button, undo button, next button을 추가합니다.
 
                 @Code(name: "ContentView.swift", file: "05-SceneKitView.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
             }
 
             @Step {

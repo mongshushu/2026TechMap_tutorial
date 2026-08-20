@@ -34,8 +34,6 @@
                 `setRotationModeEnabled(_:)`에서 rotation mode가 켜졌을 때는 `0.82`, 꺼졌을 때는 `1.0` scale을 사용합니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift and ContentView.swift", file: "08-RotationModeGuard.swift")
-
-                @Image(source: expected-08-rotation-mode.svg, alt: "rotation mode가 켜지고 큐브가 작아진 상태.")
             }
         }
     }

@@ -17,8 +17,6 @@
                 tap handler에 early return을 추가하고, 왜 tile이 선택되지 않았는지 사용자가 이해할 수 있게 debug text도 바꿉니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-RotationTapGuard.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
             }
         }
     }
@@ -39,16 +37,12 @@
                 rotation mode setter와 SwiftUI toggle을 추가합니다. 이 코드가 rotation mode가 켜졌을 때 cube를 작게 줄입니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift and ContentView.swift", file: "08-RotationModeGuard.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
             }
 
             @Step {
                 rotation mode가 꺼져 있으면 pan handler가 아무 일도 하지 않도록 guard하고, drag translation으로 cube를 회전시킵니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-RotationPan.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
             }
 
             @Step {
@@ -71,8 +65,6 @@
                 `CubeFace`마다 보여줄 각도를 정하고, 그 각도로 큐브를 회전시키는 helper를 추가합니다. 같은 코드에서 `goToNextStage()`를 수정해 `loadStage(at:)`를 호출한 뒤 `rotateCube(to: currentBoard.cubeFace)`를 호출합니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-AutoRotateToFace.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
             }
 
             @Step {
