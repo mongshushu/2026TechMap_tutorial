@@ -1,0 +1,57 @@
+@Tutorial(time: 30) {
+    @Intro(title: "17. Anchor the brush at the selected tile center") {
+        Use the paintbrush image as a SceneKit marker. Move it to the center of the selected `TileID`, not to the raw touch point.
+
+        Language: [한국어](/2026TechMap_tutorial/CubeOneStrokePuzzleKO/tutorials/cube-one-stroke-puzzle-ko/17-spritekit-scenekit-brush-anchor/).
+    }
+
+    @Section(title: "Add the BrushMarker asset") {
+        @ContentAndMedia {
+            Add the attached paintbrush image to `Assets.xcassets` as `BrushMarker`. The SceneKit material loads it with `UIImage(named: "BrushMarker")`.
+        }
+
+        @Steps {
+            @Step {
+                Put the image in `BrushMarker.imageset` as `BrushMarker.png`.
+            }
+        }
+    }
+
+    @Section(title: "Make a SceneKit brush node") {
+        @ContentAndMedia {
+            The brush is not drawn into the SpriteKit face texture. It is a separate SceneKit node placed above the cube surface. `SCNBillboardConstraint` keeps the brush facing the camera.
+        }
+
+        @Steps {
+            @Step {
+                Create a small `SCNPlane`, assign the `BrushMarker` image to its material, and attach it to `brushNode`.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-BrushAnchor.swift")
+            }
+        }
+    }
+
+    @Section(title: "Use TileID as the bridge") {
+        @ContentAndMedia {
+            SceneKit provides the surface hit and texture coordinate. The puzzle converts that coordinate into a `TileID`. After selection succeeds, move the brush to the center of that `TileID`.
+        }
+
+        @Steps {
+            @Step {
+                Move the brush only after successful selection. Failed taps may show the touch dot, but they should not move the brush.
+            }
+        }
+    }
+
+    @Section(title: "Check the result") {
+        @ContentAndMedia {
+            This chapter adds the final selected-tile marker. The marker is a SceneKit node using the `BrushMarker` asset, anchored to the selected tile center, and kept camera-facing with `SCNBillboardConstraint`.
+        }
+
+        @Steps {
+            @Step {
+                Confirm the brush appears at the tile center, does not move on invalid selections, and continues to face the camera while the cube rotates.
+            }
+        }
+    }
+}

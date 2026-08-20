@@ -1,0 +1,61 @@
+@Tutorial(time: 30) {
+    @Intro(title: "14. Check stage transitions with edge positions") {
+        Do not enable the next button just because the current stage is complete. Also check whether the last selected tile and the next stage's starting tile touch along the same cube edge.
+
+        Language: [한국어](/2026TechMap_tutorial/CubeOneStrokePuzzleKO/tutorials/cube-one-stroke-puzzle-ko/14-spritekit-scenekit-edge-position-transition/).
+    }
+
+    @Section(title: "Check the edge direction first") {
+        @ContentAndMedia {
+            After chapter 13, the visible label and the actual `TileID` use the same corrected coordinate basis. Use that basis to check how two face edges meet.
+
+            `reversed` does not mean a mysterious algorithm. It means the counting order on one edge starts from the opposite end when it crosses to the adjacent face. On a 3x3 board, position `0` on the current face meets position `2` on the next face, and position `2` meets position `0`.
+        }
+
+        @Steps {
+            @Step {
+                Check the position `0` tile on the current face's `exitEdge`. If it meets position `0` on the next face's `entryEdge`, record same. If it meets the last position, record reversed.
+            }
+        }
+    }
+
+    @Section(title: "Move between TileID and position") {
+        @ContentAndMedia {
+            Saying "the path ended on the right edge" is not enough. A 3x3 right edge has three tiles, so the app also needs to know which position on that edge was used.
+        }
+
+        @Steps {
+            @Step {
+                Add helpers that convert `TileID` to an edge position and convert a position back to a `TileID`.
+
+                @Code(name: "PuzzleModels.swift", file: "14-EdgePositionHelpers.swift")
+            }
+        }
+    }
+
+    @Section(title: "Calculate the matching start tile") {
+        @ContentAndMedia {
+            Use the last tile's position on the current stage's `exitEdge`, apply the connection direction, and look up the matching `TileID` on the next stage's `entryEdge`.
+        }
+
+        @Steps {
+            @Step {
+                Add `matchingStartTileID` and use it in the next-button condition.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "14-EdgeTransitionWithPosition.swift")
+            }
+        }
+    }
+
+    @Section(title: "Check the result") {
+        @ContentAndMedia {
+            This chapter adds a 3D position rule to stage completion. The app now checks whether the final tile can physically continue to the next stage's start tile on the cube.
+        }
+
+        @Steps {
+            @Step {
+                Complete stages 1 and 2 and confirm that the next button only enables when the edge-position transition matches.
+            }
+        }
+    }
+}

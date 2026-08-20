@@ -1,0 +1,71 @@
+@Tutorial(time: 30) {
+    @Intro(title: "17. 선택된 tile 중앙에 brush anchor 놓기") {
+        16장의 touch dot은 raw hit point를 보여주는 디버그였습니다. 이번 장에서는 선택에 성공한 `TileID`의 중앙에 SceneKit brush marker를 놓습니다.
+
+        언어 전환: [English](/2026TechMap_tutorial/CubeOneStrokePuzzle/tutorials/cube-one-stroke-puzzle/17-spritekit-scenekit-brush-anchor/).
+    }
+
+    @Section(title: "BrushMarker asset 추가하기") {
+        @ContentAndMedia {
+            brush는 SpriteKit texture 안에 그리는 그림이 아닙니다. 큐브 표면 위에 따로 올라가는 SceneKit node입니다.
+
+            먼저 첨부한 paintbrush 이미지를 Xcode asset catalog에 `BrushMarker`라는 이름으로 추가합니다. 코드에서는 `UIImage(named: "BrushMarker")`로 이 이미지를 불러옵니다.
+        }
+
+        @Steps {
+            @Step {
+                `Assets.xcassets` 안에 `BrushMarker.imageset`을 만들고, 첨부한 brush 이미지를 `BrushMarker.png`로 넣습니다.
+            }
+        }
+    }
+
+    @Section(title: "brush를 SceneKit node로 만들기") {
+        @ContentAndMedia {
+            brush를 SpriteKit face texture 안에 그리면 큐브 표면 그림의 일부가 됩니다. 하지만 여기서는 선택된 tile 위에 떠 있는 marker처럼 보여야 합니다.
+
+            그래서 작은 `SCNPlane`을 만들고, 그 plane의 material에 `BrushMarker` 이미지를 붙입니다. 이 plane을 가진 `brushNode`는 처음에는 숨겨두고, tile 선택에 성공했을 때만 보이게 합니다.
+        }
+
+        @Steps {
+            @Step {
+                brush node를 설정합니다. `SCNBillboardConstraint`는 카메라가 움직여도 brush plane이 카메라 쪽을 바라보게 합니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-BrushAnchor.swift")
+
+                @Image(source: preview-placeholder.svg, alt: "선택된 tile 중앙에 brush marker가 보이는 preview 자리.")
+            }
+        }
+    }
+
+    @Section(title: "TileID를 연결 다리로 쓰기") {
+        @ContentAndMedia {
+            SceneKit과 SpriteKit의 연결은 brush image 자체가 아니라 `TileID`로 합니다.
+
+            SceneKit hitTest는 표면 터치를 `textureCoordinates`로 바꾸고, SpriteKit puzzle logic은 그 좌표를 `TileID`로 바꿉니다. selection이 성공하면 그 `TileID`의 중앙을 계산해서 SceneKit `brushNode.position`으로 사용합니다.
+
+            지금은 `textureCoordinates`가 터치한 칸을 찾는 데 쓰이고, `TileID`가 선택된 칸을 기억하는 이름표이며, brush가 그 이름표의 중앙으로 이동한다고 이해하면 충분합니다.
+        }
+
+        @Steps {
+            @Step {
+                tile 선택이 성공한 뒤에만 `moveBrush(to:on:)`을 호출합니다. 이동할 수 없는 tile을 터치했을 때 brush가 움직이면 선택이 성공한 것처럼 보이므로, 실패한 선택에서는 brush 위치를 바꾸지 않습니다.
+            }
+        }
+    }
+
+    @Section(title: "tile 중앙으로 이동하기") {
+        @ContentAndMedia {
+            이번 장에서는 선택된 tile을 보여주는 최종 UX marker를 추가했습니다.
+
+            이제 앱은 사용자가 누른 raw hit point가 아니라, 선택에 성공한 `TileID`의 중앙으로 SceneKit `brushNode`를 이동시킵니다. brush image는 SpriteKit texture 안에 그려진 그림이 아니라, 큐브 표면 위에 따로 올라간 SceneKit node입니다. 이 node에는 `SCNBillboardConstraint`가 적용되어 큐브를 회전해도 카메라를 바라보는 marker처럼 보입니다.
+
+            즉 16장의 디버그용 touch dot과 17장의 최종 UX용 brush anchor를 구분할 수 있고, SpriteKit의 tile 선택 결과가 SceneKit marker 위치로 이어지는 흐름을 설명할 수 있습니다.
+        }
+
+        @Steps {
+            @Step {
+                brush가 터치 지점이 아니라 tile 중앙에 오는지, 이동할 수 없는 tile을 터치했을 때 brush가 움직이지 않는지, 큐브를 회전해도 brush image가 카메라를 바라보는지 확인합니다.
+            }
+        }
+    }
+}
