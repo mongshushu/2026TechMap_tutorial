@@ -1,0 +1,62 @@
+@Tutorial(time: 30) {
+    @Intro(title: "15. Add rotation mode and automatic rotation") {
+        Connect the stage transition rule to SceneKit motion. When the next stage loads, rotate the cube toward that stage's face.
+
+        Language: [한국어](/2026TechMap_tutorial/CubeOneStrokePuzzleKO/tutorials/cube-one-stroke-puzzle-ko/15-scenekit-rotation-mode-and-auto-rotation/).
+    }
+
+    @Section(title: "Separate play mode and rotation mode") {
+        @ContentAndMedia {
+            Keep tile selection and cube rotation from using the same gesture at the same time. When rotation mode is on, taps do not select tiles. When rotation mode is off, pans do not rotate the cube.
+        }
+
+        @Steps {
+            @Step {
+                Add the rotation-mode guards.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-RotationTapGuard.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-RotationPan.swift")
+            }
+        }
+    }
+
+    @Section(title: "Show the mode change") {
+        @ContentAndMedia {
+            Scale the cube down slightly when rotation mode is enabled so the mode change is visible.
+        }
+
+        @Steps {
+            @Step {
+                Use `SCNAction.scale` in `setRotationModeEnabled(_:)`.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift and ContentView.swift", file: "08-RotationModeGuard.swift")
+            }
+        }
+    }
+
+    @Section(title: "Rotate to the next face") {
+        @ContentAndMedia {
+            Use `SCNAction.rotateTo` because each stage wants a specific final face direction. `rotateBy` adds more rotation to the current state, which can drift after manual rotation.
+        }
+
+        @Steps {
+            @Step {
+                Map each `CubeFace` to a display angle, then rotate to `currentBoard.cubeFace` after loading the next stage.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-AutoRotateToFace.swift")
+            }
+        }
+    }
+
+    @Section(title: "Check the result") {
+        @ContentAndMedia {
+            This chapter turns the data transition from chapter 14 into visible motion. The next stage does not just change in memory; the cube turns so the player can see the next puzzle face.
+        }
+
+        @Steps {
+            @Step {
+                Toggle rotation mode, confirm tile selection is blocked while rotating, and confirm the cube automatically rotates after a stage transition.
+            }
+        }
+    }
+}

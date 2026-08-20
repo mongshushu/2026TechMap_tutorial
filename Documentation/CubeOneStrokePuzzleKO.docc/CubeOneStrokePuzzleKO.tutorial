@@ -41,5 +41,9 @@
 
         @TutorialReference(tutorial: "doc:07-SceneKit-Cube-Material-And-Texture-Touch")
         @TutorialReference(tutorial: "doc:08-SceneKit-Rotation-Mode")
+        @TutorialReference(tutorial: "doc:14-SpriteKit-SceneKit-Edge-Position-Transition")
+        @TutorialReference(tutorial: "doc:15-SceneKit-Rotation-Mode-And-Auto-Rotation")
+        @TutorialReference(tutorial: "doc:16-SceneKit-Hit-Test-Touch-Dot")
+        @TutorialReference(tutorial: "doc:17-SpriteKit-SceneKit-Brush-Anchor")
     }
 }

@@ -1,0 +1,33 @@
+@Tutorial(time: 20) {
+    @Intro(title: "16. Visualize hitTest with a touch dot") {
+        Show the raw 3D touch point from SceneKit as a small gray dot. This is debugging feedback, not the final brush marker.
+
+        Language: [한국어](/2026TechMap_tutorial/CubeOneStrokePuzzleKO/tutorials/cube-one-stroke-puzzle-ko/16-scenekit-hit-test-touch-dot/).
+    }
+
+    @Section(title: "Show the raw hit point") {
+        @ContentAndMedia {
+            `hitResult.worldCoordinates` is the 3D point where SceneKit found the surface hit. Add a temporary dot there so the invisible 3D hit test becomes visible.
+        }
+
+        @Steps {
+            @Step {
+                Add `showTouchDot(at:)` and call it after reading the first hit result.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "16-TouchDot.swift")
+            }
+        }
+    }
+
+    @Section(title: "Separate it from the brush") {
+        @ContentAndMedia {
+            The touch dot shows where the finger hit the cube. It is not snapped to a tile center. Chapter 17 uses a different marker for the selected tile center.
+        }
+
+        @Steps {
+            @Step {
+                Tap the cube and confirm the dot appears near the touch point rather than at the center of a tile.
+            }
+        }
+    }
+}
