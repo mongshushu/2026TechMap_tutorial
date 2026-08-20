@@ -17,8 +17,6 @@
                 board model 코드에 `isNeighbor(from:to:)`를 추가합니다.
 
                 @Code(name: "PuzzleModels.swift", file: "04-NeighborRule.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
             }
 
             @Step {
@@ -39,8 +37,6 @@
                 `selectTile` 안에 playable tile 검사, current tile 검사, visited tile 검사, neighbor 검사, path update, completion check, render call을 추가합니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "04-CanSelect.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
             }
         }
     }

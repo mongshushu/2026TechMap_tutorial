@@ -33,8 +33,6 @@
                 `TileID`를 edge 위 position으로 바꾸고, position을 다시 `TileID`로 바꾸는 helper를 추가합니다.
 
                 @Code(name: "PuzzleModels.swift", file: "14-EdgePositionHelpers.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "edge 위 position을 확인하는 preview 자리.")
             }
         }
     }
@@ -51,8 +49,6 @@
                 `matchingStartTileID`를 추가해서 다음 stage가 실제로 시작해야 하는 tile을 계산합니다. 아직 전체 cube topology를 만들지 않고, 현재 튜토리얼에서 필요한 두 연결만 허용합니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "14-EdgeTransitionWithPosition.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "다음 stage 시작 tile을 비교하는 preview 자리.")
             }
         }
     }

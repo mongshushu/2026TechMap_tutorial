@@ -17,16 +17,12 @@
                 `undoLastStep()`을 추가해서 path에서 마지막 tile을 제거하고 board를 다시 그립니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "06-UndoRemove.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
             }
 
             @Step {
                 `canUndo`를 갱신하고 SwiftUI undo button을 `undoLastStep()`에 연결합니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "06-UndoCurrent.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
             }
         }
     }
@@ -45,8 +41,6 @@
                 작은 board 목록을 반환하는 `StageCatalog`를 추가합니다.
 
                 @Code(name: "PuzzleModels.swift", file: "06-StageCatalog.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
             }
 
             @Step {

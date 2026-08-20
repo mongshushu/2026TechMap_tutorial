@@ -17,8 +17,6 @@
                 `hitResult.worldCoordinates` 위치에 작은 `SCNSphere`를 추가하고, 잠깐 기다린 뒤 사라지게 합니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "16-TouchDot.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "큐브 표면에 회색 touch dot이 잠깐 나타나는 preview 자리.")
             }
         }
     }

@@ -17,8 +17,6 @@
                 `SpriteKitFaceScene.swift`라는 새 Swift 파일을 만듭니다. `SKScene` 하위 클래스를 만들고, scene이 담기는 공간에 맞게 크기가 바뀌도록 `scaleMode`를 설정합니다.
 
                 @Code(name: "SpriteKitFaceScene.swift", file: "01-SceneInit.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
             }
         }
     }
@@ -35,8 +33,6 @@
                 같은 scene이 active, completed, future face를 그릴 수 있도록 `BoardRenderMode`를 추가합니다. 이어서 `show(board:pathTileIDs:currentTileID:mode:)`를 추가합니다. 이 method는 이전 그림을 지우고, `tileLayer`와 `labelLayer`를 만든 뒤 tile과 label drawing helper를 호출합니다.
 
                 @Code(name: "SpriteKitFaceScene.swift", file: "01-RenderLayers.swift")
-
-                @Image(source: preview-placeholder.svg, alt: "이 코드를 추가한 뒤 바뀌는 화면을 넣을 preview 자리.")
             }
 
             @Step {
