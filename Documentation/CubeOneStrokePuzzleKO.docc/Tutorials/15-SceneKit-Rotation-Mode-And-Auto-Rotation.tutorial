@@ -1,4 +1,4 @@
-@Tutorial(time: 30) {
+@Tutorial(time: 20) {
     @Intro(title: "15. rotation mode와 자동 회전") {
         14장에서 만든 stage 전환 조건을 SceneKit motion과 연결합니다. 다음 stage로 넘어가면 큐브가 그 stage의 face를 자동으로 보여줍니다.
 
