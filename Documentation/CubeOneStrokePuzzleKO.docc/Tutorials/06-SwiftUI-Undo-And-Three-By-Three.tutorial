@@ -1,62 +1,52 @@
-@Tutorial(time: 30) {
-    @Intro(title: "06. 되돌리기와 stage 확장하기") {
-        간단한 undo 동작을 추가하고, 큐브에서 플레이할 stage를 3x3 board로 맞춥니다.
+@Tutorial(time: 12) {
+    @Intro(title: "06. 2x2 board로 확장하기") {
+        이번 장에서는 tile 두 개를 2x2 board 네 칸으로 확장합니다.
 
-        언어 전환: [English](/2026TechMap_tutorial/CubeOneStrokePuzzle/tutorials/cube-one-stroke-puzzle/06-swiftui-undo-and-three-by-three/).
+        아직 neighbor 규칙은 없습니다. 먼저 네 칸이 모두 그려지고, GameStore 상태에 따라 색이 바뀌는지 확인합니다.
     }
 
-    @Section(title: "마지막 tile 되돌리기") {
+    @Section(title: "2x2로 바꾸기") {
         @ContentAndMedia {
-            undo는 path에서 가장 최근 tile을 제거합니다.
+            tile을 네 개로 늘리면 같은 코드를 계속 복사하기보다 작은 반복문이 필요해집니다.
 
-            초보자가 읽기 쉬운 순서로 작성합니다. 시작 칸인지 막고, 마지막 tile을 제거하고, 새 current tile을 정하고, 완료 상태를 풀고, 다시 그리고, debug text를 바꿉니다.
+            `row`와 `column`을 사용하면 `tile_0_0`, `tile_0_1`, `tile_1_0`, `tile_1_1`처럼 이름을 규칙적으로 만들 수 있습니다.
         }
 
         @Steps {
             @Step {
-                `undoLastStep()`을 추가해서 path에서 마지막 tile을 제거하고 board를 다시 그립니다.
+                기존 `buildTwoTileBoard()`를 `buildTwoByTwoBoard()`로 바꾸고, 2x2 tile을 반복문으로 만듭니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "06-UndoRemove.swift")
-            }
-
-            @Step {
-                `canUndo`를 갱신하고 SwiftUI undo button을 `undoLastStep()`에 연결합니다.
-
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "06-UndoCurrent.swift")
+                @Code(name: "GameScene.swift", file: "06-TwoByTwoBoard.swift")
             }
         }
     }
 
-    @Section(title: "3x3 cube stage 사용하기") {
+    @Section(title: "상태와 색 맞추기") {
         @ContentAndMedia {
-            앞의 2x2 board는 학습용 단계입니다. `SKTileMapNode`, `SKTileSet`, `SKTileGroup`의 관계를 작은 화면에서 먼저 보기 위한 장치입니다.
+            GameStore 값이 바뀐 뒤에는 화면도 다시 맞춰야 합니다. `syncFromStore()`는 현재 GameStore 상태를 읽고 tile 색을 다시 칠합니다.
 
-            큐브 버전에서는 플레이 가능한 모든 stage를 3x3으로 맞춥니다. 같은 `BoardPlan` 구조에 `boardSize: 3`을 넣으면 SpriteKit tile map과 SceneKit 터치 변환이 같은 방식으로 확장됩니다.
-
-            지금은 두세 개의 3x3 stage만 추가합니다. 모든 cube face 관계를 미리 만들지 않습니다. 목표는 모서리와 맞닿은 몇 개의 playable puzzle을 전환하는 것입니다.
+            이 함수가 없으면 GameStore 값은 바뀌어도 화면은 예전 색으로 남을 수 있습니다.
         }
 
         @Steps {
             @Step {
-                작은 board 목록을 반환하는 `StageCatalog`를 추가합니다.
+                `fillColor(for:)`와 `syncFromStore()`를 추가하고, tap 처리 뒤에 `syncFromStore()`를 호출합니다.
 
-                @Code(name: "PuzzleModels.swift", file: "06-StageCatalog.swift")
-            }
-
-            @Step {
-                각 stage를 읽기 쉽게 유지합니다. title, boardSize, start tile, goal tile, blocked tiles만 확인합니다.
+                @Code(name: "GameScene.swift", file: "06-SyncFromStore.swift")
             }
         }
     }
 
-    @Section(title: "결과 확인하기") {
+    @Section(title: "실행 확인") {
         @ContentAndMedia {
-            이제 move를 undo할 수 있고, 3x3 stage를 완료한 뒤 모서리와 맞닿은 다른 cube face의 3x3 stage로 이동할 수 있어야 합니다.
+            화면에 2x2 tile 네 개가 보여야 합니다.
+
+            tile을 탭하면 현재 tile 색과 방문한 tile 색이 GameStore 상태에 맞게 바뀌어야 합니다. 지금은 아무 tile이나 선택할 수 있습니다.
         }
 
         @Steps {
             @Step {
-                undo 코드가 길게 느껴져도 지금은 그대로 둡니다. 이 튜토리얼은 압축보다 명확함을 먼저 봅니다.
+                다음 장에서는 `BoardModel`을 만들어서 현재 tile의 이웃 tile만 선택되게 막습니다.
             }
         }
     }

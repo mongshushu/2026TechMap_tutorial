@@ -1,4 +1,4 @@
-@Tutorial(time: 30) {
+@Tutorial(time: 25) {
     @Intro(title: "17. 선택된 tile 중앙에 brush anchor 놓기") {
         16장의 touch dot은 raw hit point를 보여주는 디버그였습니다. 이번 장에서는 선택에 성공한 `TileID`의 중앙에 SceneKit brush marker를 놓습니다.
 

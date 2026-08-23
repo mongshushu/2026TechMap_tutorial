@@ -1,4 +1,4 @@
-@Tutorial(time: 20) {
+@Tutorial(time: 10) {
     @Intro(title: "16. hitTest 위치를 touch dot으로 확인하기") {
         SceneKit이 계산한 raw 3D 터치 위치를 작은 회색 점으로 잠깐 보여줍니다. 이 점은 최종 brush가 아니라 hitTest 디버그 피드백입니다.
 

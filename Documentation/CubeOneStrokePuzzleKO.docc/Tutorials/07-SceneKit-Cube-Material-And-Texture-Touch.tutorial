@@ -1,102 +1,52 @@
-@Tutorial(time: 35) {
-    @Intro(title: "07. SpriteKit을 SceneKit 큐브에 붙이기") {
-        SpriteKit puzzle scene을 `SCNBox`의 여러 면에 붙이고, 3D 표면 터치를 현재 stage의 2D tile 좌표로 변환합니다.
+@Tutorial(time: 13) {
+    @Intro(title: "07. BoardModel과 이웃 규칙 추가하기") {
+        이번 장에서는 아무 tile이나 선택되는 상태를 막고, 현재 tile의 이웃 tile만 선택되게 만듭니다.
 
-        언어 전환: [English](/2026TechMap_tutorial/CubeOneStrokePuzzle/tutorials/cube-one-stroke-puzzle/07-scenekit-cube-material-and-texture-touch/).
+        게임 규칙은 화면 코드가 아니라 `BoardModel`과 `GameStore`가 맡습니다.
     }
 
-    @Section(title: "cube material 만들기") {
+    @Section(title: "BoardModel 만들기") {
         @ContentAndMedia {
-            SceneKit은 cube를 그립니다. SpriteKit은 puzzle face를 그립니다.
+            `BoardModel`은 board의 구조와 이동 규칙을 담습니다.
 
-            둘을 연결하는 것은 `SCNMaterial`입니다. material의 diffuse contents를 SpriteKit scene으로 설정합니다.
-
-            이 버전에서는 한 면만 갈아끼우지 않습니다. stage마다 서로 다른 cube face에 SpriteKit scene을 붙입니다. 완료한 face도 단색 `.systemTeal` material이 아니라, 모든 타일이 `.systemTeal`로 바뀐 TileMap scene으로 남습니다.
+            2x2 board에서는 `tile_0_0`에서 `tile_1_1`로 대각선 이동하면 안 됩니다. 하지만 `tile_0_1`이나 `tile_1_0`처럼 가로 또는 세로로 맞닿은 tile은 선택할 수 있습니다.
         }
 
         @Steps {
             @Step {
-                face마다 SpriteKit scene을 contents로 쓰는 material을 만들고, 그 face별 material을 `SCNBox`의 material 배열에 넣습니다.
+                `BoardModel.swift` 파일을 만들고, 2x2 tile 목록과 neighbor 목록을 추가합니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "07-Material.swift")
+                @Code(name: "BoardModel.swift", file: "07-BoardModel.swift")
             }
         }
     }
 
-    @Section(title: "터치된 표면 찾기") {
+    @Section(title: "GameStore가 규칙을 묻게 하기") {
         @ContentAndMedia {
-            `SCNView.hitTest`는 사용자의 손가락 아래에 어떤 3D object가 있는지 SceneKit에 묻습니다.
+            `GameStore`는 현재 상태를 알고 있습니다. 이제 `BoardModel`에게 두 tile이 이웃인지 물어본 뒤, 가능한 선택만 받아들입니다.
 
-            결과에는 어떤 node가 맞았는지, 어떤 material face가 맞았는지 정보가 들어 있습니다. 그래서 지금 진행 중인 stage의 face가 아닌 곳을 터치하면 무시할 수 있습니다.
+            `canSelectTile(id:)`는 선택 가능한지 검사합니다. `selectTile(id:)`는 검사에 통과했을 때 실제 상태를 바꿉니다.
         }
 
         @Steps {
             @Step {
-                tap 위치에서 hit test를 실행합니다.
+                `GameStore`에 `board`, `canSelectTile(id:)`, Bool을 반환하는 `selectTile(id:)`를 추가합니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "07-HitTest.swift")
-            }
-
-            @Step {
-                같은 hit-test 코드 안에서 hit result가 cube에 속하고, 현재 stage의 cube face에 속하는지 확인합니다.
+                @Code(name: "GameStore.swift", file: "07-GameStoreNeighbor.swift")
             }
         }
     }
 
-    @Section(title: "표면 좌표를 TileID로 바꾸기") {
+    @Section(title: "실행 확인") {
         @ContentAndMedia {
-            `textureCoordinates(withMappingChannel:)`가 핵심 기술입니다. 3D 표면 hit을 `0`과 `1` 사이의 2D 좌표로 바꿔줍니다.
+            `tile_0_0`에서 `tile_1_1`로 바로 이동할 수 없어야 합니다.
 
-            그 좌표에 현재 board의 `boardSize`를 곱하면 row와 column을 얻을 수 있습니다. 그래서 학습용 2x2 board와 최종 3x3 cube face에서 같은 코드가 작동합니다.
-
-            face 방향 때문에 좌표가 뒤집혀 보이는 경우에는 `coordinateLayout`으로 raw row/column을 다시 정렬합니다. label도 `labelCorrection`으로 보정해서 큐브 위에서 읽을 수 있게 합니다.
-
-            @Image(source: expected-07-cube-touch.svg, alt: "큐브 표면 터치가 2D tile 좌표로 변환되는 모습.")
+            이미 방문한 tile을 다시 탭해도 선택되지 않아야 합니다. 성공한 이동만 `pathTileIDs`에 추가되어야 합니다.
         }
 
         @Steps {
             @Step {
-                texture coordinate를 현재 board 크기에 맞는 `row`와 `column`으로 바꿉니다.
-
-                @Code(name: "PuzzleModels.swift", file: "07-TextureCoordinateToTileID.swift")
-            }
-
-            @Step {
-                hit-test 코드의 마지막 두 줄을 읽어봅니다. texture coordinate를 `TileID`로 바꾼 뒤, 앞에서 만든 selection logic으로 보냅니다.
-            }
-        }
-    }
-
-    @Section(title: "같은 모서리를 공유할 때만 넘어가기") {
-        @ContentAndMedia {
-            stage는 이미 `cubeFace`를 가지고 있습니다. 이제 현재 stage가 어느 변으로 끝나는지, 다음 stage가 어느 변에서 시작하는지, 그리고 시작/도착 칸이 실제로 그 변 위에 있는지만 확인하면 됩니다.
-
-            이 버전에서는 전체 큐브 topology를 만들지 않습니다. 지금 필요한 연결은 `front.right -> right.left`, `right.top -> top.right` 두 개뿐입니다.
-        }
-
-        @Steps {
-            @Step {
-                `TileEdge`, `entryEdge`, `exitEdge`는 model 단계에서 `BoardPlan`에 추가했습니다. 이제 현재 stage의 마지막 칸이 `exitEdge` 위에 있는지, 다음 stage의 시작 칸이 `entryEdge` 위에 있는지도 함께 확인합니다.
-
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "07-EdgeTransition.swift")
-            }
-
-            @Step {
-                코드의 마지막 assignment를 읽어봅니다. `canAdvanceStage`는 puzzle이 complete이고, 다음 stage와 같은 큐브 모서리를 공유하고, 두 칸이 각자의 edge 위에 있을 때만 켜집니다.
-            }
-        }
-    }
-
-    @Section(title: "범위 좁게 유지하기") {
-        @ContentAndMedia {
-            이 버전은 6면 전체가 실제로 접혔을 때의 모든 face-edge 관계를 완성하지 않습니다.
-
-            첫 playable 목표는 더 좁습니다. 앞면에서 시작하고, 완료한 면은 `.systemTeal` 타일로 남기고, 다음 stage는 모서리와 맞닿는 다른 면에 둡니다.
-        }
-
-        @Steps {
-            @Step {
-                6면 전체 topology는 나중에 refactor할 범위로 남깁니다. 첫 playable tutorial에서는 stage가 붙는 몇 개의 인접 face만 명시합니다.
+                다음 흐름을 자기 말로 설명해봅니다. 화면 tile의 `name`을 `GameScene`이 읽고, `GameStore.selectTile(id:)`로 보내고, `GameStore`가 `BoardModel`에게 neighbor 여부를 물어봅니다.
             }
         }
     }

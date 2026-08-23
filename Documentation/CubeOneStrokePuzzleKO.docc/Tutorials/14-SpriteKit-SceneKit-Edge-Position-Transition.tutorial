@@ -1,4 +1,4 @@
-@Tutorial(time: 30) {
+@Tutorial(time: 20) {
     @Intro(title: "14. edge 위치로 stage 전환 확인하기") {
         stage를 완료했다는 사실만으로 다음 버튼을 켜지 않습니다. 마지막으로 선택한 tile과 다음 stage의 시작 tile이 큐브에서 같은 모서리를 공유하는 위치인지 확인합니다.
 
