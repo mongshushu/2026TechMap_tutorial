@@ -1,26 +1,34 @@
-@Tutorial(time: 10) {
+@Tutorial(time: 15) {
     @Intro(title: "01. SwiftUI 안에 SpriteKit scene 올리기") {
         이번 장에서는 SwiftUI 화면 안에 SpriteKit 무대를 올리고, 가운데에 `Hello SpriteKit` 글자를 표시합니다.
 
-        아직 tile, touch, GameStore는 만들지 않습니다. 목표는 `ContentView`, `GameScene`, `SpriteView(scene:)`의 역할을 구분하는 것입니다.
+        아직 tile, touch, GameStore는 만들지 않습니다. 먼저 SwiftUI가 SpriteKit scene을 품는 구조를 만듭니다. 이 구조를 이해해야 나중에 SpriteKit scene을 SceneKit cube face의 material로 붙이는 흐름도 자연스럽게 이어집니다.
     }
 
     @Section(title: "이번 장의 결과") {
         @ContentAndMedia {
             앱을 실행하면 SwiftUI 화면 전체에 SpriteKit scene이 보이고, 그 안에 글자 하나가 나타납니다.
 
-            `ContentView`는 SwiftUI 화면입니다. `GameScene`은 SpriteKit 무대입니다. `SpriteView(scene:)`는 SwiftUI 안에 SpriteKit 무대를 보여주는 연결 지점입니다.
+            `ContentView`는 SwiftUI 화면을 만들고, `SpriteView(scene:)`로 SpriteKit scene을 보여줍니다. `GameScene`은 SpriteKit 안에서 node를 배치하는 무대입니다. 배경색, label, tile 같은 SpriteKit 요소는 이 scene 안에서 만들어집니다.
+
+            지금 화면에 보이는 것은 `Hello SpriteKit` 글자 하나뿐입니다. 하지만 이 장의 핵심은 글자 자체가 아니라, SwiftUI 화면 안에 SpriteKit scene을 올리고 그 안에 SpriteKit node를 배치하는 첫 연결입니다.
         }
 
         @Steps {
             @Step {
-                `ContentView.swift`에서 SpriteKit을 import하고, `GameScene`을 `SpriteView`에 넣습니다.
+                파일: `ContentView.swift`
+                작업: 수정
+
+                `ContentView`에서 SpriteKit을 import하고, `GameScene`을 `SpriteView`에 넣습니다.
 
                 @Code(name: "ContentView.swift", file: "01-ContentView-SpriteView.swift")
             }
 
             @Step {
-                `GameScene.swift`를 만들고, `SKScene`을 상속한 `GameScene` class를 추가합니다.
+                파일: `GameScene.swift`
+                작업: 새 파일 생성
+
+                `SKScene`을 상속한 `GameScene` class를 만들고, scene 가운데에 `SKLabelNode`를 올립니다.
 
                 @Code(name: "GameScene.swift", file: "01-GameScene-Hello.swift")
             }
@@ -32,6 +40,11 @@
             `SpriteView(scene:)`는 SwiftUI와 SpriteKit 사이의 다리입니다. SwiftUI의 `body` 안에서는 view를 배치하고, SpriteKit의 `GameScene` 안에서는 node를 배치합니다.
 
             `self.size.width / 2`와 `self.size.height / 2`는 scene의 가운데 좌표를 구합니다. 기기마다 화면 크기가 다르기 때문에 고정 숫자보다 scene 크기를 기준으로 계산하는 편이 안전합니다.
+
+            ---
+
+            Note:
+            `Label`은 개발에서 화면에 글자를 보여주는 요소를 뜻할 때 자주 쓰는 말입니다. SpriteKit에서는 글자를 보여주는 node로 `SKLabelNode`를 사용합니다. 여기서는 `titleLabel`을 scene이 제대로 보이는지 확인하는 첫 SpriteKit node로 사용합니다.
         }
 
         @Steps {
@@ -45,7 +58,12 @@
         @ContentAndMedia {
             화면 안에 SpriteKit scene이 보이고, 가운데에 `Hello SpriteKit` label이 보여야 합니다.
 
-            > Note: `ContentView`는 SwiftUI 화면을 만들고, `GameScene`은 SpriteKit node를 올리는 2D 무대 역할을 맡습니다. 두 파일의 역할을 나누면 SwiftUI layout과 SpriteKit drawing을 섞지 않고 볼 수 있습니다.
+            `ContentView.swift`에는 `SpriteView(scene:)`가 있고, `GameScene.swift`에는 `didMove(to:)`와 `SKLabelNode` 생성 코드가 있습니다. 이 차이로 SwiftUI 화면 구성과 SpriteKit node 배치가 서로 다른 파일에서 시작된다는 점을 볼 수 있습니다.
+
+            ---
+
+            Note:
+            지금은 SpriteKit scene을 SwiftUI 화면 안에 올립니다. 후반에는 같은 SpriteKit scene 계열의 화면이 SceneKit cube face의 texture처럼 쓰입니다.
         }
 
         @Steps {
