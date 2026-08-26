@@ -37,17 +37,4 @@
         }
     }
 
-    @Section(title: "실행 확인") {
-        @ContentAndMedia {
-            화면에 2x2 tile 네 개가 보여야 합니다.
-
-            tile을 탭하면 현재 tile 색과 방문한 tile 색이 GameStore 상태에 맞게 바뀌어야 합니다. 지금은 아무 tile이나 선택할 수 있습니다.
-        }
-
-        @Steps {
-            @Step {
-                다음 장에서는 `BoardModel`을 만들어서 현재 tile의 이웃 tile만 선택되게 막습니다.
-            }
-        }
-    }
 }

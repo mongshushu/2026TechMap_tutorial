@@ -35,17 +35,4 @@
         }
     }
 
-    @Section(title: "실행 확인") {
-        @ContentAndMedia {
-            파란 tile을 탭하면 console에 `Tapped tile: tile_0_0`이 출력되어야 합니다.
-
-            흰 tile을 탭하면 `Tapped tile: tile_0_1`이 출력되어야 합니다. 배경을 탭하면 아무 출력이 없어야 합니다.
-        }
-
-        @Steps {
-            @Step {
-                다음 장에서는 console 출력에서 멈추지 않고, 탭한 tile 이름을 `GameStore`에 전달해 게임 상태를 바꿉니다.
-            }
-        }
-    }
 }

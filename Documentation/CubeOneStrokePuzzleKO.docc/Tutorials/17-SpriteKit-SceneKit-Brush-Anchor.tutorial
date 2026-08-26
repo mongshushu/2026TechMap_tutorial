@@ -10,6 +10,8 @@
             brush는 SpriteKit texture 안에 그리는 그림이 아닙니다. 큐브 표면 위에 따로 올라가는 SceneKit node입니다.
 
             먼저 첨부한 paintbrush 이미지를 Xcode asset catalog에 `BrushMarker`라는 이름으로 추가합니다. 코드에서는 `UIImage(named: "BrushMarker")`로 이 이미지를 불러옵니다.
+
+            > Note: SpriteKit texture 안에 brush를 그리면 board 그림의 일부가 됩니다. SceneKit node로 만들면 큐브 표면 위에 따로 움직이는 marker처럼 다룰 수 있습니다.
         }
 
         @Steps {
@@ -24,19 +26,21 @@
             brush를 SpriteKit face texture 안에 그리면 큐브 표면 그림의 일부가 됩니다. 하지만 여기서는 선택된 tile 위에 떠 있는 marker처럼 보여야 합니다.
 
             그래서 작은 `SCNPlane`을 만들고, 그 plane의 material에 `BrushMarker` 이미지를 붙입니다. 여기까지는 brush를 표시할 node와 anchor만 만든 상태입니다.
+
+            > Note: `SCNPlane`은 얇은 사각형 판입니다. 여기에 이미지를 붙이면 3D 공간 안에 놓인 2D 아이콘처럼 사용할 수 있습니다.
         }
 
         @Steps {
             @Step {
                 먼저 `SceneKitPuzzleViewModel` 안에 brush marker로 사용할 node를 추가합니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-BrushNodeProperty.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-BrushNodeProperty.swift", previousFile: "00-Empty.swift")
             }
 
             @Step {
                 brush image를 붙일 `SCNPlane`을 만들고, 그 plane을 `brushNode.geometry`로 설정합니다. 아직 선택된 tile이 없으므로 `brushNode.isHidden`은 `true`로 둡니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-BrushPlaneNode.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-BrushPlaneNode.swift", previousFile: "00-Empty.swift")
             }
         }
     }
@@ -46,13 +50,15 @@
             anchor만 만들면 brush는 큐브 표면 위 특정 위치에 놓일 수 있습니다. 하지만 큐브를 회전했을 때 brush plane이 옆으로 누워 보이거나 읽기 어려운 방향을 바라볼 수 있습니다.
 
             `SCNBillboardConstraint`는 SceneKit node가 카메라를 바라보게 하는 constraint입니다. 이 장에서 brush는 3D 공간에 떠 있는 marker지만, 사용자는 2D 아이콘처럼 읽어야 하므로 billboard 처리가 필요합니다.
+
+            > Note: billboard는 표지판이 항상 카메라 쪽을 바라보게 만드는 규칙입니다. 큐브를 돌려도 brush image가 옆으로 누워 보이지 않게 하는 UX 보정입니다.
         }
 
         @Steps {
             @Step {
                 `brushNode.isHidden = true` 아래, `scene.rootNode.addChildNode(brushNode)` 위에 billboard constraint를 추가합니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-BillboardConstraint.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-BillboardConstraint.swift", previousFile: "00-Empty.swift")
             }
         }
     }
@@ -62,19 +68,21 @@
             SceneKit과 SpriteKit의 연결은 brush image 자체가 아니라 `TileID`로 합니다.
 
             SceneKit hitTest는 표면 터치를 `textureCoordinates`로 바꾸고, SpriteKit puzzle logic은 그 좌표를 `TileID`로 바꿉니다. selection이 성공하면 그 `TileID`의 중앙을 계산해서 SceneKit `brushNode.position`으로 사용합니다.
+
+            > Note: raw hit point는 사용자가 실제로 누른 3D 표면 위치이고, tile center는 게임 규칙이 선택했다고 인정한 칸의 중앙입니다. 최종 marker는 손가락이 닿은 점보다 선택된 tile의 중앙에 놓이는 편이 더 안정적으로 보입니다.
         }
 
         @Steps {
             @Step {
                 raw hit point가 아니라 selected `TileID`의 center로 `brushNode`를 옮기는 helper를 추가합니다. 위치 계산에 실패하면 brush를 숨기고 끝냅니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-MoveBrushToTileCenter.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-MoveBrushToTileCenter.swift", previousFile: "00-Empty.swift")
             }
 
             @Step {
                 tile 선택이 성공한 뒤에만 `moveBrush(to:on:)`을 호출합니다. 이동할 수 없는 tile을 터치했을 때 brush가 움직이면 선택이 성공한 것처럼 보이므로, 실패한 선택에서는 brush 위치를 바꾸지 않습니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-MoveBrushAfterSelection.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "17-MoveBrushAfterSelection.swift", previousFile: "00-Empty.swift")
             }
         }
     }
@@ -85,7 +93,7 @@
 
             이제 앱은 사용자가 누른 raw hit point가 아니라, 선택에 성공한 `TileID`의 중앙으로 SceneKit `brushNode`를 이동시킵니다. brush image는 SpriteKit texture 안에 그려진 그림이 아니라, 큐브 표면 위에 따로 올라간 SceneKit node입니다. 이 node에는 `SCNBillboardConstraint`가 적용되어 큐브를 회전해도 카메라를 바라보는 marker처럼 보입니다.
 
-            즉 16장의 디버그용 touch dot과 17장의 최종 UX용 brush anchor를 구분할 수 있고, SpriteKit의 tile 선택 결과가 SceneKit marker 위치로 이어지는 흐름을 설명할 수 있습니다.
+            > Note: 16장의 touch dot은 hitTest가 맞는지 보기 위한 디버그 피드백이고, 17장의 brush anchor는 사용자가 선택 성공을 읽는 최종 UX 피드백입니다. SpriteKit의 tile 선택 결과가 SceneKit marker 위치로 이어지기 때문에 둘은 역할이 다릅니다.
         }
 
         @Steps {

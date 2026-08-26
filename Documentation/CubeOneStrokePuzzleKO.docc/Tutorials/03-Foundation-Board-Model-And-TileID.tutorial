@@ -38,8 +38,6 @@
     @Section(title: "실행 확인") {
         @ContentAndMedia {
             화면에는 `Hello SpriteKit` label이 보이고, 그 아래에 파란 tile과 흰 tile이 나란히 보여야 합니다.
-
-            다음 장에서는 이 tile들에 숨은 이름을 붙이고, 사용자가 어떤 tile을 탭했는지 console에 출력합니다.
         }
 
         @Steps {
