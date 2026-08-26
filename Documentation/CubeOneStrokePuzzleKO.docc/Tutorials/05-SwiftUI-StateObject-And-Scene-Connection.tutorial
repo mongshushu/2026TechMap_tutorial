@@ -42,11 +42,13 @@
             tile을 탭하면 GameStore의 현재 tile과 방문 목록이 바뀌어야 합니다.
 
             이 장을 마치면 tile 이름을 읽는 코드와 게임 상태를 저장하는 코드가 연결됩니다. 화면 색을 상태와 맞추는 작업은 다음 장에서 합니다.
+
+            > Note: `GameStore`는 게임의 진짜 상태를 보관합니다. `GameScene`은 터치한 tile 이름을 읽어서 `GameStore`로 보내고, 상태를 직접 오래 들고 있지 않습니다.
         }
 
         @Steps {
             @Step {
-                `GameStore`가 게임의 진짜 상태이고, `GameScene`은 터치한 tile 이름을 그 상태 저장소로 보낸다는 점을 설명해봅니다.
+                tile을 탭하고 console에 현재 tile과 path가 출력되는지 확인합니다.
             }
         }
     }

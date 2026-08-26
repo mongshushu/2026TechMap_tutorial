@@ -42,11 +42,13 @@
             `tile_0_0`에서 `tile_1_1`로 바로 이동할 수 없어야 합니다.
 
             이미 방문한 tile을 다시 탭해도 선택되지 않아야 합니다. 성공한 이동만 `pathTileIDs`에 추가되어야 합니다.
+
+            > Note: 선택 흐름은 역할 분리를 그대로 따릅니다. `GameScene`은 화면에서 터치된 tile의 `name`만 읽고, 실제 선택 가능 여부는 `GameStore`가 `BoardModel`에게 물어본 뒤 결정합니다.
         }
 
         @Steps {
             @Step {
-                다음 흐름을 자기 말로 설명해봅니다. 화면 tile의 `name`을 `GameScene`이 읽고, `GameStore.selectTile(id:)`로 보내고, `GameStore`가 `BoardModel`에게 neighbor 여부를 물어봅니다.
+                대각선 tile과 이미 방문한 tile이 선택되지 않는지 실행해서 확인합니다.
             }
         }
     }

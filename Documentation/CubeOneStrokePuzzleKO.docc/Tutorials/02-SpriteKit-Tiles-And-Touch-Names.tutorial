@@ -9,14 +9,14 @@
         @ContentAndMedia {
             `hudLayer`는 화면에 보이는 사각형이나 글자가 아닙니다. 다른 node를 담는 빈 그룹입니다.
 
-            container를 쓰면 나중에 HUD 전체를 숨기거나, 앞에 두거나, 함께 움직이기 쉽습니다. 지금은 `hudLayer`가 `titleLabel`을 담고, 다음 장에서는 `tileLayer`가 tile들을 담습니다.
+            container를 쓰면 나중에 HUD 전체를 숨기거나, 앞에 두거나, 함께 움직이기 쉽습니다.
         }
 
         @Steps {
             @Step {
                 `GameScene` 안에 `hudLayer`를 만들고 scene에 추가합니다. 그 다음 `titleLabel`을 scene이 아니라 `hudLayer` 안에 넣습니다.
 
-                @Code(name: "GameScene.swift", file: "02-HUDLayer.swift")
+                @Code(name: "GameScene.swift", file: "02-HUDLayer.swift", previousFile: "01-GameScene-Hello.swift")
             }
         }
     }
@@ -35,17 +35,4 @@
         }
     }
 
-    @Section(title: "실행 확인") {
-        @ContentAndMedia {
-            실행하면 1장처럼 `Hello SpriteKit` label이 보여야 합니다.
-
-            이번 장의 통과 기준은 새 기능이 아니라 구조입니다. `hudLayer`가 빈 container이고, `titleLabel`이 그 안에 들어간다는 점을 설명할 수 있으면 됩니다.
-        }
-
-        @Steps {
-            @Step {
-                다음 장에서는 같은 container 개념으로 `tileLayer`를 만들고, 그 안에 사각형 tile 두 개를 넣습니다.
-            }
-        }
-    }
 }

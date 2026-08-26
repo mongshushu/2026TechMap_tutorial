@@ -45,12 +45,12 @@
         @ContentAndMedia {
             화면 안에 SpriteKit scene이 보이고, 가운데에 `Hello SpriteKit` label이 보여야 합니다.
 
-            다음 장에서는 이 label을 바로 scene에 올리지 않고, `hudLayer`라는 빈 container 안에 넣어봅니다.
+            > Note: `ContentView`는 SwiftUI 화면을 만들고, `GameScene`은 SpriteKit node를 올리는 2D 무대 역할을 맡습니다. 두 파일의 역할을 나누면 SwiftUI layout과 SpriteKit drawing을 섞지 않고 볼 수 있습니다.
         }
 
         @Steps {
             @Step {
-                `ContentView`와 `GameScene`의 역할을 자기 말로 구분해봅니다.
+                앱을 실행해서 SpriteKit scene과 `Hello SpriteKit` label이 보이는지 확인합니다.
             }
         }
     }
