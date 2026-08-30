@@ -23,14 +23,9 @@
 
         @Steps {
             @Step {
-                파일: `GameScene.swift`
-                타입: `GameScene`
-                위치: class의 `{ }` 안, `didMove(to:)` 위
-                작업: 새 property 추가
+                `GameScene.swift`의 `GameScene` class 안에서 `didMove(to:)`보다 위에 `hudLayer` property를 추가합니다. 이 node는 화면에 직접 보이는 요소가 아니라, HUD에 해당하는 node들을 담아둘 빈 container입니다.
 
-                `hudLayer` property를 추가합니다. 이 node는 화면에 직접 보이는 요소가 아니라, HUD에 해당하는 node들을 담아둘 빈 container입니다.
-
-                @Code(name: "GameScene.swift", file: "02-HUDLayer-Property.swift")
+                @Code(name: "GameScene.swift", file: "02-HUDLayer-Property.swift", previousFile: "01-GameScene-TitleLabel.swift")
             }
         }
     }
@@ -46,15 +41,9 @@
 
         @Steps {
             @Step {
-                파일: `GameScene.swift`
-                타입: `GameScene`
-                메서드: `didMove(to:)`
-                위치: `backgroundColor = .systemGray6` 아래
-                작업: 새 코드 추가
+                `GameScene.swift`의 `didMove(to:)` 안에서 `backgroundColor = .systemGray6` 아래에 `hudLayer`를 scene에 추가합니다.
 
-                배경색을 정한 뒤, `hudLayer`를 scene에 추가합니다.
-
-                @Code(name: "GameScene.swift", file: "02-HUDLayer-AddToScene.swift")
+                @Code(name: "GameScene.swift", file: "02-HUDLayer-AddToScene.swift", previousFile: "02-HUDLayer-Property.swift")
             }
         }
     }
@@ -70,15 +59,9 @@
 
         @Steps {
             @Step {
-                파일: `GameScene.swift`
-                타입: `GameScene`
-                메서드: `didMove(to:)`
-                위치: 기존 `addChild(titleLabel)`이 있던 자리
-                작업: 기존 코드 수정
+                `GameScene.swift`의 `didMove(to:)` 안에서 기존 `addChild(titleLabel)`을 `hudLayer.addChild(titleLabel)`로 바꿉니다.
 
-                `addChild(titleLabel)`을 `hudLayer.addChild(titleLabel)`로 바꿉니다.
-
-                @Code(name: "GameScene.swift", file: "02-HUDLayer-MoveLabel.swift")
+                @Code(name: "GameScene.swift", file: "02-HUDLayer-MoveLabel.swift", previousFile: "02-HUDLayer-AddToScene.swift")
             }
         }
     }

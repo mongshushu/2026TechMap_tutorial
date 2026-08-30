@@ -1,7 +1,17 @@
-private let gameScene: GameScene
+import SwiftUI
+import SpriteKit
 
-init() {
-    let scene = GameScene(size: CGSize(width: 700, height: 900))
-    scene.scaleMode = .resizeFill
-    gameScene = scene
+struct ContentView: View {
+    private let gameScene: GameScene
+
+    init() {
+        let scene = GameScene(size: CGSize(width: 700, height: 900))
+        scene.scaleMode = .resizeFill
+        gameScene = scene
+    }
+
+    var body: some View {
+        Text("Hello, world!")
+            .padding()
+    }
 }
