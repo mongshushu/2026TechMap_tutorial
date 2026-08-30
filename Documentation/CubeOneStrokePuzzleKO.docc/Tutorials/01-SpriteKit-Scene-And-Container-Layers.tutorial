@@ -34,43 +34,30 @@
 
     @Section(title: "GameScene.swift 만들기") {
         @ContentAndMedia {
-            SpriteKit 화면은 scene 안에 node를 넣어서 구성합니다.
-
             `GameScene`은 SpriteKit의 2D 무대입니다. 여기서는 먼저 빈 scene을 만들고, `#Preview`로 Xcode 캔버스에서 scene이 만들어지는지 확인합니다. 아직 앱 첫 화면인 `ContentView`에는 연결하지 않습니다.
-
-            `GameScene: SKScene`에서 콜론 뒤의 `SKScene`은 `GameScene`이 SpriteKit scene의 기본 기능을 물려받는다는 뜻입니다. 그래서 빈 class처럼 보여도 SpriteKit이 화면으로 다룰 수 있고, 다음 Step에서 `backgroundColor`와 `addChild(...)` 같은 scene 기능을 사용할 수 있습니다.
-
-            `#Preview`는 Xcode 캔버스에서 현재 코드를 빠르게 확인하기 위한 영역입니다. 이 장에서는 `GameScene`을 앱 화면에 연결하기 전에 Preview에서 먼저 확인합니다.
-
-            ---
-
-            Note:
-            `SKScene`은 SpriteKit의 화면 단위입니다. SwiftUI에서 `View`를 화면 조각으로 다루듯, SpriteKit에서는 `Scene` 안에 여러 node를 올려 화면을 구성합니다.
         }
 
         @Steps {
             @Step {
                 새 Swift 파일을 만들고 이름을 `GameScene.swift`로 정합니다. 이 파일에 `SwiftUI`와 SpriteKit을 import하고, `SKScene`을 상속한 빈 `GameScene` class를 만든 뒤, 파일 맨 아래에는 `#Preview`를 추가합니다.
 
+                Note: `GameScene: SKScene`에서 콜론 뒤의 `SKScene`은 `GameScene`이 SpriteKit scene의 기본 기능을 물려받는다는 뜻입니다. 그래서 빈 class처럼 보여도 SpriteKit이 화면으로 다룰 수 있고, 다음 Step에서 `backgroundColor`와 `addChild(...)` 같은 scene 기능을 사용할 수 있습니다. `#Preview`는 Xcode 캔버스에서 현재 코드를 빠르게 확인하기 위한 영역입니다.
+
                 @Code(name: "GameScene.swift", file: "01-GameScene-Shell.swift")
             }
         }
     }
 
-    @Section(title: "scene이 처음 보일 때 설정하기") {
+    @Section(title: "첫 node를 올릴 자리 만들기") {
         @ContentAndMedia {
-            이제 빈 `GameScene` 안에 첫 설정 지점을 만듭니다.
-
-            `didMove(to:)`는 `GameScene`이 `SKView`에 표시된 직후 SpriteKit이 자동으로 불러주는 메서드입니다. 이런 메서드를 lifecycle callback이라고 부릅니다.
-
-            말로 풀면, 화면이 준비되는 흐름 중 정해진 순간에 SpriteKit이 다시 불러주는 약속된 자리입니다. 여기서는 scene이 처음 보이는 순간에 필요한 설정을 `didMove(to:)` 안에 적습니다.
-
-            헷갈리기 쉬운 것은 `didMove(to:)`와 `backgroundColor`의 역할입니다. `didMove(to:)`는 코드를 실행할 시점을 정하고, `backgroundColor = .systemGray6`는 실제로 scene의 배경색 값을 바꿉니다.
+            이제 `GameScene`이 화면에 붙은 뒤 실행될 첫 설정 지점을 만듭니다. 다음 Section에서 첫 node도 같은 자리 안에 추가합니다.
         }
 
         @Steps {
             @Step {
                 `GameScene.swift`의 `GameScene` class 안에 `didMove(to:)`를 추가하고, 그 안에서 scene의 배경색을 정합니다.
+
+                Note: `didMove(to:)`는 `GameScene`이 `SKView` 안으로 들어가 화면에 붙은 뒤 울리는 알람 같은 메서드입니다. 이런 식으로 프레임워크가 정해진 시점에 자동으로 불러주는 메서드를 lifecycle callback이라고 부릅니다. 여기서 `Move`는 label 같은 node가 움직였다는 뜻이 아니라, scene이 view에 붙었다는 뜻에 가깝습니다. `didMove(to:)`는 코드를 실행할 시점을 정하고, `backgroundColor = .systemGray6`는 실제로 scene의 배경색 값을 바꿉니다.
 
                 @Code(name: "GameScene.swift", file: "01-GameScene-DidMove.swift", previousFile: "01-GameScene-Shell.swift")
             }
@@ -79,21 +66,14 @@
 
     @Section(title: "첫 node 올리기") {
         @ContentAndMedia {
-            SpriteKit 화면은 node를 scene에 넣어서 구성합니다.
-
-            `SKLabelNode`는 글자를 보여주는 node입니다. 여기서는 `titleLabel`을 scene이 제대로 보이는지 확인하는 첫 SpriteKit node로 사용합니다.
-
-            node를 만들기만 하면 화면에 자동으로 보이지 않습니다. `addChild(titleLabel)`로 scene의 자식 node로 넣어야 화면에 나타납니다.
-
-            ---
-
-            Note:
-            `size.width / 2`와 `size.height / 2`는 scene의 가운데 좌표를 구합니다. 기기마다 화면 크기가 다르기 때문에 고정 숫자보다 scene 크기를 기준으로 계산합니다.
+            SpriteKit 화면은 scene 안에 node를 넣어서 구성합니다. 여기서는 첫 node로 `Hello SpriteKit` label을 올립니다.
         }
 
         @Steps {
             @Step {
                 `GameScene.swift`의 `didMove(to:)` 안에서 `backgroundColor = .systemGray6` 아래에 `SKLabelNode`를 만듭니다. font와 위치를 정한 뒤 `addChild(titleLabel)`로 scene에 올립니다.
+
+                Note: `SKLabelNode`는 글자를 보여주는 node입니다. node를 만들기만 하면 화면에 자동으로 보이지 않고, `addChild(titleLabel)`로 scene의 자식 node로 넣어야 화면에 나타납니다. `size.width / 2`와 `size.height / 2`는 scene의 가운데 좌표를 구합니다.
 
                 @Code(name: "GameScene.swift", file: "01-GameScene-TitleLabel.swift", previousFile: "01-GameScene-DidMove.swift")
             }
