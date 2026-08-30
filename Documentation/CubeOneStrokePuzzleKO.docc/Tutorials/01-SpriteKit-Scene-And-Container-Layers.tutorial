@@ -1,32 +1,38 @@
-@Tutorial(time: 20) {
+@Tutorial(time: 25) {
     @Intro(title: "01. SpriteKit scene을 올리고 첫 node 만들기") {
         이번 장에서는 SwiftUI 화면 안에 SpriteKit 무대를 올리고, 그 안에 첫 node인 `Hello SpriteKit` label을 표시합니다.
 
-        아직 tile, touch, GameStore는 만들지 않습니다. 먼저 SwiftUI가 SpriteKit scene을 품고, SpriteKit scene 안에 node를 넣어 화면을 구성하는 기본 흐름을 만듭니다. 이 구조를 이해해야 나중에 SpriteKit scene을 SceneKit cube face의 material로 붙이는 흐름도 자연스럽게 이어집니다.
+        아직 tile, touch, GameStore는 만들지 않습니다. 먼저 Xcode에서 기본 SwiftUI 앱을 만들고, 우리가 직접 `GameScene.swift`를 추가합니다. 그 다음 Preview에서 SpriteKit scene을 확인하고, 마지막으로 `ContentView`에 연결합니다.
     }
 
-    @Section(title: "SwiftUI와 SpriteKit 연결하기") {
+    @Section(title: "Xcode 프로젝트 만들기") {
         @ContentAndMedia {
-            먼저 SwiftUI 화면이 SpriteKit scene을 보여줄 수 있게 연결합니다.
+            이 튜토리얼은 `Game` 템플릿이 아니라 `App` 템플릿으로 시작합니다.
 
-            `ContentView`는 SwiftUI 화면을 만들고, `SpriteView(scene:)`로 SpriteKit scene을 보여줍니다. 이 장에서는 `ContentView` 안에 `GameScene`을 저장해두고, 그 scene을 `SpriteView`에 넘깁니다.
+            `Game` 템플릿을 고르면 SpriteKit용 기본 파일이 미리 만들어집니다. 여기서는 그 구조를 직접 만들면서 배우기 위해 가장 기본적인 SwiftUI 앱에서 출발합니다.
 
-            이 연결이 생기면 SwiftUI는 화면의 바깥 틀을 맡고, SpriteKit은 그 안에서 node를 그리는 2D 무대를 맡게 됩니다.
+            ---
+
+            Note:
+            처음부터 `App`으로 시작하면 SwiftUI 화면 안에 SpriteKit scene을 끼워 넣는 과정을 직접 볼 수 있습니다. 이 경험이 뒤에서 SpriteKit 화면을 SceneKit cube face에 붙일 때도 이어집니다.
         }
 
         @Steps {
             @Step {
-                파일: `ContentView.swift`
-                작업: 수정
+                Xcode에서 새 프로젝트를 만들 때 `iOS` 탭의 `App` 템플릿을 선택합니다. `Game` 템플릿은 선택하지 않습니다.
 
-                먼저 SpriteKit을 import합니다. 그 다음 `ContentView` 안에 `GameScene`을 저장할 property를 만들고, `init`에서 `GameScene`을 생성합니다. 마지막으로 `body`에서 `SpriteView(scene:)`로 `GameScene`을 화면에 올립니다.
+                @Image(source: xcode-new-project-template-app.png, alt: "Xcode 새 프로젝트 템플릿 선택 화면에서 iOS App 템플릿이 선택된 모습.")
+            }
 
-                @Code(name: "ContentView.swift", file: "01-ContentView-SpriteView.swift")
+            @Step {
+                Product Name을 정하고, `Interface`는 `SwiftUI`, `Language`는 `Swift`로 둡니다. 이 장에서는 테스트와 저장소 기능을 만들지 않으므로 `Testing System`과 `Storage`는 `None`으로 둡니다.
+
+                @Image(source: xcode-new-project-options-swiftui.png, alt: "Xcode 새 프로젝트 옵션 화면에서 SwiftUI와 Swift, None 설정이 선택된 모습.")
             }
         }
     }
 
-    @Section(title: "첫 node를 scene에 올리기") {
+    @Section(title: "GameScene.swift 만들기") {
         @ContentAndMedia {
             SpriteKit 화면은 scene 안에 node를 넣어서 구성합니다.
 
@@ -42,18 +48,33 @@
 
         @Steps {
             @Step {
-                파일: `GameScene.swift`
-                작업: 새 파일 생성
-
-                먼저 새 Swift 파일을 만들고 이름을 `GameScene.swift`로 정합니다. 그 안에서 SpriteKit을 import하고, `SKScene`을 상속한 `GameScene` class를 만듭니다. class 안에 `didMove(to:)`를 추가한 뒤, 그 안에서 scene의 배경색을 정하고 `SKLabelNode`를 만들어 화면 가운데에 올립니다.
+                파일: `GameScene.swift` 작업: 새 파일 생성. 먼저 새 Swift 파일을 만들고 이름을 `GameScene.swift`로 정합니다. 그 안에서 `SwiftUI`와 SpriteKit을 import하고, `SKScene`을 상속한 `GameScene` class를 만듭니다. class 안에 `didMove(to:)`를 추가한 뒤, scene 배경색과 `SKLabelNode`를 설정합니다. 파일 아래쪽에는 Preview를 추가해서 `ContentView`를 고치기 전에도 scene을 먼저 확인합니다.
 
                 @Code(name: "GameScene.swift", file: "01-GameScene-Hello.swift")
             }
         }
     }
 
+    @Section(title: "ContentView에 연결하기") {
+        @ContentAndMedia {
+            Preview에서 `GameScene`이 보이면, 이제 앱의 첫 화면인 `ContentView`에서 같은 scene을 보여줍니다.
+
+            SwiftUI는 앱의 화면 틀을 맡고, SpriteKit은 그 안에서 node를 그리는 2D 무대를 맡습니다. `SpriteView(scene:)`는 이 둘을 이어주는 SwiftUI view입니다.
+        }
+
+        @Steps {
+            @Step {
+                파일: `ContentView.swift` 작업: 수정. 먼저 SpriteKit을 import합니다. 그 다음 `GameScene`을 만들고, `body`에서 `SpriteView(scene:)`로 화면에 올립니다.
+
+                @Code(name: "ContentView.swift", file: "01-ContentView-SpriteView.swift")
+            }
+        }
+    }
+
     @Section(title: "코드 읽기") {
         @ContentAndMedia {
+            `#Preview`는 Xcode 캔버스에서 현재 코드를 빠르게 확인하기 위한 영역입니다. 이 장에서는 `GameScene`을 앱 화면에 연결하기 전에 Preview에서 먼저 확인합니다.
+
             `SpriteView(scene:)`는 SwiftUI와 SpriteKit 사이의 다리입니다. SwiftUI의 `body` 안에서는 view를 배치하고, SpriteKit의 `GameScene` 안에서는 node를 배치합니다.
 
             `SKScene`은 SpriteKit의 2D 무대입니다. `SKLabelNode`는 글자를 보여주는 node입니다. `addChild(titleLabel)`은 만든 node를 scene 안에 넣는 코드입니다.
@@ -68,14 +89,14 @@
 
         @Steps {
             @Step {
-                `SKLabelNode`는 SpriteKit에서 글자를 보여주는 node입니다. 이 장에서는 글자 하나만 올려서 scene이 제대로 보이는지 확인합니다.
+                `SKLabelNode`는 SpriteKit에서 글자를 보여주는 node입니다. 이 장에서는 Preview와 앱 실행 화면에서 글자 하나를 올려 scene이 제대로 보이는지 확인합니다.
             }
         }
     }
 
     @Section(title: "실행 확인") {
         @ContentAndMedia {
-            화면 안에 SpriteKit scene이 보이고, 가운데에 `Hello SpriteKit` label이 보여야 합니다.
+            Preview와 앱 실행 화면에서 SpriteKit scene이 보이고, 가운데에 `Hello SpriteKit` label이 보여야 합니다.
 
             `ContentView.swift`에는 `SpriteView(scene:)`가 있고, `GameScene.swift`에는 `didMove(to:)`, `SKLabelNode`, `addChild(titleLabel)` 코드가 있습니다. 이 차이로 SwiftUI 화면 구성과 SpriteKit node 배치가 서로 다른 파일에서 시작된다는 점을 볼 수 있습니다.
 
@@ -87,7 +108,7 @@
 
         @Steps {
             @Step {
-                앱을 실행해서 SpriteKit scene과 `Hello SpriteKit` label이 보이는지 확인합니다.
+                먼저 `GameScene.swift`의 Preview에서 label을 확인하고, 그 다음 앱을 실행해서 같은 scene이 첫 화면에 보이는지 확인합니다.
             }
         }
     }

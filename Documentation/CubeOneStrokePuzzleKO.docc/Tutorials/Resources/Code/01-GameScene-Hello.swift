@@ -1,3 +1,4 @@
+import SwiftUI
 import SpriteKit
 
 final class GameScene: SKScene {
@@ -12,4 +13,8 @@ final class GameScene: SKScene {
 
         addChild(titleLabel)
     }
+}
+
+#Preview {
+    SpriteView(scene: GameScene(size: CGSize(width: 700, height: 900)))
 }
