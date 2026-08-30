@@ -36,21 +36,62 @@
         @ContentAndMedia {
             SpriteKit 화면은 scene 안에 node를 넣어서 구성합니다.
 
-            `GameScene`은 SpriteKit 무대이고, `SKLabelNode`는 그 무대 위에 올릴 첫 node입니다. node를 만들기만 하면 화면에 자동으로 보이지 않습니다. `addChild(titleLabel)`로 scene의 자식 node로 넣어야 화면에 나타납니다.
+            `GameScene`은 SpriteKit의 2D 무대입니다. 여기서는 먼저 빈 scene을 만들고, `#Preview`로 Xcode 캔버스에서 scene이 만들어지는지 확인합니다. 아직 앱 첫 화면인 `ContentView`에는 연결하지 않습니다.
 
-            `didMove(to:)`는 배경색을 바꾸는 기능이 아닙니다. `GameScene`이 `SKView`에 표시된 뒤 SpriteKit이 호출하는 메서드입니다. 우리는 그 시점에 필요한 초기 화면 구성을 이 안에 적습니다.
+            `#Preview`는 Xcode 캔버스에서 현재 코드를 빠르게 확인하기 위한 영역입니다. 이 장에서는 `GameScene`을 앱 화면에 연결하기 전에 Preview에서 먼저 확인합니다.
 
             ---
 
             Note:
+            `SKScene`은 SpriteKit의 화면 단위입니다. SwiftUI에서 `View`를 화면 조각으로 다루듯, SpriteKit에서는 `Scene` 안에 여러 node를 올려 화면을 구성합니다.
+        }
+
+        @Steps {
+            @Step {
+                파일: `GameScene.swift` 작업: 새 파일 생성. 새 Swift 파일을 만들고 이름을 `GameScene.swift`로 정한 뒤, `SwiftUI`와 SpriteKit을 import합니다. 그 아래에 `SKScene`을 상속한 빈 `GameScene` class를 만들고, 파일 맨 아래에는 `#Preview`를 추가합니다.
+
+                @Code(name: "GameScene.swift", file: "01-GameScene-Shell.swift")
+            }
+        }
+    }
+
+    @Section(title: "scene이 처음 보일 때 설정하기") {
+        @ContentAndMedia {
+            이제 빈 `GameScene` 안에 첫 설정 지점을 만듭니다.
+
+            `didMove(to:)`는 배경색을 바꾸는 기능이 아닙니다. `GameScene`이 `SKView`에 표시된 뒤 SpriteKit이 호출하는 메서드입니다. 우리는 그 시점에 필요한 초기 화면 구성을 이 안에 적습니다.
+
             실제로 배경색을 바꾸는 코드는 `backgroundColor = .systemGray6`입니다. `didMove(to:)`는 그 코드가 scene이 화면에 올라온 뒤 실행되도록 자리를 제공하는 lifecycle callback입니다.
         }
 
         @Steps {
             @Step {
-                파일: `GameScene.swift` 작업: 새 파일 생성. 먼저 새 Swift 파일을 만들고 이름을 `GameScene.swift`로 정합니다. 그 안에서 `SwiftUI`와 SpriteKit을 import하고, `SKScene`을 상속한 `GameScene` class를 만듭니다. class 안에 `didMove(to:)`를 추가한 뒤, scene 배경색과 `SKLabelNode`를 설정합니다. 파일 아래쪽에는 Preview를 추가해서 `ContentView`를 고치기 전에도 scene을 먼저 확인합니다.
+                파일: `GameScene.swift` 타입: `GameScene` 위치: class의 `{ }` 안. `didMove(to:)`를 추가하고, 그 안에서 scene의 배경색을 정합니다.
 
-                @Code(name: "GameScene.swift", file: "01-GameScene-Hello.swift")
+                @Code(name: "GameScene.swift", file: "01-GameScene-DidMove.swift")
+            }
+        }
+    }
+
+    @Section(title: "첫 node 올리기") {
+        @ContentAndMedia {
+            SpriteKit 화면은 node를 scene에 넣어서 구성합니다.
+
+            `SKLabelNode`는 글자를 보여주는 node입니다. 여기서는 `titleLabel`을 scene이 제대로 보이는지 확인하는 첫 SpriteKit node로 사용합니다.
+
+            node를 만들기만 하면 화면에 자동으로 보이지 않습니다. `addChild(titleLabel)`로 scene의 자식 node로 넣어야 화면에 나타납니다.
+
+            ---
+
+            Note:
+            `size.width / 2`와 `size.height / 2`는 scene의 가운데 좌표를 구합니다. 기기마다 화면 크기가 다르기 때문에 고정 숫자보다 scene 크기를 기준으로 계산합니다.
+        }
+
+        @Steps {
+            @Step {
+                파일: `GameScene.swift` 타입: `GameScene` 메서드: `didMove(to:)` 위치: `backgroundColor = .systemGray6` 아래. `SKLabelNode`를 만들고, font와 위치를 정한 뒤 `addChild(titleLabel)`로 scene에 올립니다.
+
+                @Code(name: "GameScene.swift", file: "01-GameScene-TitleLabel.swift")
             }
         }
     }
@@ -60,36 +101,27 @@
             Preview에서 `GameScene`이 보이면, 이제 앱의 첫 화면인 `ContentView`에서 같은 scene을 보여줍니다.
 
             SwiftUI는 앱의 화면 틀을 맡고, SpriteKit은 그 안에서 node를 그리는 2D 무대를 맡습니다. `SpriteView(scene:)`는 이 둘을 이어주는 SwiftUI view입니다.
+
+            `scaleMode = .resizeFill`은 `GameScene`이 `SpriteView`의 크기에 맞게 채워지도록 합니다. Preview에서 본 scene을 실제 앱 화면에도 같은 방식으로 올리는 단계입니다.
         }
 
         @Steps {
             @Step {
-                파일: `ContentView.swift` 작업: 수정. 먼저 SpriteKit을 import합니다. 그 다음 `GameScene`을 만들고, `body`에서 `SpriteView(scene:)`로 화면에 올립니다.
+                파일: `ContentView.swift` 위치: 파일 맨 위. `import SwiftUI` 아래에 SpriteKit import를 추가합니다.
 
-                @Code(name: "ContentView.swift", file: "01-ContentView-SpriteView.swift")
+                @Code(name: "ContentView.swift", file: "01-ContentView-ImportSpriteKit.swift")
             }
-        }
-    }
 
-    @Section(title: "코드 읽기") {
-        @ContentAndMedia {
-            `#Preview`는 Xcode 캔버스에서 현재 코드를 빠르게 확인하기 위한 영역입니다. 이 장에서는 `GameScene`을 앱 화면에 연결하기 전에 Preview에서 먼저 확인합니다.
-
-            `SpriteView(scene:)`는 SwiftUI와 SpriteKit 사이의 다리입니다. SwiftUI의 `body` 안에서는 view를 배치하고, SpriteKit의 `GameScene` 안에서는 node를 배치합니다.
-
-            `SKScene`은 SpriteKit의 2D 무대입니다. `SKLabelNode`는 글자를 보여주는 node입니다. `addChild(titleLabel)`은 만든 node를 scene 안에 넣는 코드입니다.
-
-            `self.size.width / 2`와 `self.size.height / 2`는 scene의 가운데 좌표를 구합니다. 기기마다 화면 크기가 다르기 때문에 고정 숫자보다 scene 크기를 기준으로 계산하는 편이 안전합니다.
-
-            ---
-
-            Note:
-            `Label`은 개발에서 화면에 글자를 보여주는 요소를 뜻할 때 자주 쓰는 말입니다. SpriteKit에서는 글자를 보여주는 node로 `SKLabelNode`를 사용합니다. 여기서는 `titleLabel`을 scene이 제대로 보이는지 확인하는 첫 SpriteKit node로 사용합니다.
-        }
-
-        @Steps {
             @Step {
-                `SKLabelNode`는 SpriteKit에서 글자를 보여주는 node입니다. 이 장에서는 Preview와 앱 실행 화면에서 글자 하나를 올려 scene이 제대로 보이는지 확인합니다.
+                파일: `ContentView.swift` 타입: `ContentView` 위치: `body` 위. `GameScene`을 저장할 property를 만들고, `init`에서 scene 크기와 `scaleMode`를 정합니다.
+
+                @Code(name: "ContentView.swift", file: "01-ContentView-SceneProperty.swift")
+            }
+
+            @Step {
+                파일: `ContentView.swift` 타입: `ContentView` 위치: 기존 `body` 교체. `SpriteView(scene:)`에 `gameScene`을 넘겨 SwiftUI 화면 안에 SpriteKit scene을 올립니다.
+
+                @Code(name: "ContentView.swift", file: "01-ContentView-SpriteViewBody.swift")
             }
         }
     }
@@ -98,7 +130,7 @@
         @ContentAndMedia {
             Preview와 앱 실행 화면에서 SpriteKit scene이 보이고, 가운데에 `Hello SpriteKit` label이 보여야 합니다.
 
-            `ContentView.swift`에는 `SpriteView(scene:)`가 있고, `GameScene.swift`에는 `didMove(to:)`, `SKLabelNode`, `addChild(titleLabel)` 코드가 있습니다. 이 차이로 SwiftUI 화면 구성과 SpriteKit node 배치가 서로 다른 파일에서 시작된다는 점을 볼 수 있습니다.
+            `GameScene.swift`에는 `didMove(to:)`, `SKLabelNode`, `addChild(titleLabel)` 코드가 있습니다. `ContentView.swift`에는 `SpriteView(scene:)`가 있습니다. 이 차이로 SpriteKit node 배치와 SwiftUI 화면 연결이 서로 다른 파일에서 시작된다는 점을 볼 수 있습니다.
 
             ---
 
