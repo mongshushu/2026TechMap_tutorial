@@ -2,7 +2,7 @@
     @Intro(title: "06. 2x2 board로 확장하기") {
         이번 장에서는 tile 두 개를 2x2 board 네 칸으로 확장합니다.
 
-        아직 neighbor 규칙은 없습니다. 먼저 네 칸이 모두 그려지고, GameStore 상태에 따라 색이 바뀌는지 확인합니다.
+        아직 이동 가능한 tile인지 검사하지 않습니다. 먼저 네 칸이 모두 그려지고, GameStore 상태에 따라 색이 바뀌는지 확인합니다.
     }
 
     @Section(title: "2x2로 바꾸기") {

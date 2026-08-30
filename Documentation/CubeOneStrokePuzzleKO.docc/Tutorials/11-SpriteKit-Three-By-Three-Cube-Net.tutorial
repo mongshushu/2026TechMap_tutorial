@@ -41,7 +41,7 @@
         @ContentAndMedia {
             `SpriteKitFaceScene`은 `BoardPlan`을 받아 3x3 tile map과 좌표 label을 그립니다.
 
-            이 preview는 SceneKit에 붙이기 전에도 유용합니다. 3x3의 row와 column이 눈에 보여야 나중에 face 방향 보정을 확인할 수 있습니다.
+            이 preview에서는 3x3의 row와 column이 눈에 보여야 합니다. 좌표 label이 보여야 각 tile의 주소와 화면 위치를 함께 확인할 수 있습니다.
         }
 
         @Steps {

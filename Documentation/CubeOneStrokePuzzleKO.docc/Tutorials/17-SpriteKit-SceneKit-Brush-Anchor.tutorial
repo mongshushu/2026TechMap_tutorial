@@ -93,7 +93,7 @@
 
             이제 앱은 사용자가 누른 raw hit point가 아니라, 선택에 성공한 `TileID`의 중앙으로 SceneKit `brushNode`를 이동시킵니다. brush image는 SpriteKit texture 안에 그려진 그림이 아니라, 큐브 표면 위에 따로 올라간 SceneKit node입니다. 이 node에는 `SCNBillboardConstraint`가 적용되어 큐브를 회전해도 카메라를 바라보는 marker처럼 보입니다.
 
-            > Note: 16장의 touch dot은 hitTest가 맞는지 보기 위한 디버그 피드백이고, 17장의 brush anchor는 사용자가 선택 성공을 읽는 최종 UX 피드백입니다. SpriteKit의 tile 선택 결과가 SceneKit marker 위치로 이어지기 때문에 둘은 역할이 다릅니다.
+            > Note: 16장의 touch dot은 hitTest가 맞는지 보기 위한 디버그 피드백이고, 이 장의 brush anchor는 사용자가 선택 성공을 읽는 최종 UX 피드백입니다. SpriteKit의 tile 선택 결과가 SceneKit marker 위치로 이어지기 때문에 둘은 역할이 다릅니다.
         }
 
         @Steps {

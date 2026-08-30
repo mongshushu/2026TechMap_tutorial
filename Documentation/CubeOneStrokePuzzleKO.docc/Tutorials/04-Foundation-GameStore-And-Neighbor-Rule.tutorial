@@ -9,7 +9,7 @@
         @ContentAndMedia {
             `name`은 화면에 보이는 글자가 아닙니다. 개발자가 node를 구별하기 위해 붙이는 숨은 이름입니다.
 
-            `tile_0_0`, `tile_0_1`처럼 이름을 붙이면 나중에 이 값을 GameStore로 보낼 수 있습니다.
+            `tile_0_0`, `tile_0_1`처럼 이름을 붙이면 터치된 node가 우리가 만든 tile인지 구별할 수 있습니다.
         }
 
         @Steps {

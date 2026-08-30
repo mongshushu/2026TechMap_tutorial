@@ -25,7 +25,7 @@
         @ContentAndMedia {
             `import Foundation`은 파일을 서로 연결하는 코드가 아닙니다. `GameScene`이 `GameStore()` 인스턴스를 만들 때 두 파일의 코드가 실제로 만납니다.
 
-            이번 장에서는 `GameScene` 안에 `private let gameStore = GameStore()`를 둡니다. SwiftUI와 공유하는 구조는 나중에 필요할 때 바꿉니다.
+            이번 장에서는 `GameScene` 안에 `private let gameStore = GameStore()`를 둡니다. tile을 탭하는 코드가 바로 같은 scene 안에 있으므로, 여기에서 상태 객체를 만들어 사용합니다.
         }
 
         @Steps {
@@ -41,7 +41,7 @@
         @ContentAndMedia {
             tile을 탭하면 GameStore의 현재 tile과 방문 목록이 바뀌어야 합니다.
 
-            이 장을 마치면 tile 이름을 읽는 코드와 게임 상태를 저장하는 코드가 연결됩니다. 화면 색을 상태와 맞추는 작업은 다음 장에서 합니다.
+            이 장을 마치면 tile 이름을 읽는 코드와 게임 상태를 저장하는 코드가 연결됩니다. 지금은 상태가 console 출력으로 확인되고, 화면 색은 아직 바뀌지 않습니다.
 
             > Note: `GameStore`는 게임의 진짜 상태를 보관합니다. `GameScene`은 터치한 tile 이름을 읽어서 `GameStore`로 보내고, 상태를 직접 오래 들고 있지 않습니다.
         }
