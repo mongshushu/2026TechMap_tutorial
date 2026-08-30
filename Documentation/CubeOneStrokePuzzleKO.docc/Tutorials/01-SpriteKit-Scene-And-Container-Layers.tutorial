@@ -38,6 +38,8 @@
 
             `GameScene`은 SpriteKit의 2D 무대입니다. 여기서는 먼저 빈 scene을 만들고, `#Preview`로 Xcode 캔버스에서 scene이 만들어지는지 확인합니다. 아직 앱 첫 화면인 `ContentView`에는 연결하지 않습니다.
 
+            `GameScene: SKScene`에서 콜론 뒤의 `SKScene`은 `GameScene`이 SpriteKit scene의 기본 기능을 물려받는다는 뜻입니다. 그래서 빈 class처럼 보여도 SpriteKit이 화면으로 다룰 수 있고, 다음 Step에서 `backgroundColor`와 `addChild(...)` 같은 scene 기능을 사용할 수 있습니다.
+
             `#Preview`는 Xcode 캔버스에서 현재 코드를 빠르게 확인하기 위한 영역입니다. 이 장에서는 `GameScene`을 앱 화면에 연결하기 전에 Preview에서 먼저 확인합니다.
 
             ---
@@ -59,9 +61,11 @@
         @ContentAndMedia {
             이제 빈 `GameScene` 안에 첫 설정 지점을 만듭니다.
 
-            `didMove(to:)`는 배경색을 바꾸는 기능이 아닙니다. `GameScene`이 `SKView`에 표시된 뒤 SpriteKit이 호출하는 메서드입니다. 우리는 그 시점에 필요한 초기 화면 구성을 이 안에 적습니다.
+            `didMove(to:)`는 `GameScene`이 `SKView`에 표시된 직후 SpriteKit이 자동으로 불러주는 메서드입니다. 이런 메서드를 lifecycle callback이라고 부릅니다.
 
-            실제로 배경색을 바꾸는 코드는 `backgroundColor = .systemGray6`입니다. `didMove(to:)`는 그 코드가 scene이 화면에 올라온 뒤 실행되도록 자리를 제공하는 lifecycle callback입니다.
+            말로 풀면, 화면이 준비되는 흐름 중 정해진 순간에 SpriteKit이 다시 불러주는 약속된 자리입니다. 여기서는 scene이 처음 보이는 순간에 필요한 설정을 `didMove(to:)` 안에 적습니다.
+
+            헷갈리기 쉬운 것은 `didMove(to:)`와 `backgroundColor`의 역할입니다. `didMove(to:)`는 코드를 실행할 시점을 정하고, `backgroundColor = .systemGray6`는 실제로 scene의 배경색 값을 바꿉니다.
         }
 
         @Steps {
