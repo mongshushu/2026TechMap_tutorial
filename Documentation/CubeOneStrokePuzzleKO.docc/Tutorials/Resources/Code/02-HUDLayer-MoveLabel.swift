@@ -6,6 +6,7 @@ final class GameScene: SKScene {
 
     override func didMove(to view: SKView) {
         backgroundColor = .systemGray6
+        hudLayer.zPosition = 10
         addChild(hudLayer)
 
         let titleLabel = SKLabelNode(text: "Hello SpriteKit")
