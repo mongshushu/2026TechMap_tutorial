@@ -34,14 +34,7 @@ final class GameScene: SKScene {
         startTile.lineWidth = 4
         startTile.position = CGPoint(x: size.width / 2 - 80, y: centerY)
 
-        let nextTile = SKShapeNode(rectOf: tileSize, cornerRadius: 12)
-        nextTile.fillColor = .white
-        nextTile.strokeColor = .black
-        nextTile.lineWidth = 4
-        nextTile.position = CGPoint(x: size.width / 2 + 80, y: centerY)
-
         tileLayer.addChild(startTile)
-        tileLayer.addChild(nextTile)
     }
 }
 

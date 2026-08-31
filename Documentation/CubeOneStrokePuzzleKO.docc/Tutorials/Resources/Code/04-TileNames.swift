@@ -29,12 +29,14 @@ final class GameScene: SKScene {
         let centerY = size.height / 2
 
         let startTile = SKShapeNode(rectOf: tileSize, cornerRadius: 12)
+        startTile.name = "tile_0_0"
         startTile.fillColor = .systemBlue
         startTile.strokeColor = .black
         startTile.lineWidth = 4
         startTile.position = CGPoint(x: size.width / 2 - 80, y: centerY)
 
         let nextTile = SKShapeNode(rectOf: tileSize, cornerRadius: 12)
+        nextTile.name = "tile_0_1"
         nextTile.fillColor = .white
         nextTile.strokeColor = .black
         nextTile.lineWidth = 4
