@@ -13,7 +13,7 @@ final class GameScene: SKScene {
         addChild(tileLayer)
 
         buildTitle()
-        buildTwoByTwoBoard()
+        buildTwoTileBoard()
     }
 
     private func buildTitle() {
@@ -26,34 +26,26 @@ final class GameScene: SKScene {
         hudLayer.addChild(titleLabel)
     }
 
-    private func buildTwoByTwoBoard() {
-        let tileSize = CGSize(width: 130, height: 130)
-        let gap: CGFloat = 16
-        let boardWidth = tileSize.width * 2 + gap
-        let startX = size.width / 2 - boardWidth / 2 + tileSize.width / 2
-        let startY = size.height / 2 - boardWidth / 2 + tileSize.height / 2
+    private func buildTwoTileBoard() {
+        let tileSize = CGSize(width: 140, height: 140)
+        let centerY = size.height / 2
 
-        for row in 0..<2 {
-            for column in 0..<2 {
-                let tileID = "tile_\(row)_\(column)"
-                let tile = SKShapeNode(rectOf: tileSize, cornerRadius: 12)
-                tile.name = tileID
-                tile.fillColor = .white
+        let startTile = SKShapeNode(rectOf: tileSize, cornerRadius: 12)
+        startTile.name = "tile_0_0"
+        startTile.fillColor = .systemBlue
+        startTile.strokeColor = .black
+        startTile.lineWidth = 4
+        startTile.position = CGPoint(x: size.width / 2 - 80, y: centerY)
 
-                if tileID == "tile_0_0" {
-                    tile.fillColor = .systemBlue
-                }
-                tile.strokeColor = .black
-                tile.lineWidth = 4
-                tile.position = CGPoint(
-                    x: startX + CGFloat(column) * (tileSize.width + gap),
-                    y: startY + CGFloat(row) * (tileSize.height + gap)
-                )
+        let nextTile = SKShapeNode(rectOf: tileSize, cornerRadius: 12)
+        nextTile.name = "tile_0_1"
+        nextTile.fillColor = .white
+        nextTile.strokeColor = .black
+        nextTile.lineWidth = 4
+        nextTile.position = CGPoint(x: size.width / 2 + 80, y: centerY)
 
-                tileNodesByID[tileID] = tile
-                tileLayer.addChild(tile)
-            }
-        }
+        tileLayer.addChild(startTile)
+        tileLayer.addChild(nextTile)
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

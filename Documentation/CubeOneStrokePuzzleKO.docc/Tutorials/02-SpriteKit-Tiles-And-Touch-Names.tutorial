@@ -2,12 +2,14 @@
     @Intro(title: "02. HUD layer로 화면 구조 잡기") {
         이번 장에서는 1장에서 만든 `titleLabel`을 `hudLayer` 안으로 옮깁니다.
 
-        화면은 거의 똑같아 보일 수 있습니다. 달라지는 것은 보이는 모양이 아니라 node를 담는 구조입니다. 1장에서는 label을 scene에 바로 넣었고, 2장에서는 HUD를 담는 layer를 하나 만든 뒤 그 안에 label을 넣습니다.
+        화면은 거의 똑같아 보일 수 있습니다. 달라지는 것은 보이는 모양이 아니라 node를 담는 구조입니다. 제목 같은 HUD 요소를 scene에 바로 흩어 놓지 않고, `hudLayer`라는 한 묶음 안에 담는 것이 목표입니다.
     }
 
-    @Section(title: "container 이해하기") {
+    @Section(title: "hudLayer로 titleLabel 담기") {
         @ContentAndMedia {
-            `hudLayer`는 다른 node를 담는 빈 그룹입니다. 이번 장에서는 `titleLabel`을 scene에 바로 붙이지 않고 `hudLayer` 안에 넣습니다.
+            `hudLayer`는 다른 node를 담는 빈 그룹입니다. 이번 Section에서는 `titleLabel`을 scene에 바로 붙이지 않고 `hudLayer` 안에 넣는 구조를 만듭니다.
+
+            1장 끝의 구조는 `GameScene -> titleLabel`이었습니다. 2장 끝에서는 `GameScene -> hudLayer -> titleLabel`이 됩니다. 지금은 label이 하나뿐이라 화면 차이는 작지만, 코드에서는 제목이 HUD 묶음 안에 들어간다는 의미가 생깁니다.
         }
 
         @Steps {
@@ -18,35 +20,19 @@
 
                 @Code(name: "GameScene.swift", file: "02-HUDLayer-Property.swift", previousFile: "01-GameScene-TitleLabel.swift")
             }
-        }
-    }
 
-    @Section(title: "hudLayer를 scene에 올리기") {
-        @ContentAndMedia {
-            property로 만든 `hudLayer`를 scene에 올려 `GameScene -> hudLayer` 구조를 만듭니다.
-        }
-
-        @Steps {
             @Step {
                 `GameScene.swift`의 `didMove(to:)` 안에서 `backgroundColor = .systemGray6` 아래에 `hudLayer`를 scene에 추가합니다.
 
-                Note: `addChild(hudLayer)`는 만들어 둔 `hudLayer`를 scene 구조 안에 넣습니다. property로 `hudLayer`를 만들었더라도, 그것만으로는 scene에 보이지 않습니다.
+                Note: `hudLayer`를 property로 만드는 것은 이름을 준비하는 일입니다. 아직 scene 안에 들어간 것은 아니기 때문에, 그 안에 node를 담아도 화면 구조에서는 확인할 수 없습니다. `addChild(hudLayer)`를 호출해야 `hudLayer`가 `GameScene`의 자식 node가 됩니다.
 
                 @Code(name: "GameScene.swift", file: "02-HUDLayer-AddToScene.swift", previousFile: "02-HUDLayer-Property.swift")
             }
-        }
-    }
 
-    @Section(title: "titleLabel을 hudLayer 안으로 옮기기") {
-        @ContentAndMedia {
-            이제 1장에서 scene에 바로 올렸던 `titleLabel`을 `hudLayer` 안으로 옮깁니다.
-        }
-
-        @Steps {
             @Step {
                 `GameScene.swift`의 `didMove(to:)` 안에서 기존 `addChild(titleLabel)`을 `hudLayer.addChild(titleLabel)`로 바꿉니다.
 
-                Note: `hudLayer.addChild(titleLabel)`은 `titleLabel`을 `hudLayer` 안에 넣습니다. 같은 label이 보이지만, 이제 label의 부모 node가 scene이 아니라 `hudLayer`입니다. 보이는 결과가 같아도 구조를 바꾸는 이유는 역할을 분리하기 위해서입니다.
+                Note: `hudLayer.addChild(titleLabel)`은 `titleLabel`을 `hudLayer` 안에 넣습니다. 같은 label이 보이지만, 이제 label의 부모 node가 scene이 아니라 `hudLayer`입니다. 이 구조가 있으면 제목, 점수, 안내 문구처럼 화면 위의 정보 node들을 "HUD 묶음"으로 읽고 관리할 수 있습니다.
 
                 @Code(name: "GameScene.swift", file: "02-HUDLayer-MoveLabel.swift", previousFile: "02-HUDLayer-AddToScene.swift")
             }
@@ -57,7 +43,7 @@
         @ContentAndMedia {
             앱을 실행하면 화면은 1장과 거의 같아 보입니다. 이 장에서 새로 보이는 UI가 생기지 않는 것은 정상입니다.
 
-            코드에서는 `GameScene -> hudLayer -> titleLabel` 구조가 만들어져 있어야 합니다. 화면의 모양보다 node의 부모-자식 구조가 바뀐 것이 이번 장의 핵심입니다.
+            코드에서는 `GameScene -> hudLayer -> titleLabel` 구조가 만들어져 있어야 합니다. 이 장의 결과는 새 UI가 아니라, HUD에 해당하는 node를 따로 담을 수 있는 자리입니다.
         }
 
         @Steps {

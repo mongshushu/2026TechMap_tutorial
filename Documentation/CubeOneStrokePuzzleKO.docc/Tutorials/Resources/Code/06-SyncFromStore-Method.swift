@@ -85,7 +85,8 @@ final class GameScene: SKScene {
 
             if nodeName.hasPrefix("tile_") {
                 gameStore.selectTile(id: nodeName)
-                syncFromStore()
+                print("Current tile: \(gameStore.currentTileID)")
+                print("Path: \(gameStore.pathTileIDs)")
                 return
             }
         }

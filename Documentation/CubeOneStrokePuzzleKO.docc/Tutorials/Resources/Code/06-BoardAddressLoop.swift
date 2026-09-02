@@ -36,37 +36,13 @@ final class GameScene: SKScene {
         for row in 0..<2 {
             for column in 0..<2 {
                 let tileID = "tile_\(row)_\(column)"
-                let tile = SKShapeNode(rectOf: tileSize, cornerRadius: 12)
-                tile.name = tileID
-                tile.fillColor = fillColor(for: tileID)
-                tile.strokeColor = .black
-                tile.lineWidth = 4
-                tile.position = CGPoint(
+                let position = CGPoint(
                     x: startX + CGFloat(column) * (tileSize.width + gap),
                     y: startY + CGFloat(row) * (tileSize.height + gap)
                 )
 
-                tileNodesByID[tileID] = tile
-                tileLayer.addChild(tile)
+                print(tileID, position)
             }
-        }
-    }
-
-    private func fillColor(for tileID: String) -> UIColor {
-        if gameStore.currentTileID == tileID {
-            return .systemBlue
-        }
-
-        if gameStore.visitedTileIDs.contains(tileID) {
-            return .systemTeal
-        }
-
-        return .white
-    }
-
-    private func syncFromStore() {
-        for (tileID, tileNode) in tileNodesByID {
-            tileNode.fillColor = fillColor(for: tileID)
         }
     }
 
@@ -85,7 +61,8 @@ final class GameScene: SKScene {
 
             if nodeName.hasPrefix("tile_") {
                 gameStore.selectTile(id: nodeName)
-                syncFromStore()
+                print("Current tile: \(gameStore.currentTileID)")
+                print("Path: \(gameStore.pathTileIDs)")
                 return
             }
         }

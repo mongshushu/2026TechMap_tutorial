@@ -18,7 +18,7 @@ final class GameScene: SKScene {
         titleLabel.fontName = "AvenirNext-Bold"
         titleLabel.fontSize = 34
         titleLabel.fontColor = .black
-        titleLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        titleLabel.position = CGPoint(x: size.width / 2, y: size.height - 120)
 
         hudLayer.addChild(titleLabel)
     }

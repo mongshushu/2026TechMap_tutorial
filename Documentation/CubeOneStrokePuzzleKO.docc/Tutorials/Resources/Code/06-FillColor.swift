@@ -64,12 +64,6 @@ final class GameScene: SKScene {
         return .white
     }
 
-    private func syncFromStore() {
-        for (tileID, tileNode) in tileNodesByID {
-            tileNode.fillColor = fillColor(for: tileID)
-        }
-    }
-
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let firstTouch = touches.first else {
             return
@@ -85,7 +79,8 @@ final class GameScene: SKScene {
 
             if nodeName.hasPrefix("tile_") {
                 gameStore.selectTile(id: nodeName)
-                syncFromStore()
+                print("Current tile: \(gameStore.currentTileID)")
+                print("Path: \(gameStore.pathTileIDs)")
                 return
             }
         }

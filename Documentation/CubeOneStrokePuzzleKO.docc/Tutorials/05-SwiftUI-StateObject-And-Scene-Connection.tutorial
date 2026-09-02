@@ -1,52 +1,60 @@
-@Tutorial(time: 18) {
+@Tutorial(time: 22) {
     @Intro(title: "05. GameStore로 선택 상태 저장하기") {
         이번 장에서는 게임이 기억해야 할 값을 `GameStore`로 분리합니다.
 
-        console 출력은 확인용이고, `GameStore`는 게임의 진짜 상태입니다.
+        앞 장에서는 터치한 tile 이름을 console에 출력했습니다. 이제 그 이름을 현재 tile, 방문한 tile, 지나온 순서로 저장합니다.
     }
 
     @Section(title: "GameStore 만들기") {
         @ContentAndMedia {
-            지금까지는 tile을 탭해도 console에 이름만 출력했습니다. 이제 방문한 tile, 현재 tile, 지나온 순서를 저장합니다.
+            `GameStore`는 화면을 그리는 파일이 아니라, 게임 진행 상태를 기억하는 파일입니다.
         }
 
         @Steps {
             @Step {
-                새 Swift 파일을 만들고 이름을 `GameStore.swift`로 정합니다. 이 파일에 `GameStore` class를 만들고, 상태 값 세 개와 `selectTile(id:)`, `reset()`을 추가합니다.
+                새 Swift 파일을 만들고 이름을 `GameStore.swift`로 정합니다. 그 안에 `GameStore` class를 만듭니다.
 
-                Note: `visitedTileIDs`는 방문 여부를 빠르게 확인하기 좋은 `Set`입니다. `pathTileIDs`는 지나온 순서가 중요하므로 `Array`로 둡니다. `private(set)`은 class 밖에서는 값을 읽을 수 있지만, 바꾸는 일은 `GameStore` 안에서만 하게 해줍니다.
+                Note: `GameStore`는 SpriteKit node를 만들지 않습니다. 이 파일은 화면에 무엇을 그릴지가 아니라, 사용자가 어떤 tile을 선택했는지 기억하는 역할부터 맡습니다.
 
-                @Code(name: "GameStore.swift", file: "05-GameStoreState.swift")
+                @Code(name: "GameStore.swift", file: "05-GameStore-Empty.swift")
+            }
+
+            @Step {
+                `GameStore` class 안에 처음 상태를 저장할 property 세 개를 추가합니다.
+
+                Note: `currentTileID`는 지금 선택된 tile 하나를 저장합니다. `visitedTileIDs`는 이미 방문한 tile들을 빠르게 확인하기 위해 `Set`으로 저장합니다. `pathTileIDs`는 첫 번째로 지나간 tile, 두 번째로 지나간 tile처럼 선택 순서를 그대로 기록하기 위해 `Array`로 저장합니다.
+
+                @Code(name: "GameStore.swift", file: "05-GameStore-InitialState.swift", previousFile: "05-GameStore-Empty.swift")
+            }
+
+            @Step {
+                `pathTileIDs` 아래에 `selectTile(id:)`를 추가합니다. 이 메서드는 새 tile id를 받아 방문 목록, 현재 tile, 지나온 순서를 함께 바꿉니다.
+
+                Note: `private let gameStore`는 `gameStore`를 `GameScene` 안에서만 쓸 수 있게 합니다. 반면 `private(set) var currentTileID`는 class 밖에서 값을 읽을 수는 있지만, 직접 바꿀 수는 없게 합니다. 그래서 `GameScene`은 상태 값을 마음대로 고치지 않고, `selectTile(id:)`를 통해서만 선택 상태를 바꿉니다.
+
+                @Code(name: "GameStore.swift", file: "05-GameStoreState.swift", previousFile: "05-GameStore-InitialState.swift")
             }
         }
     }
 
-    @Section(title: "GameScene에 GameStore 준비하기") {
+    @Section(title: "GameScene에서 GameStore 사용하기") {
         @ContentAndMedia {
-            `GameScene`이 tile 터치를 읽고 있으므로, 같은 scene 안에 `GameStore`를 하나 준비합니다.
+            `GameScene`은 터치된 tile 이름을 읽습니다. 이제 그 이름을 `GameStore`로 보내 상태로 저장합니다.
         }
 
         @Steps {
             @Step {
                 `GameScene.swift`의 `GameScene` class 안에서 `tileLayer` 아래에 `gameStore` property를 추가합니다.
 
-                Note: `import Foundation`은 파일을 서로 연결하는 코드가 아닙니다. `GameScene`이 `GameStore()` 인스턴스를 만들 때 두 파일의 코드가 실제로 만납니다.
+                Note: `gameStore`에는 현재 선택된 tile, 이미 방문한 tile, 지나온 순서가 저장됩니다. `private let gameStore = GameStore()`는 `GameScene` 안에서 계속 사용할 저장소 하나를 만들어 두는 코드입니다.
 
                 @Code(name: "GameScene.swift", file: "05-ConnectStore-Property.swift", previousFile: "04-TileTapHandling.swift")
             }
-        }
-    }
 
-    @Section(title: "tap 결과를 GameStore로 보내기") {
-        @ContentAndMedia {
-            이제 터치한 tile 이름을 console에만 출력하지 않고, `GameStore`의 상태 변경 메서드로 보냅니다.
-        }
-
-        @Steps {
             @Step {
                 `touchesBegan(_:with:)` 안에서 `print("Tapped tile: ...")` 대신 `gameStore.selectTile(id:)`를 호출합니다. 이어서 현재 tile과 path를 console에 출력합니다.
 
-                Note: `GameScene`은 터치한 node의 이름을 읽는 일을 맡고, `GameStore`는 선택 상태를 저장하는 일을 맡습니다. console 출력은 상태가 바뀌었는지 확인하기 위한 임시 확인 방법입니다.
+                Note: 이 장의 tap 흐름은 `터치 위치에서 tile 이름 찾기 -> GameStore에 선택 전달하기 -> 저장된 상태를 console로 확인하기`입니다. console 출력은 상태가 바뀌었는지 확인하는 임시 방법입니다.
 
                 @Code(name: "GameScene.swift", file: "05-ConnectTapToStore.swift", previousFile: "05-ConnectStore-Property.swift")
             }
@@ -56,8 +64,6 @@
     @Section(title: "실행 확인") {
         @ContentAndMedia {
             tile을 탭하면 GameStore의 현재 tile과 방문 목록이 바뀌어야 합니다.
-
-            지금은 상태가 console 출력으로 확인되고, 화면 색은 아직 바뀌지 않습니다.
         }
 
         @Steps {
