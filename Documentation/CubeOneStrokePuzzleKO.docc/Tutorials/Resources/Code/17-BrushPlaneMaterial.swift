@@ -4,10 +4,4 @@ private func configureBrushNode() {
     plane.firstMaterial?.isDoubleSided = true
 
     brushNode.geometry = plane
-    brushNode.isHidden = true
-
-    let billboard = SCNBillboardConstraint()
-    brushNode.constraints = [billboard]
-
-    scene.rootNode.addChildNode(brushNode)
 }
