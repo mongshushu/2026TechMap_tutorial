@@ -19,14 +19,9 @@ final class GameStore {
         return board.isNeighbor(from: currentTileID, to: tileID)
     }
 
-    func selectTile(id tileID: String) -> Bool {
-        if canSelectTile(id: tileID) == false {
-            return false
-        }
-
+    func selectTile(id tileID: String) {
         currentTileID = tileID
         visitedTileIDs.insert(tileID)
         pathTileIDs.append(tileID)
-        return true
     }
 }
