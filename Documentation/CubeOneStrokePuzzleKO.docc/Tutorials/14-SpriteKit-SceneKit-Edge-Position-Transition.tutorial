@@ -1,38 +1,94 @@
-@Tutorial(time: 20) {
+@Tutorial(time: 30) {
     @Intro(title: "14. edge 위치로 stage 전환 확인하기") {
-        stage를 완료했다는 사실만으로 다음 버튼을 켜지 않습니다. 마지막으로 선택한 tile과 다음 stage의 시작 tile이 큐브에서 같은 모서리를 공유하는 위치인지 확인합니다.
+        이번 장에서는 stage 완료 조건에 cube edge 위치 조건을 더합니다.
 
-        언어 전환: [English](/2026TechMap_tutorial/CubeOneStrokePuzzle/tutorials/cube-one-stroke-puzzle/14-spritekit-scenekit-edge-position-transition/).
+        목표는 현재 stage에서 마지막으로 선택한 tile이 다음 stage의 시작 tile과 실제 cube edge에서 이어지는 위치인지 확인하는 것입니다.
     }
 
-    @Section(title: "edge 방향을 먼저 확인하기") {
+    @Section(title: "edge와 position 나누어 보기") {
         @ContentAndMedia {
             13장에서 `coordinateLayout`을 맞췄기 때문에, 화면에 보이는 label과 실제 `TileID`가 같은 기준을 바라봅니다. 이제 그 기준으로 두 face의 edge가 어떤 순서로 맞닿는지 확인합니다.
 
-            `reversed`는 어려운 알고리즘 이름이 아닙니다. 한쪽 edge에서 세던 순서가 맞은편 face로 넘어가면 반대 끝에서 시작된다는 뜻입니다. 3x3에서 현재 face의 position `0`이 다음 face의 position `2`와 만나고, 현재 face의 position `2`가 다음 face의 position `0`과 만나는 방식입니다.
-
-            이 값은 모든 연결에 자동으로 적용하지 않습니다. `front.right -> right.left`, `right.top -> top.right`처럼 지금 구현하는 연결마다 same인지 reversed인지 확인해서 정합니다.
+            이 섹션에서는 edge의 이름과 edge 위 position을 분리해서 봅니다. 예를 들어 right edge에는 3개의 tile이 있으므로, “right edge에서 끝났다”만으로는 부족하고 그 edge 위 몇 번째 tile인지도 알아야 합니다.
         }
 
         @Steps {
             @Step {
-                현재 face의 `exitEdge`에서 position `0`에 해당하는 tile을 찾고, 그 tile이 다음 face의 `entryEdge`에서 어느 position과 만나는지 확인합니다. position `0`끼리 만나면 same, position `0`이 마지막 position과 만나면 reversed로 기록합니다.
+                현재 stage가 나가는 edge를 `exitEdge`, 다음 stage가 들어오는 edge를 `entryEdge`로 부르기로 합니다.
+
+                Note: `exitEdge`와 `entryEdge`는 화면에 그려지는 선이 아니라 stage 전환을 판단하기 위한 데이터입니다. 현재 face의 오른쪽 edge에서 끝났다면, 다음 face의 왼쪽 edge와 이어질 수 있는지 확인합니다.
+            }
+
+            @Step {
+                edge 위의 tile 순서를 `position`으로 확인합니다.
+
+                Note: 3x3 face의 edge에는 tile이 3개 있으므로 position은 `0`, `1`, `2`입니다. top과 bottom edge는 column이 position이고, left와 right edge는 row가 position입니다.
+            }
+
+            @Step {
+                두 edge의 position이 같은 방향으로 이어지는지, 반대 방향으로 이어지는지 확인합니다.
+
+                Note: 한 face의 position `0`이 다음 face의 position `0`과 만나면 같은 방향입니다. position `0`이 다음 face의 마지막 position과 만나면 반대 방향입니다. 이 장의 연결은 반대 방향이므로 `boardSize - 1 - position`으로 다음 position을 계산합니다.
+            }
+        }
+    }
+
+    @Section(title: "edge 정보를 모델에 담기") {
+        @ContentAndMedia {
+            stage 전환을 계산하려면 code 안에서도 edge 이름을 다룰 수 있어야 합니다.
+
+            이 섹션에서는 `TileEdge`로 네 방향 edge를 만들고, `BoardPlan`에 stage의 입구 edge와 출구 edge를 저장합니다. 섹션을 마치면 stage마다 어느 edge로 들어오고 나가는지 데이터로 읽을 수 있습니다.
+        }
+
+        @Steps {
+            @Step {
+                `TileEdge`를 추가해 top, right, bottom, left edge를 코드 이름으로 만듭니다.
+
+                Note: `CubeFace`가 cube의 어느 면인지 나타냈다면, `TileEdge`는 한 face 안의 어느 가장자리인지 나타냅니다.
+
+                @Code(name: "PuzzleModels.swift", file: "14-TileEdge.swift", previousFile: "13-BoardPlanTileIDMethod.swift")
+            }
+
+            @Step {
+                `BoardPlan`에 `entryEdge`와 `exitEdge`를 추가합니다.
+
+                Note: 첫 stage는 이전 stage에서 들어오는 edge가 없으므로 `entryEdge`가 `nil`일 수 있습니다. 마지막 stage처럼 다음으로 나갈 edge가 없는 경우에는 `exitEdge`가 `nil`일 수 있습니다.
+
+                @Code(name: "PuzzleModels.swift", file: "14-BoardPlanEdges.swift", previousFile: "14-BoardPlanBeforeEdges.swift")
             }
         }
     }
 
     @Section(title: "TileID와 position 오가기") {
         @ContentAndMedia {
-            `"right edge에서 끝났다"`만으로는 충분하지 않습니다. 3x3 face의 right edge에는 `TileID(row: 0, column: 2)`, `TileID(row: 1, column: 2)`, `TileID(row: 2, column: 2)`가 모두 들어 있습니다.
+            edge 위의 tile을 비교하려면 `TileID`를 position으로 바꾸고, position을 다시 `TileID`로 바꿀 수 있어야 합니다.
 
-            그래서 edge 위 몇 번째 tile인지 나타내는 숫자가 필요합니다. 이 숫자를 `position`이라고 부릅니다. top과 bottom edge는 가로줄이라 column이 position이고, left와 right edge는 세로줄이라 row가 position입니다.
+            이 섹션에서는 현재 tile이 edge 위 몇 번째인지 계산하고, 다음 face의 entry edge에서 같은 position의 tile을 찾아냅니다.
         }
 
         @Steps {
             @Step {
-                `TileID`를 edge 위 position으로 바꾸고, position을 다시 `TileID`로 바꾸는 helper를 추가합니다.
+                `TileID`에 `isOnEdge(_:boardSize:)`를 추가합니다.
 
-                @Code(name: "PuzzleModels.swift", file: "14-EdgePositionHelpers.swift")
+                Note: 이 메서드는 tile이 특정 edge 위에 있는지만 확인합니다. 예를 들어 top edge는 row가 `0`인 칸들이고, right edge는 column이 마지막 번호인 칸들입니다.
+
+                @Code(name: "PuzzleModels.swift", file: "14-TileIDIsOnEdge.swift", previousFile: "14-TileIDBeforeEdgeHelpers.swift")
+            }
+
+            @Step {
+                `TileID`에 `position(on:boardSize:)`를 추가합니다.
+
+                Note: tile이 해당 edge 위에 없으면 position을 만들 수 없으므로 `nil`을 반환합니다. 오른쪽 edge 위의 `TileID(row: 1, column: 2)`는 row 값인 `1`이 position이 됩니다.
+
+                @Code(name: "PuzzleModels.swift", file: "14-TileIDPositionOnEdge.swift", previousFile: "14-TileIDIsOnEdge.swift")
+            }
+
+            @Step {
+                `TileEdge`에 `tileID(at:boardSize:)`를 추가합니다.
+
+                Note: 이 메서드는 edge 이름과 position을 받아 실제 `TileID`를 다시 만듭니다. 예를 들어 right edge의 position `1`은 `TileID(row: 1, column: 2)`가 됩니다.
+
+                @Code(name: "PuzzleModels.swift", file: "14-EdgePositionHelpers.swift", previousFile: "14-TileIDPositionOnEdge.swift")
             }
         }
     }
@@ -46,9 +102,27 @@
 
         @Steps {
             @Step {
-                `matchingStartTileID`를 추가해서 다음 stage가 실제로 시작해야 하는 tile을 계산합니다. 아직 전체 cube topology를 만들지 않고, 현재 튜토리얼에서 필요한 두 연결만 허용합니다.
+                현재 stage와 다음 stage, 그리고 두 stage의 edge 정보를 꺼냅니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "14-EdgeTransitionWithPosition.swift")
+                Note: 다음 stage가 없거나, `exitEdge`와 `entryEdge` 중 하나가 없으면 edge 연결을 확인할 수 없으므로 `false`를 반환합니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "14-CurrentNextStageEdges.swift", previousFile: "00-Empty.swift")
+            }
+
+            @Step {
+                마지막 tile의 position을 반대편 edge의 position으로 바꿉니다.
+
+                Note: `currentStage.boardSize - 1 - position`은 edge 위 순서를 반대로 뒤집습니다. 3x3에서 position `0`은 `2`가 되고, position `2`는 `0`이 됩니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "14-MatchingStartTileID.swift", previousFile: "00-Empty.swift")
+            }
+
+            @Step {
+                `currentStageSharesEdgeWithNextStage()`가 계산된 시작 tile과 `nextStage.startTileID`를 비교하게 합니다.
+
+                Note: 이 비교가 통과하면 현재 stage의 마지막 tile과 다음 stage의 시작 tile이 cube edge에서 이어질 수 있는 위치라는 뜻입니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "14-EdgeTransitionWithPosition.swift", previousFile: "14-CurrentNextStageEdges.swift")
             }
         }
     }
@@ -64,7 +138,11 @@
 
         @Steps {
             @Step {
-                `canAdvanceStage`가 puzzle 완료와 edge-position 연결을 함께 확인하게 합니다. 실행 후 1단계와 2단계를 완료했을 때 다음 버튼이 알맞게 켜지는지 확인합니다.
+                `canAdvanceStage`가 puzzle 완료와 edge-position 연결을 함께 확인하게 합니다. 실행 후 stage를 완료했을 때 다음 버튼이 알맞게 켜지는지 확인합니다.
+
+                Note: `isStageComplete`는 현재 face 안의 퍼즐이 끝났는지 확인하고, `currentStageSharesEdgeWithNextStage()`는 다음 face로 이어질 수 있는 edge 위치에서 끝났는지 확인합니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "14-CanAdvanceWithEdge.swift", previousFile: "00-Empty.swift")
             }
         }
     }

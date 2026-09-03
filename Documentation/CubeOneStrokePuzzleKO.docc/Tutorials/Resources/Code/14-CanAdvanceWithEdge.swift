@@ -1,0 +1,1 @@
+canAdvanceStage = isStageComplete && currentStageSharesEdgeWithNextStage()
