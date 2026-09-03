@@ -1,7 +1,9 @@
-if viewModel.isRotationModeEnabled == false {
+if isRotationModeEnabled == false {
     return
 }
 
-let translation = recognizer.translation(in: sceneView)
-viewModel.rotateCubeByDrag(translation: translation)
-recognizer.setTranslation(.zero, in: sceneView)
+let xRotation = Float(translation.y) * 0.008
+let yRotation = Float(translation.x) * 0.008
+
+cubeNode.eulerAngles.x += xRotation
+cubeNode.eulerAngles.y += yRotation
