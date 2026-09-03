@@ -1,78 +1,144 @@
-@Tutorial(time: 20) {
+@Tutorial(time: 30) {
     @Intro(title: "13. face 방향과 texture 보정 확인하기") {
         이번 장에서는 큐브 face 방향과 SpriteKit texture 방향을 분리해서 확인합니다.
 
-        보정값은 외워서 넣지 않습니다. 화면의 좌표 label을 보고, 어떤 face에서 row와 column이 뒤집히는지 확인한 뒤 코드에 반영합니다.
+        목표는 화면의 좌표 label을 기준으로, 실제로 선택되는 `TileID` 보정과 눈에 보이는 label 방향 보정을 따로 다루는 것입니다.
     }
 
-    @Section(title: "두 문제를 분리하기") {
+    @Section(title: "face와 texture 방향 나누어 보기") {
         @ContentAndMedia {
-            첫 번째 문제는 SceneKit 큐브의 어느 material index가 어느 face인지 확인하는 일입니다.
+            8장에서는 cube를 탭했을 때 `geometryIndex`로 어느 material이 눌렸는지 확인했습니다.
 
-            두 번째 문제는 SpriteKit texture가 그 face에 붙었을 때 label이 읽히는 방향입니다. face 위치와 texture 방향은 서로 다른 문제이므로 한 번에 고치지 않습니다.
-
-            > Note: face 위치는 "큐브의 어느 면인가"를 묻는 문제이고, texture 방향은 "그 면 위에서 row와 column이 어느 방향으로 읽히는가"를 묻는 문제입니다. 둘을 섞으면 터치 좌표가 틀린 것인지 글자만 뒤집힌 것인지 구분하기 어려워집니다.
+            이 섹션에서는 두 가지 확인 대상을 분리합니다. 하나는 `geometryIndex`가 어느 cube face를 뜻하는지이고, 다른 하나는 그 face에 붙은 SpriteKit texture의 row와 column이 어느 방향으로 보이는지입니다.
         }
 
         @Steps {
             @Step {
-                먼저 각 face의 label이 어디에 붙는지 확인합니다. 그 다음 좌표가 좌우로 뒤집히는지, 위아래로 뒤집히는지 따로 적습니다.
+                cube를 탭해서 `geometryIndex`가 어느 face에 해당하는지 확인합니다.
+
+                Note: `geometryIndex`는 SceneKit의 3D 면을 구분하는 값입니다. 이 값은 “어느 cube face를 눌렀는가”를 알려주지만, 그 face 위의 `(0,0)` label이 어느 방향으로 읽히는지는 따로 확인해야 합니다.
+            }
+
+            @Step {
+                각 face에서 `(0,0)` label이 같은 기준으로 보이는지 확인합니다.
+
+                Note: face 위치는 “큐브의 어느 면인가”를 묻는 문제이고, texture 방향은 “그 면 위에서 row와 column이 어느 방향으로 읽히는가”를 묻는 문제입니다. 이 둘을 분리하면 터치 좌표가 틀린 것인지, 글자만 뒤집힌 것인지 구분하기 쉬워집니다.
             }
         }
     }
 
-    @Section(title: "좌표 보정 추가하기") {
+    @Section(title: "선택 좌표 보정하기") {
         @ContentAndMedia {
-            `coordinateLayout`은 3D 표면 터치에서 얻은 raw row/column을 실제 `TileID`로 바꾸는 규칙입니다.
+            SceneKit 표면에서 얻은 raw row와 raw column은 그 face 위에서 읽은 임시 좌표입니다.
 
-            예를 들어 column이 반대로 보이면 `flipColumns`를 사용합니다. row가 반대로 보이면 `flipRows`를 사용합니다.
+            이 섹션에서는 raw 좌표를 게임에서 사용할 `TileID`로 바꾸는 `TileCoordinateLayout`을 만듭니다. 섹션을 마치면 column이 반대로 읽히는 face와 row가 반대로 읽히는 face를 코드로 구분할 수 있습니다.
         }
 
         @Steps {
             @Step {
-                raw row와 raw column을 `TileID`로 바꾸는 `TileCoordinateLayout`을 추가합니다.
+                `TileCoordinateLayout`을 만들고, 좌표를 그대로 쓰는 `standard` case를 추가합니다.
 
-                @Code(name: "PuzzleModels.swift", file: "13-CoordinateLayout.swift", previousFile: "00-Empty.swift")
+                Note: `standard`는 raw row와 raw column을 그대로 `TileID`로 바꿉니다. 기준 face처럼 label 방향과 선택 좌표가 이미 맞는 경우에 사용합니다.
+
+                @Code(name: "PuzzleModels.swift", file: "13-CoordinateLayout-Standard.swift", previousFile: "11-TileIDAndBoardPlan.swift")
+            }
+
+            @Step {
+                column이 반대로 읽히는 경우를 위해 `flipColumns`를 추가합니다.
+
+                Note: `boardSize - 1 - rawColumn`은 column 번호를 반대편 column으로 바꿉니다. 3x3 board에서는 raw column `0`이 `2`가 되고, raw column `2`가 `0`이 됩니다.
+
+                @Code(name: "PuzzleModels.swift", file: "13-CoordinateLayout-FlipColumns.swift", previousFile: "13-CoordinateLayout-Standard.swift")
+            }
+
+            @Step {
+                row가 반대로 읽히는 경우를 위해 `flipRows`를 추가합니다.
+
+                Note: `flipColumns`가 좌우 방향을 바꿨다면, `flipRows`는 위아래 방향을 바꿉니다. 두 보정 모두 화면에서 읽은 raw 좌표를 게임에서 사용할 `TileID`로 바꾸는 일입니다.
+
+                @Code(name: "PuzzleModels.swift", file: "13-CoordinateLayout.swift", previousFile: "13-CoordinateLayout-FlipColumns.swift")
             }
         }
     }
 
-    @Section(title: "label 보정 추가하기") {
+    @Section(title: "보이는 label 방향 보정하기") {
         @ContentAndMedia {
-            `labelCorrection`은 화면에 보이는 글자의 방향만 보정합니다.
+            `TileCoordinateLayout`은 실제 선택 좌표를 바꿉니다. 반면 `LabelCorrection`은 화면에 보이는 글자의 방향만 바꿉니다.
 
-            좌표 계산을 바꾸는 `coordinateLayout`과 글자를 읽기 좋게 만드는 `labelCorrection`을 분리해야, 터치 좌표와 시각적 label을 각각 확인할 수 있습니다.
-
-            > Note: `coordinateLayout`은 실제 선택되는 `TileID`를 바꾸고, `labelCorrection`은 화면에 보이는 글자 방향만 바꿉니다. 사용자가 보는 글자와 게임이 선택하는 좌표는 서로 영향을 줄 수 있지만, 코드에서는 따로 다루는 편이 디버깅하기 쉽습니다.
+            이 섹션에서는 label의 `xScale`, `yScale`을 조정해 글자가 거울처럼 뒤집힌 경우를 보정합니다. 섹션을 마치면 선택 좌표 보정과 글자 방향 보정을 서로 다른 이름으로 읽을 수 있습니다.
         }
 
         @Steps {
             @Step {
-                label의 `xScale`, `yScale`을 조정하는 `LabelCorrection`을 추가합니다.
+                `LabelCorrection`을 만들고, 보정하지 않는 `normal`과 글자를 뒤집는 `mirrorX`, `mirrorY` case를 추가합니다.
 
-                @Code(name: "PuzzleModels.swift", file: "13-LabelCorrection.swift", previousFile: "00-Empty.swift")
+                Note: `mirrorX`는 label을 좌우로 뒤집는 경우, `mirrorY`는 label을 위아래로 뒤집는 경우에 사용합니다. 이 step에서는 실제 scale 값을 계산하기 전에, 필요한 보정 이름부터 만듭니다.
+
+                @Code(name: "PuzzleModels.swift", file: "13-LabelCorrection-Cases.swift", previousFile: "13-CoordinateLayout.swift")
             }
 
             @Step {
-                `BoardPlan`에 두 보정값을 저장하고, SpriteKit drawing과 texture coordinate 변환에서 각각 사용합니다.
+                `LabelCorrection`에 `xScale`과 `yScale`을 추가합니다.
 
-                @Code(name: "PuzzleModels.swift and SpriteKitFaceScene.swift", file: "13-ApplyCorrections.swift", previousFile: "13-BoardPlanBeforeCorrections.swift")
+                Note: SpriteKit node의 scale 값이 `1`이면 원래 방향이고, `-1`이면 해당 축으로 뒤집힙니다. 그래서 `mirrorX`는 `xScale`을 `-1`로, `mirrorY`는 `yScale`을 `-1`로 돌려줍니다.
+
+                @Code(name: "PuzzleModels.swift", file: "13-LabelCorrection.swift", previousFile: "13-LabelCorrection-Cases.swift")
+            }
+        }
+    }
+
+    @Section(title: "BoardPlan과 preview에 적용하기") {
+        @ContentAndMedia {
+            보정 규칙을 만들었으면 stage 설정인 `BoardPlan`에 저장해야 합니다.
+
+            이 섹션에서는 `BoardPlan`에 두 보정값을 추가하고, SpriteKit preview가 그 값을 읽어 좌표와 label을 각각 보정하게 만듭니다. 섹션을 마치면 stage마다 다른 face 방향을 다룰 준비가 됩니다.
+        }
+
+        @Steps {
+            @Step {
+                `BoardPlan`에 `coordinateLayout`과 `labelCorrection`을 저장합니다.
+
+                Note: `coordinateLayout`은 터치 좌표가 어떤 `TileID`로 선택될지 정하고, `labelCorrection`은 label이 화면에 어떤 방향으로 보일지 정합니다. 이름을 나눠두면 “선택이 틀린 문제”와 “글자가 뒤집힌 문제”를 따로 고칠 수 있습니다.
+
+                @Code(name: "PuzzleModels.swift", file: "13-BoardPlanWithCorrectionProperties.swift", previousFile: "13-BoardPlanBeforeCorrections.swift")
+            }
+
+            @Step {
+                `BoardPlan`에 raw 좌표를 `TileID`로 바꾸는 `tileID(forRawRow:rawColumn:)`을 추가합니다.
+
+                Note: 이제 preview나 터치 처리 코드는 `coordinateLayout`을 직접 들여다보지 않고, `board.tileID(forRawRow:rawColumn:)`만 호출하면 됩니다. 좌표 보정 규칙은 `BoardPlan` 안쪽에서 처리됩니다.
+
+                @Code(name: "PuzzleModels.swift", file: "13-BoardPlanTileIDMethod.swift", previousFile: "13-BoardPlanWithCorrectionProperties.swift")
+            }
+
+            @Step {
+                `StageCatalog`의 각 `BoardPlan`에 필요한 보정값을 넣습니다.
+
+                Note: 앞면은 기준 방향으로 보고 `standard`, `normal`을 사용합니다. 오른쪽 면은 column이 반대로 읽히는 경우라 `flipColumns`, `mirrorX`를 사용하고, 윗면은 row가 반대로 읽히는 경우라 `flipRows`, `mirrorY`를 사용합니다.
+
+                @Code(name: "PuzzleModels.swift", file: "13-StageCatalogWithCorrections.swift", previousFile: "13-StageCatalogBeforeCorrections.swift")
+            }
+
+            @Step {
+                `SpriteKitFaceScene`에서 label을 만들 때 `board.labelCorrection`의 scale 값을 적용합니다.
+
+                Note: 이 코드는 tile을 고르는 좌표를 바꾸지 않습니다. 이미 만들어진 label node의 `xScale`, `yScale`만 바꿔서 cube 면에서 글자가 읽히는 방향을 맞춥니다.
+
+                @Code(name: "SpriteKitFaceScene.swift", file: "13-ApplyCorrections.swift", previousFile: "13-DrawTileLabelsBeforeCorrection.swift")
             }
         }
     }
 
     @Section(title: "확인 절차") {
         @ContentAndMedia {
-            보정은 정답표처럼 넣지 않습니다.
-
-            먼저 기준 face의 label을 확인합니다. 그 다음 다음 face에서 `(0,0)`이 어느 쪽에 보이는지 확인하고, 좌표가 뒤집힌 문제인지 글자만 뒤집힌 문제인지 나눠 적습니다.
-
-            > Note: 이 장에서는 화면 label과 실제 `TileID`를 같은 기준으로 맞춥니다. 그래서 보정값 자체보다 "무엇을 보고 보정값을 정하는가"가 더 중요합니다.
+            화면 label과 실제 `TileID`가 같은 기준으로 맞는지 확인합니다.
         }
 
         @Steps {
             @Step {
-                기준 face와 다음 face의 `(0,0)` label 위치를 비교하고, 필요한 보정값을 따로 적습니다.
+                기준 face와 다른 face의 `(0,0)` label 위치를 비교합니다. 터치 선택이 다른 칸으로 들어가면 `coordinateLayout`을 확인하고, 선택은 맞는데 글자만 뒤집혀 보이면 `labelCorrection`을 확인합니다.
+
+                Note: 이 장의 확인 기준은 “어느 값을 넣었는가”가 아니라 “화면에서 본 칸과 실제 선택된 `TileID`가 같은가”입니다.
             }
         }
     }

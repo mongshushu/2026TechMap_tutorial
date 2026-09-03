@@ -20,8 +20,6 @@ private func drawTileLabels(
                 tileSize: tileSize,
                 origin: origin
             )
-            label.xScale = board.labelCorrection.xScale
-            label.yScale = board.labelCorrection.yScale
             label.zPosition = 1
             labelLayer.addChild(label)
         }

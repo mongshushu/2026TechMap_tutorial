@@ -41,6 +41,12 @@ enum TileCoordinateLayout {
     }
 }
 
+enum LabelCorrection {
+    case normal
+    case mirrorX
+    case mirrorY
+}
+
 struct BoardPlan {
     let title: String
     let boardSize: Int

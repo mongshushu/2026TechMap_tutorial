@@ -41,10 +41,34 @@ enum TileCoordinateLayout {
     }
 }
 
+enum LabelCorrection {
+    case normal
+    case mirrorX
+    case mirrorY
+
+    var xScale: CGFloat {
+        if self == .mirrorX {
+            return -1
+        }
+
+        return 1
+    }
+
+    var yScale: CGFloat {
+        if self == .mirrorY {
+            return -1
+        }
+
+        return 1
+    }
+}
+
 struct BoardPlan {
     let title: String
     let boardSize: Int
     let cubeFace: CubeFace
+    let coordinateLayout: TileCoordinateLayout
+    let labelCorrection: LabelCorrection
     let startTileID: TileID
     let goalTileID: TileID
     let blockedTileIDs: Set<TileID>
