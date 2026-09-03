@@ -33,7 +33,6 @@ final class SpriteKitFaceScene: SKScene {
 
         for row in 0..<board.boardSize {
             for column in 0..<board.boardSize {
-                let tileID = TileID(row: row, column: column)
                 let tile = SKShapeNode(
                     rectOf: CGSize(width: tileSize, height: tileSize)
                 )
@@ -43,10 +42,6 @@ final class SpriteKitFaceScene: SKScene {
                 )
 
                 tileLayer.addChild(tile)
-
-                let label = SKLabelNode(text: "(\(tileID.row),\(tileID.column))")
-                label.position = tile.position
-                labelLayer.addChild(label)
             }
         }
     }

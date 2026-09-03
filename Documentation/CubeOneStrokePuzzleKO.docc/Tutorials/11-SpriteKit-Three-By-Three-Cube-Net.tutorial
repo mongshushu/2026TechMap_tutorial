@@ -1,38 +1,84 @@
-@Tutorial(time: 20) {
+@Tutorial(time: 30) {
     @Intro(title: "11. 3x3 cube net preview 만들기") {
-        이번 장에서는 2x2 학습 board를 3x3 stage 구조로 키웁니다.
+        이번 장에서는 2x2 학습 board를 3x3 stage preview로 키웁니다.
 
-        아직 큐브의 모든 면 연결을 완성하지 않습니다. 먼저 3x3 face가 SpriteKit에서 제대로 그려지고, stage마다 어느 cube face에 붙을지 확인합니다.
+        목표는 문자열 tile 이름 대신 `TileID(row:column:)`으로 한 칸의 주소를 표현하고, `BoardPlan`으로 stage 설정을 묶은 뒤, SpriteKit preview에서 3x3 좌표가 보이게 만드는 것입니다.
     }
 
-    @Section(title: "TileID와 BoardPlan으로 바꾸기") {
+    @Section(title: "TileID로 한 칸 주소 만들기") {
         @ContentAndMedia {
             7장까지는 `"tile_0_0"` 같은 문자열로 tile을 구분했습니다.
 
-            3x3부터는 row와 column을 직접 가진 `TileID`가 더 읽기 쉽습니다. `BoardPlan`은 stage 하나의 board size, 시작 tile, 목표 tile, 붙을 cube face를 함께 기억합니다.
+            이 섹션에서는 문자열 안에 row와 column을 숨겨두지 않고, `TileID(row:column:)`이라는 작은 데이터로 한 칸의 주소를 표현합니다. 섹션을 마치면 `(0, 0)` 같은 좌표와 `"tile_0_0"` 같은 node 이름을 같은 데이터에서 만들 수 있습니다.
         }
 
         @Steps {
             @Step {
-                `TileID`, `CubeFace`, `BoardPlan`을 추가합니다.
+                `PuzzleModels.swift`를 만들고, `TileID`에 `row`와 `column`을 저장합니다.
 
-                @Code(name: "PuzzleModels.swift", file: "11-TileIDAndBoardPlan.swift", previousFile: "00-Empty.swift")
+                Note: `row`와 `column`은 3x3 board에서 한 칸이 어디에 있는지 나타내는 주소입니다. 예를 들어 `TileID(row: 0, column: 2)`는 0번째 줄, 2번째 칸을 가리킵니다.
+
+                @Code(name: "PuzzleModels.swift", file: "11-TileID-Coordinates.swift", previousFile: "00-Empty.swift")
+            }
+
+            @Step {
+                `TileID`에 `Hashable`, `CustomStringConvertible`, `name`을 추가합니다.
+
+                Note: `name`은 SpriteKit node에 붙일 문자열 이름입니다. `TileID(row: 0, column: 2)`에서 `"tile_0_2"`를 만들면, 좌표 데이터와 node 이름이 따로 어긋나지 않습니다. `Hashable`은 `Set<TileID>`처럼 중복 없는 목록에 `TileID`를 넣을 수 있게 해줍니다.
+
+                @Code(name: "PuzzleModels.swift", file: "11-TileID-Name.swift", previousFile: "11-TileID-Coordinates.swift")
             }
         }
     }
 
-    @Section(title: "3x3 stage 준비하기") {
+    @Section(title: "BoardPlan으로 stage 설정 묶기") {
         @ContentAndMedia {
-            최종 튜토리얼은 한 면 전체를 3x3 tile로 봅니다.
+            한 stage에는 board 크기, 시작 tile, 목표 tile, 연결될 cube face가 함께 필요합니다.
 
-            처음에는 앞면, 오른쪽 면, 윗면처럼 몇 개의 stage만 둡니다. 6면 전체 topology를 미리 만들지 않고, 실제로 진행할 stage만 먼저 확인합니다.
+            이 섹션에서는 여러 값을 흩어놓지 않고 `BoardPlan` 하나로 묶습니다. 섹션을 마치면 “앞면에 붙는 3x3 stage”처럼 stage 하나를 데이터로 설명할 수 있습니다.
         }
 
         @Steps {
             @Step {
-                `StageCatalog.makeStages()`에 3개의 3x3 stage를 추가합니다.
+                `CubeFace`를 추가해서 stage가 어느 cube 면에 붙는지 표시합니다.
 
-                @Code(name: "PuzzleModels.swift", file: "11-StageCatalogThreeByThree.swift", previousFile: "00-Empty.swift")
+                Note: 8장에서 `geometryIndex`로 cube의 어느 면을 터치했는지 확인했습니다. `CubeFace`의 `rawValue`는 그 면 번호를 코드에서 읽기 쉬운 이름으로 다루기 위한 값입니다.
+
+                @Code(name: "PuzzleModels.swift", file: "11-CubeFace.swift", previousFile: "11-TileID-Name.swift")
+            }
+
+            @Step {
+                `BoardPlan`을 추가해서 stage 하나의 설정을 묶습니다.
+
+                Note: `boardSize`는 3x3처럼 한 줄에 몇 칸이 있는지 나타냅니다. `startTileID`와 `goalTileID`는 시작 칸과 목표 칸이고, `blockedTileIDs`는 지나갈 수 없는 칸을 모아두는 자리입니다.
+
+                @Code(name: "PuzzleModels.swift", file: "11-TileIDAndBoardPlan.swift", previousFile: "11-CubeFace.swift")
+            }
+        }
+    }
+
+    @Section(title: "3x3 stage 목록 만들기") {
+        @ContentAndMedia {
+            `StageCatalog`는 앱에서 사용할 stage들을 한곳에서 만들어 돌려주는 목록입니다.
+
+            이 섹션에서는 3개의 3x3 stage를 준비합니다. 섹션을 마치면 앞면, 오른쪽 면, 윗면에 붙을 stage 데이터를 차례로 꺼내 쓸 수 있습니다.
+        }
+
+        @Steps {
+            @Step {
+                `StageCatalog.makeStages()`를 만들고 첫 번째 3x3 stage를 반환합니다.
+
+                Note: `BoardPlan`을 먼저 만들었기 때문에 stage를 추가할 때 필요한 값이 한눈에 보입니다. 여기서는 제목, board 크기, cube face, 시작 tile, 목표 tile을 한 묶음으로 작성합니다.
+
+                @Code(name: "PuzzleModels.swift", file: "11-StageCatalogFirstStage.swift", previousFile: "11-TileIDAndBoardPlan.swift")
+            }
+
+            @Step {
+                같은 형식으로 두 번째, 세 번째 stage를 추가하고 배열로 반환합니다.
+
+                Note: `[firstStage, secondStage, thirdStage]`는 stage를 순서대로 담은 배열입니다. 화면은 이 배열에서 현재 stage를 고르고, 그 stage의 `BoardPlan`을 preview scene에 넘겨 그립니다.
+
+                @Code(name: "PuzzleModels.swift", file: "11-StageCatalogThreeByThree.swift", previousFile: "11-StageCatalogFirstStage.swift")
             }
         }
     }
@@ -41,14 +87,40 @@
         @ContentAndMedia {
             `SpriteKitFaceScene`은 `BoardPlan`을 받아 3x3 tile map과 좌표 label을 그립니다.
 
-            이 preview에서는 3x3의 row와 column이 눈에 보여야 합니다. 좌표 label이 보여야 각 tile의 주소와 화면 위치를 함께 확인할 수 있습니다.
+            이 섹션에서는 `board.boardSize`를 기준으로 tile을 반복해서 만들고, 각 칸 위에 `(row,column)` label을 올립니다. 섹션을 마치면 3x3 board의 각 칸 주소가 화면에 보입니다.
         }
 
         @Steps {
             @Step {
-                `show(board:pathTileIDs:currentTileID:mode:)`가 board 크기를 읽고 tile과 label을 다시 그리게 합니다.
+                `SpriteKitFaceScene`을 만들고 기본 배경을 설정합니다.
 
-                @Code(name: "SpriteKitFaceScene.swift", file: "11-RenderBoardPreview.swift", previousFile: "00-Empty.swift")
+                Note: 이 scene은 SwiftUI의 `SpriteView`에 바로 띄우는 화면이 아니라, cube face preview를 그릴 때 사용할 SpriteKit scene입니다. 먼저 빈 scene을 준비하고, `BoardPlan`을 받아 tile을 그리는 구조로 확장합니다.
+
+                @Code(name: "SpriteKitFaceScene.swift", file: "11-SpriteKitFaceScene-Empty.swift", previousFile: "00-Empty.swift")
+            }
+
+            @Step {
+                `show(board:pathTileIDs:currentTileID:)`를 추가하고, tile layer와 label layer를 scene에 넣습니다.
+
+                Note: `tileLayer`에는 사각형 tile을, `labelLayer`에는 좌표 label을 넣습니다. `labelLayer.zPosition = 1`로 두면 label이 tile보다 위에 그려집니다.
+
+                @Code(name: "SpriteKitFaceScene.swift", file: "11-SpriteKitFaceScene-ShowLayers.swift", previousFile: "11-SpriteKitFaceScene-Empty.swift")
+            }
+
+            @Step {
+                `board.boardSize`만큼 row와 column을 반복해서 tile node를 만듭니다.
+
+                Note: 이전에 직접 만들던 한두 개의 tile을 그대로 남겨두는 것이 아니라, 반복문이 실행될 때마다 새 tile node를 하나씩 만듭니다. `board.boardSize`가 3이면 row 3개와 column 3개가 만나 총 9개의 tile이 만들어집니다.
+
+                @Code(name: "SpriteKitFaceScene.swift", file: "11-SpriteKitFaceScene-TileLoop.swift", previousFile: "11-SpriteKitFaceScene-ShowLayers.swift")
+            }
+
+            @Step {
+                각 tile 위에 `(row,column)` label을 올립니다.
+
+                Note: label은 지금 보고 있는 칸이 어떤 `TileID`인지 확인하기 위한 표시입니다. 화면의 칸과 코드의 주소가 함께 보이면, stage 데이터를 고칠 때 어느 칸을 바꾸는지 확인하기 쉽습니다.
+
+                @Code(name: "SpriteKitFaceScene.swift", file: "11-RenderBoardPreview.swift", previousFile: "11-SpriteKitFaceScene-TileLoop.swift")
             }
         }
     }
@@ -56,13 +128,13 @@
     @Section(title: "실행 확인") {
         @ContentAndMedia {
             화면에서 3x3 tile 좌표를 확인할 수 있어야 합니다.
-
-            > Note: `TileID(row:column:)`은 화면의 한 칸 주소입니다. `BoardPlan`은 stage 하나의 설정이며, board 크기와 시작 tile, 목표 tile, 붙을 cube face를 함께 기억합니다.
         }
 
         @Steps {
             @Step {
-                3x3 preview에서 각 tile의 좌표 label이 보이는지 확인합니다.
+                3x3 preview에서 9개의 tile과 각 tile의 좌표 label이 보이는지 확인합니다.
+
+                Note: `TileID(row:column:)`은 화면의 한 칸 주소이고, `BoardPlan`은 stage 하나의 설정입니다. 이 장에서 만든 preview는 `BoardPlan.boardSize`를 읽어 tile 개수를 정하고, 각 tile의 `TileID`를 label로 보여줍니다.
             }
         }
     }
