@@ -29,14 +29,7 @@ final class SceneKitPuzzleViewModel: ObservableObject {
         let material = SCNMaterial()
         material.diffuse.contents = UIColor.systemGray5
 
-        box.materials = [
-            material,
-            material,
-            material,
-            material,
-            material,
-            material
-        ]
+        box.materials = [material]
 
         return box
     }

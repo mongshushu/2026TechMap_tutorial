@@ -40,9 +40,9 @@ final class SceneKitPuzzleViewModel: ObservableObject {
         plainMaterial.diffuse.contents = UIColor.systemGray5
 
         box.materials = [
+            plainMaterial,
+            plainMaterial,
             puzzleMaterial,
-            plainMaterial,
-            plainMaterial,
             plainMaterial,
             plainMaterial,
             plainMaterial
