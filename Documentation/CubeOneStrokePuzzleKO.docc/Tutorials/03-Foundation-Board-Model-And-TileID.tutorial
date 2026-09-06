@@ -62,7 +62,7 @@
             @Step {
                 `buildTwoTileBoard()` 안에서 `startTile` 아래에 흰색 `nextTile`을 만들고, 마지막에 `tileLayer.addChild(nextTile)`을 추가합니다.
 
-                Note: 두 번째 tile도 첫 tile과 같은 방식으로 만듭니다. 달라지는 부분은 흰색으로 채우는 것과, `startTile`보다 오른쪽에 놓는 x 위치입니다.
+                Note: 두 번째 tile도 첫 tile과 같은 방식으로 만듭니다. 달라지는 부분은 흰색으로 채우는 것과, `startTile`보다 오른쪽에 놓는 x 위치입니다. 두 tile의 중심 간격을 tile 너비와 같게 두면, 두 칸 사이가 벌어지지 않습니다.
 
                 @Code(name: "GameScene.swift", file: "03-TwoTiles.swift", previousFile: "03-StartTile.swift")
             }
@@ -76,7 +76,7 @@
 
         @Steps {
             @Step {
-                Preview나 앱 실행 화면에서 제목 아래에 각진 사각형 tile 두 개가 보이는지 확인합니다. 코드에서는 `GameScene -> tileLayer -> startTile, nextTile` 구조가 만들어져 있어야 합니다.
+                Preview나 앱 실행 화면에서 제목 아래에 각진 사각형 tile 두 개가 붙어 보이는지 확인합니다. 코드에서는 `GameScene -> tileLayer -> startTile, nextTile` 구조가 만들어져 있어야 합니다.
             }
         }
     }

@@ -32,7 +32,7 @@ final class GameScene: SKScene {
         startTile.fillColor = .systemBlue
         startTile.strokeColor = .black
         startTile.lineWidth = 4
-        startTile.position = CGPoint(x: size.width / 2 - 80, y: centerY)
+        startTile.position = CGPoint(x: size.width / 2 - 70, y: centerY)
 
         tileLayer.addChild(startTile)
     }
