@@ -6,8 +6,6 @@ import UIKit
 final class SceneKitPuzzleViewModel: ObservableObject {
     let scene = SCNScene()
 
-    @Published private(set) var debugText = ""
-
     init() {
         configureScene()
     }

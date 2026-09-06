@@ -2,12 +2,12 @@
     @Intro(title: "06. 2x2 board로 확장하기") {
         이번 장에서는 tile 두 개를 2x2 board 네 칸으로 확장합니다.
 
-        목표는 네 칸이 모두 그려지고, tile을 탭했을 때 `GameStore` 상태에 따라 화면 색도 다시 맞춰지는지 확인하는 것입니다.
+        목표는 네 칸이 간격 없이 붙은 하나의 작은 board처럼 보이고, tile을 탭했을 때 `GameStore` 상태에 따라 화면 색도 다시 맞춰지는지 확인하는 것입니다.
     }
 
     @Section(title: "2x2 board 만들기") {
         @ContentAndMedia {
-            tile 두 개를 직접 만들던 코드를 2x2 네 칸을 만드는 구조로 바꿉니다.
+            tile 두 개를 직접 만들던 코드를 2x2 네 칸을 만드는 구조로 바꿉니다. 네 칸은 서로 떨어진 버튼이 아니라, 하나의 판을 네 영역으로 나눈 모양이어야 합니다.
         }
 
         @Steps {
@@ -30,7 +30,7 @@
             @Step {
                 `buildTwoByTwoBoard()` 안쪽을 비우고, 2x2 board를 가운데에 놓기 위한 기준 값을 만듭니다.
 
-                Note: `tileSize`는 tile 하나의 크기이고, `gap`은 tile 사이의 간격입니다. `boardWidth`는 tile 두 개의 너비와 사이 간격을 합친 전체 board 너비입니다. `startX`와 `startY`는 첫 tile의 중심 좌표입니다. `SKShapeNode`의 `position`은 사각형의 왼쪽 위가 아니라 node의 중심을 기준으로 하기 때문입니다.
+                Note: `tileSize`는 tile 하나의 크기이고, `gap`은 tile 사이의 간격입니다. 여기서는 하나의 stage board처럼 보이도록 `gap`을 `0`으로 둡니다. `boardWidth`는 tile 두 개의 너비와 사이 간격을 합친 전체 board 너비입니다. `startX`와 `startY`는 첫 tile의 중심 좌표입니다. `SKShapeNode`의 `position`은 사각형의 왼쪽 위가 아니라 node의 중심을 기준으로 하기 때문입니다.
 
                 @Code(name: "GameScene.swift", file: "06-BoardLayoutValues.swift", previousFile: "06-RenameBoardMethod.swift")
             }
@@ -87,12 +87,12 @@
 
     @Section(title: "실행 확인") {
         @ContentAndMedia {
-            앱을 실행하면 tile 네 개가 2x2로 보이고, tile을 탭할 때 색이 바뀌어야 합니다.
+            앱을 실행하면 tile 네 개가 간격 없이 붙은 2x2 board로 보이고, tile을 탭할 때 색이 바뀌어야 합니다.
         }
 
         @Steps {
             @Step {
-                파란 tile이 현재 tile이고, 지나간 tile은 청록색으로 남는지 확인합니다. console 출력이 줄어든 것도 정상입니다.
+                네 칸 사이에 배경색이 보이는 틈이 없는지 먼저 확인합니다. 파란 tile이 현재 tile이고, 지나간 tile은 청록색으로 남는지 확인합니다. console 출력이 줄어든 것도 정상입니다.
             }
         }
     }

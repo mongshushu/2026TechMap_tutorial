@@ -177,10 +177,13 @@ final class SceneKitPuzzleViewModel: ObservableObject {
 
     private func makeCubeGeometry() -> SCNBox {
         let box = SCNBox(width: 2.3, height: 2.3, length: 2.3, chamferRadius: 0)
+        var materials = Array(repeating: SCNMaterial(), count: CubeFace.allCases.count)
 
-        box.materials = CubeFace.allCases.map { face in
-            material(for: face)
+        for face in CubeFace.allCases {
+            materials[face.rawValue] = material(for: face)
         }
+
+        box.materials = materials
 
         return box
     }

@@ -68,8 +68,18 @@ final class GameScene: SKScene {
     private let tileLayer = SKNode()
     private let gameStore = GameStore()
     private var tileNodesByID: [String: SKShapeNode] = [:]
+    private var hasSetUpPuzzleScene = false
 
     override func didMove(to view: SKView) {
+        setUpPuzzleScene()
+    }
+
+    func setUpPuzzleScene() {
+        guard hasSetUpPuzzleScene == false else {
+            return
+        }
+
+        hasSetUpPuzzleScene = true
         backgroundColor = .systemGray6
         addChild(hudLayer)
         addChild(tileLayer)
@@ -268,6 +278,7 @@ final class SceneKitPuzzleViewModel: ObservableObject {
     private let faceScene = GameScene(size: CGSize(width: 700, height: 900))
 
     init() {
+        faceScene.setUpPuzzleScene()
         configureScene()
     }
 

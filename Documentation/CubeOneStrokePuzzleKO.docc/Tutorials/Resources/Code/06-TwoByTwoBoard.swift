@@ -28,7 +28,7 @@ final class GameScene: SKScene {
 
     private func buildTwoByTwoBoard() {
         let tileSize = CGSize(width: 130, height: 130)
-        let gap: CGFloat = 16
+        let gap: CGFloat = 0
         let boardWidth = tileSize.width * 2 + gap
         let startX = size.width / 2 - boardWidth / 2 + tileSize.width / 2
         let startY = size.height / 2 - boardWidth / 2 + tileSize.height / 2
@@ -36,7 +36,7 @@ final class GameScene: SKScene {
         for row in 0..<2 {
             for column in 0..<2 {
                 let tileID = "tile_\(row)_\(column)"
-                let tile = SKShapeNode(rectOf: tileSize, cornerRadius: 12)
+                let tile = SKShapeNode(rectOf: tileSize, cornerRadius: 0)
                 tile.name = tileID
                 tile.fillColor = .white
 

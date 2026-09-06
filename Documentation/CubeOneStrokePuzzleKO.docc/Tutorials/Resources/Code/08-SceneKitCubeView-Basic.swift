@@ -9,6 +9,7 @@ struct SceneKitCubeView: UIViewRepresentable {
         let sceneView = SCNView()
         sceneView.scene = viewModel.scene
         sceneView.backgroundColor = .systemBackground
+        sceneView.allowsCameraControl = true
 
         return sceneView
     }

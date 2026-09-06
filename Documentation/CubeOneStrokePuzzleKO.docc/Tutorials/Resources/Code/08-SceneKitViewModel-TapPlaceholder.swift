@@ -14,6 +14,7 @@ final class SceneKitPuzzleViewModel: ObservableObject {
     private let faceScene = GameScene(size: CGSize(width: 700, height: 900))
 
     init() {
+        faceScene.setUpPuzzleScene()
         configureScene()
     }
 
@@ -52,13 +53,6 @@ final class SceneKitPuzzleViewModel: ObservableObject {
     }
 
     func handleTap(at point: CGPoint, in sceneView: SCNView) {
-        let hitResults = sceneView.hitTest(
-            point,
-            options: [
-                SCNHitTestOption.firstFoundOnly: true
-            ]
-        )
-
-        debugText = "hit result count: \(hitResults.count)"
+        debugText = "큐브 표면 터치를 확인할 준비가 되었습니다."
     }
 }

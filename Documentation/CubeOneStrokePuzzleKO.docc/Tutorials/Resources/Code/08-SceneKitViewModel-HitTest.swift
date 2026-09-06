@@ -14,6 +14,7 @@ final class SceneKitPuzzleViewModel: ObservableObject {
     private let faceScene = GameScene(size: CGSize(width: 700, height: 900))
 
     init() {
+        faceScene.setUpPuzzleScene()
         configureScene()
     }
 
@@ -69,6 +70,6 @@ final class SceneKitPuzzleViewModel: ObservableObject {
             return
         }
 
-        debugText = "퍼즐 큐브를 터치했어요."
+        debugText = "터치한 cube material index: \(hitResult.geometryIndex)"
     }
 }

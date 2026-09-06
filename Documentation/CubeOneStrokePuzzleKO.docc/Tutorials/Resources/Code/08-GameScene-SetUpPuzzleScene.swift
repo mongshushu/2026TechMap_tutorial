@@ -6,8 +6,18 @@ final class GameScene: SKScene {
     private let tileLayer = SKNode()
     private let gameStore = GameStore()
     private var tileNodesByID: [String: SKShapeNode] = [:]
+    private var hasSetUpPuzzleScene = false
 
     override func didMove(to view: SKView) {
+        setUpPuzzleScene()
+    }
+
+    func setUpPuzzleScene() {
+        guard hasSetUpPuzzleScene == false else {
+            return
+        }
+
+        hasSetUpPuzzleScene = true
         backgroundColor = .systemGray6
         addChild(hudLayer)
         addChild(tileLayer)
@@ -84,10 +94,8 @@ final class GameScene: SKScene {
             }
 
             if nodeName.hasPrefix("tile_") {
-                if gameStore.selectTile(id: nodeName) {
-                    syncFromStore()
-                }
-
+                gameStore.selectTile(id: nodeName)
+                syncFromStore()
                 return
             }
         }

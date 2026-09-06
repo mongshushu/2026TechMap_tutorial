@@ -7,13 +7,12 @@ import UIKit
 final class SceneKitPuzzleViewModel: ObservableObject {
     let scene = SCNScene()
 
-    @Published private(set) var debugText = ""
-
     private let cameraNode = SCNNode()
     private let cubeNode = SCNNode()
     private let faceScene = GameScene(size: CGSize(width: 700, height: 900))
 
     init() {
+        faceScene.setUpPuzzleScene()
         configureScene()
     }
 
