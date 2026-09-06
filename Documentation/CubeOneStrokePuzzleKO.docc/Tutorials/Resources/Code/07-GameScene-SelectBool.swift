@@ -2,33 +2,19 @@ import SwiftUI
 import SpriteKit
 
 final class GameScene: SKScene {
-    private let hudLayer = SKNode()
     private let tileLayer = SKNode()
     private let gameStore = GameStore()
     private var tileNodesByID: [String: SKShapeNode] = [:]
 
     override func didMove(to view: SKView) {
         backgroundColor = .systemGray6
-        addChild(hudLayer)
         addChild(tileLayer)
-
-        buildTitle()
         buildTwoByTwoBoard()
-    }
-
-    private func buildTitle() {
-        let titleLabel = SKLabelNode(text: "Hello SpriteKit")
-        titleLabel.fontName = "AvenirNext-Bold"
-        titleLabel.fontSize = 34
-        titleLabel.fontColor = .black
-        titleLabel.position = CGPoint(x: size.width / 2, y: size.height - 120)
-
-        hudLayer.addChild(titleLabel)
     }
 
     private func buildTwoByTwoBoard() {
         let tileSize = CGSize(width: 130, height: 130)
-        let gap: CGFloat = 16
+        let gap: CGFloat = 0
         let boardWidth = tileSize.width * 2 + gap
         let startX = size.width / 2 - boardWidth / 2 + tileSize.width / 2
         let startY = size.height / 2 - boardWidth / 2 + tileSize.height / 2
@@ -36,7 +22,7 @@ final class GameScene: SKScene {
         for row in 0..<2 {
             for column in 0..<2 {
                 let tileID = "tile_\(row)_\(column)"
-                let tile = SKShapeNode(rectOf: tileSize, cornerRadius: 12)
+                let tile = SKShapeNode(rectOf: tileSize, cornerRadius: 0)
                 tile.name = tileID
                 tile.fillColor = fillColor(for: tileID)
                 tile.strokeColor = .black

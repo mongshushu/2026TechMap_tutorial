@@ -71,7 +71,7 @@
 
     @Section(title: "선택 성공할 때만 화면 갱신하기") {
         @ContentAndMedia {
-            `GameStore`가 선택을 거절할 수 있게 되었으므로, `GameScene`도 성공한 선택일 때만 화면 색을 다시 맞춥니다.
+            `GameStore`가 선택을 거절할 수 있게 되었으므로, `GameScene`도 성공한 선택일 때만 화면 색을 다시 맞춥니다. 6장에서 정리한 제목 없는 2x2 board 모양은 그대로 유지합니다.
         }
 
         @Steps {
@@ -94,7 +94,7 @@
 
         @Steps {
             @Step {
-                대각선 tile과 이미 방문한 tile을 탭해도 색이 바뀌지 않는지 실행해서 확인합니다.
+                대각선 tile과 이미 방문한 tile을 탭해도 색이 바뀌지 않는지 실행해서 확인합니다. `Hello SpriteKit` 제목이 다시 나타나거나, 네 칸 사이에 배경색 틈이 생기면 이전 단계의 board 모양이 되돌아간 것입니다.
             }
         }
     }

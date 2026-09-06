@@ -90,7 +90,7 @@
 
         @Steps {
             @Step {
-                `GameScene.swift`에서 제목과 타일을 만드는 코드를 `setUpPuzzleScene()`으로 분리합니다. 이 함수는 `GameScene` 안에 퍼즐 화면을 준비하는 역할을 합니다. `didMove(to:)`에서도 부르고, SceneKit 큐브 면에 사용하기 전에도 직접 부를 수 있습니다.
+                `GameScene.swift`에서 2x2 board를 만드는 코드를 `setUpPuzzleScene()`으로 분리합니다. 이 함수는 `GameScene` 안에 퍼즐 화면을 준비하는 역할을 합니다. `didMove(to:)`에서도 부르고, SceneKit 큐브 면에 사용하기 전에도 직접 부를 수 있습니다.
 
                 Note: `didMove(to:)`에만 준비 코드를 두면 `SpriteView`에서 볼 때는 자연스럽게 실행되지만, `GameScene`을 큐브 material로 사용할 때는 같은 시점을 기대하기 어렵습니다. 그래서 퍼즐 화면을 준비하는 코드를 직접 호출할 수 있는 함수로 분리합니다. `hasSetUpPuzzleScene`은 같은 node가 두 번 추가되지 않도록 막는 확인 값입니다.
 
@@ -100,7 +100,7 @@
             @Step {
                 앞에서 만든 `SceneKitPuzzleViewModel.swift`를 이어서 수정합니다. `cubeNode` 아래에 `faceScene` property를 추가하고, 나머지 scene/camera/cube 코드는 그대로 둡니다. 이 `faceScene`은 큐브 한 면에 붙일 SpriteKit scene입니다.
 
-                Note: `GameScene`을 큐브 표면에 붙일 SpriteKit scene으로 준비합니다. `faceScene`은 2D 퍼즐 화면 데이터를 가진 `GameScene`이고, `faceScene.setUpPuzzleScene()`은 그 안에 제목과 타일 node를 미리 만들어 둡니다.
+                Note: `GameScene`을 큐브 표면에 붙일 SpriteKit scene으로 준비합니다. `faceScene`은 2D 퍼즐 화면 데이터를 가진 `GameScene`이고, `faceScene.setUpPuzzleScene()`은 그 안에 2x2 board tile node를 미리 만들어 둡니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-SceneKitViewModel-FaceScene.swift", previousFile: "08-SceneKitViewModel-Cube.swift")
             }
@@ -164,7 +164,7 @@
 
         @Steps {
             @Step {
-                앱을 실행하고 큐브 한 면에 SpriteKit 퍼즐 화면이 붙어 있는지 확인합니다. 큐브를 탭하면 아래 확인 문장에 material index가 표시되어야 합니다.
+                앱을 실행하고 큐브 한 면에 SpriteKit 퍼즐 화면이 붙어 있는지 확인합니다. 이때 큐브 표면에는 제목 없이, 간격 없는 2x2 board만 보여야 합니다. 큐브를 탭하면 아래 확인 문장에 material index가 표시되어야 합니다.
 
                 Note: 이 장의 최종 흐름은 `GameScene -> SCNMaterial -> SCNBox -> SCNView -> ContentView`입니다. `GameScene`은 2D board를 그리고, `SCNMaterial`은 그 board를 cube 표면으로 쓰고, `SCNView`는 3D 장면을 SwiftUI 화면 안에 보여줍니다.
             }
