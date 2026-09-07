@@ -85,7 +85,7 @@
         @ContentAndMedia {
             SceneKit에서 큐브의 겉면은 `SCNMaterial`이 정합니다. 이 material의 contents에 `GameScene`을 넣으면 SpriteKit에서 그린 board를 큐브 표면에 사용할 수 있습니다.
 
-            이 섹션에서는 `GameScene`을 2D 화면으로 직접 보여주지 않고, 큐브 한 면의 material contents로 사용합니다. 결과적으로 지금까지 만든 SpriteKit board가 큐브 표면 하나에 그려지고, 나머지 면은 회색 material로 남습니다.
+            6장에서 만든 2×2 board는 한붓그리기에서 선택할 tilemap입니다. 이제 이 연결된 board를 정사각형인 큐브 면에 material로 붙여, 큐브 표면에서도 같은 tile 구조를 볼 수 있게 합니다.
         }
 
         @Steps {
