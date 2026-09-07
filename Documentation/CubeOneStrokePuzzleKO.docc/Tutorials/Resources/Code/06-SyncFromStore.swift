@@ -13,7 +13,8 @@ final class GameScene: SKScene {
     }
 
     private func buildTwoByTwoBoard() {
-        let tileSize = CGSize(width: 130, height: 130)
+        let tileSide = size.width / 2
+        let tileSize = CGSize(width: tileSide, height: tileSide)
         let gap: CGFloat = 0
         let boardWidth = tileSize.width * 2 + gap
         let startX = size.width / 2 - boardWidth / 2 + tileSize.width / 2

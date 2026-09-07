@@ -11,7 +11,7 @@ final class SceneKitPuzzleViewModel: ObservableObject {
 
     private let cameraNode = SCNNode()
     private let cubeNode = SCNNode()
-    private let faceScene = GameScene(size: CGSize(width: 700, height: 900))
+    private let faceScene = GameScene(size: CGSize(width: 700, height: 700))
 
     init() {
         faceScene.setUpPuzzleScene()

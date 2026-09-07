@@ -38,7 +38,7 @@
             @Step {
                 `buildTwoByTwoBoard()` 안쪽을 비우고, 제목이 사라진 화면의 중앙에 2x2 board를 놓기 위한 기준 값을 만듭니다.
 
-                Note: 네 칸짜리 board 전체가 화면 중앙에 오도록, 첫 번째 tile의 중심 좌표를 계산합니다. `tileSize`는 tile 하나의 크기이고, `gap`은 tile 사이의 간격입니다. 여기서는 하나의 stage board처럼 보이도록 `gap`을 `0`으로 둡니다. `boardWidth`는 두 칸을 나란히 놓았을 때의 전체 너비입니다. `startX`와 `startY`는 왼쪽 아래 tile의 중심 위치입니다. `SKShapeNode`의 `position`은 사각형의 왼쪽 위가 아니라 node의 중심을 기준으로 합니다.
+                Note: `tileSide`는 scene의 가로 길이를 2로 나눈 값입니다. 2×2 board이므로 tile 하나가 가로의 절반을 사용하면, 두 tile을 나란히 놓았을 때 board가 scene의 가로를 채웁니다. 같은 값을 너비와 높이에 사용해 각 tile과 전체 board를 정사각형으로 만듭니다. `gap`을 `0`으로 두면 네 칸이 떨어진 버튼이 아니라 한붓그리기에서 이어서 선택할 하나의 board처럼 맞닿습니다. `boardWidth`는 두 칸을 나란히 놓았을 때의 전체 너비이고, `startX`와 `startY`는 왼쪽 아래 tile의 중심 위치입니다. `SKShapeNode`의 `position`은 사각형의 왼쪽 위가 아니라 node의 중심을 기준으로 합니다.
 
                 @Code(name: "GameScene.swift", file: "06-BoardLayoutValues.swift", previousFile: "06-RemoveTitle.swift")
             }
@@ -100,7 +100,7 @@
 
         @Steps {
             @Step {
-                `Hello SpriteKit` 제목이 사라졌는지 먼저 확인합니다. 그 다음 네 칸 사이에 배경색이 보이는 틈이 없는지, board가 화면 중앙에 놓였는지 확인합니다. 파란 tile이 현재 tile이고, 지나간 tile은 청록색으로 남는지 확인합니다. console 출력이 줄어든 것도 정상입니다.
+                `Hello SpriteKit` 제목이 사라졌는지 먼저 확인합니다. 그 다음 네 칸 사이에 배경색이 보이는 틈이 없는지, 네 tile의 너비와 높이가 같은지, board가 화면 중앙에 놓였는지 확인합니다. 파란 tile이 현재 tile이고, 지나간 tile은 청록색으로 남는지 확인합니다. console 출력이 줄어든 것도 정상입니다.
             }
         }
     }

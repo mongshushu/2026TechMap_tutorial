@@ -100,7 +100,7 @@
             @Step {
                 앞에서 만든 `SceneKitPuzzleViewModel.swift`를 이어서 수정합니다. `cubeNode` 아래에 `faceScene` property를 추가하고, 나머지 scene/camera/cube 코드는 그대로 둡니다. 이 `faceScene`은 큐브 한 면에 붙일 SpriteKit scene입니다.
 
-                Note: `GameScene`을 큐브 표면에 붙일 SpriteKit scene으로 준비합니다. `faceScene`은 2D 퍼즐 화면 데이터를 가진 `GameScene`이고, `faceScene.setUpPuzzleScene()`은 그 안에 2x2 board tile node를 미리 만들어 둡니다.
+                Note: `GameScene`을 큐브 표면에 붙일 SpriteKit scene으로 준비합니다. `faceScene`은 2D 퍼즐 화면 데이터를 가진 `GameScene`이고, `faceScene.setUpPuzzleScene()`은 그 안에 2x2 board tile node를 미리 만들어 둡니다. 큐브의 한 면과 같은 정사각형 비율을 사용하기 위해 `faceScene`도 정사각형 크기로 만듭니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-SceneKitViewModel-FaceScene.swift", previousFile: "08-SceneKitViewModel-Cube.swift")
             }
@@ -164,7 +164,7 @@
 
         @Steps {
             @Step {
-                앱을 실행하고 큐브 한 면에 SpriteKit 퍼즐 화면이 붙어 있는지 확인합니다. 이때 큐브 표면에는 제목 없이, 간격 없는 2x2 board만 보여야 합니다. 큐브를 탭하면 아래 확인 문장에 material index가 표시되어야 합니다.
+                앱을 실행하고 큐브 한 면에 SpriteKit 퍼즐 화면이 붙어 있는지 확인합니다. 이때 큐브 표면에는 제목 없이, 타일 사이가 붙은 정사각형 2x2 board가 면의 비율에 맞게 보여야 합니다. 큐브를 탭하면 아래 확인 문장에 material index가 표시되어야 합니다.
 
                 Note: 이 장의 최종 흐름은 `GameScene -> SCNMaterial -> SCNBox -> SCNView -> ContentView`입니다. `GameScene`은 2D board를 그리고, `SCNMaterial`은 그 board를 cube 표면으로 쓰고, `SCNView`는 3D 장면을 SwiftUI 화면 안에 보여줍니다.
             }
