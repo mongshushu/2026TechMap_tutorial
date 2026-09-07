@@ -1,0 +1,48 @@
+import SwiftUI
+import SpriteKit
+
+final class GameScene: SKScene {
+    private let tileLayer = SKNode()
+    private let gameStore = GameStore()
+    private var tileNodesByID: [String: SKShapeNode] = [:]
+
+    override func didMove(to view: SKView) {
+        backgroundColor = .systemGray6
+        addChild(tileLayer)
+        buildTwoByTwoBoard()
+    }
+
+    private func buildTwoByTwoBoard() {
+        let tileSide = size.width / 2
+        let tileSize = CGSize(width: tileSide, height: tileSide)
+        let gap: CGFloat = 0
+
+        print("Tile size:", tileSize, "Gap:", gap)
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let firstTouch = touches.first else {
+            return
+        }
+
+        let touchLocation = firstTouch.location(in: self)
+        let touchedNodes = nodes(at: touchLocation)
+
+        for touchedNode in touchedNodes {
+            guard let nodeName = touchedNode.name else {
+                continue
+            }
+
+            if nodeName.hasPrefix("tile_") {
+                gameStore.selectTile(id: nodeName)
+                print("Current tile: \(gameStore.currentTileID)")
+                print("Path: \(gameStore.pathTileIDs)")
+                return
+            }
+        }
+    }
+}
+
+#Preview {
+    SpriteView(scene: GameScene(size: CGSize(width: 700, height: 900)))
+}
