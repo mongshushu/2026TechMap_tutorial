@@ -2,7 +2,7 @@
     @Intro(title: "큐브 한붓그리기 퍼즐") {
         SpriteKit으로 작은 2D 퍼즐을 먼저 만들고, GameStore로 상태와 규칙을 분리한 뒤, 나중에 SceneKit 큐브로 확장하는 한국어 튜토리얼입니다.
 
-        정규 트랙은 1-8장입니다. 약 90분 안에 2D SpriteKit 퍼즐을 만들고, 그 화면을 SceneKit 큐브 한 면에 붙이는 데서 끝냅니다. 11장 이후는 더 긴 추가 단계입니다.
+        정규 트랙은 1-9장입니다. 약 100분 안에 2D SpriteKit 퍼즐을 만들고, 그 화면을 SceneKit 큐브 한 면에 붙인 뒤, 큐브 표면 터치를 tile 이름으로 바꾸는 데서 끝냅니다. 11장 이후는 더 긴 추가 단계입니다.
     }
 
     @Chapter(name: "정규 트랙 A: SpriteKit 첫 화면") {
@@ -19,12 +19,13 @@
     @Chapter(name: "정규 트랙 B: 상태와 큐브 첫 연결") {
         @Image(source: chapter-foundation.svg, alt: "퍼즐 데이터 규칙을 나타내는 연결된 원.")
 
-        tile 선택 상태를 저장하고, 2x2 board 규칙을 만든 뒤, SpriteKit face를 SceneKit 큐브에 붙입니다.
+        tile 선택 상태를 저장하고, 2x2 board 규칙을 만든 뒤, SpriteKit face를 SceneKit 큐브에 붙이고, 큐브 표면 터치를 tile 이름으로 바꿉니다.
 
         @TutorialReference(tutorial: "doc:05-SwiftUI-StateObject-And-Scene-Connection")
         @TutorialReference(tutorial: "doc:06-SwiftUI-Undo-And-Three-By-Three")
         @TutorialReference(tutorial: "doc:07-SceneKit-Cube-Material-And-Texture-Touch")
         @TutorialReference(tutorial: "doc:08-SceneKit-Rotation-Mode")
+        @TutorialReference(tutorial: "doc:09-Cube-Touch-To-Tile-Name")
     }
 
     @Chapter(name: "추가 단계: 큐브 stage 확장") {

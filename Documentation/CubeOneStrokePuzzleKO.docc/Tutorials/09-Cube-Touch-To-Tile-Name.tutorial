@@ -1,0 +1,113 @@
+@Tutorial(time: 24) {
+    @Intro(title: "09. 큐브에서 누른 tile 이름 읽기") {
+        이번 장에서는 SceneKit 큐브 표면을 탭했을 때, 그 탭이 SpriteKit board의 어느 tile에 해당하는지 계산합니다.
+
+        8장에서는 큐브의 어느 material 면을 눌렀는지 확인했습니다. 이번 장에서는 같은 탭 결과에서 SceneKit 표면 좌표를 읽고, 그 좌표를 SpriteKit board에서 쓰는 `tile_0_0`, `tile_0_1` 같은 tile 이름으로 바꿉니다.
+    }
+
+    @Section(title: "SceneKit 표면 좌표 읽기") {
+        @ContentAndMedia {
+            `hitTest` 결과는 SceneKit이 계산한 3D 터치 결과입니다.
+
+            이 섹션에서는 그 결과에서 큐브 material 면 안의 좌표를 읽습니다. 이 좌표는 아직 SpriteKit tile 이름이 아니라, SceneKit이 큐브 표면을 기준으로 알려주는 위치입니다.
+        }
+
+        @Steps {
+            @Step {
+                먼저 8장 마지막 코드에서 출발합니다. 지금 `handleTap(at:in:)`은 아이폰 화면에서 탭한 위치인 `point`를 `hitTest`에 넘기고, 그 결과에서 큐브의 material 번호를 읽습니다.
+
+                Note: `point`는 아이폰 화면 위에서 손가락이 닿은 2D 위치입니다. `hitResult.geometryIndex`는 SceneKit 큐브의 어느 material 면이 맞았는지 알려주는 값입니다. 이제 같은 `hitResult`에서 material 면 안의 좌표도 읽어 봅니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-SceneKitViewModel-HitTest.swift")
+            }
+
+            @Step {
+                `SceneKitPuzzleViewModel.swift`의 `handleTap(at:in:)` 마지막 부분을 바꿉니다. `geometryIndex`를 바로 출력하는 대신, `textureCoordinates(withMappingChannel:)`로 큐브 material 면 안의 좌표를 읽어 `debugText`에 표시합니다.
+
+                Note: `textureCoordinate.x`는 SceneKit material 면의 가로 위치입니다. `0`은 한쪽 가로 끝, `1`은 반대쪽 가로 끝입니다. `textureCoordinate.y`는 세로 위치이고, `0`과 `1`은 서로 반대쪽 세로 끝입니다. 이 값은 아직 SpriteKit tile 이름이 아니라, 큐브 표면 안에서의 위치입니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "09-TextureCoordinate.swift", previousFile: "08-SceneKitViewModel-HitTest.swift")
+            }
+        }
+    }
+
+    @Section(title: "표면 좌표를 board 위치로 바꾸기") {
+        @ContentAndMedia {
+            큐브 material 면 안의 좌표를 읽었다면, 이제 그 좌표가 2x2 SpriteKit board의 몇 번째 줄, 몇 번째 칸인지 계산할 수 있습니다.
+
+            SceneKit 표면 좌표는 각 material 면 안에서 `0...1` 범위로 표현됩니다. 다만 어느 모서리가 `0`이고 어느 방향으로 값이 커지는지는 면의 방향과 material 배치에 따라 달라질 수 있습니다. 이 섹션에서는 먼저 `0...1` 범위를 2칸짜리 board 번호로 바꾸는 기본 계산을 만듭니다.
+        }
+
+        @Steps {
+            @Step {
+                `0...1` 범위의 표면 좌표를 2칸짜리 board 번호로 바꾸는 계산 기준을 먼저 확인합니다. `0...1`은 한 면 전체를 하나의 비율로 본 값입니다. 여기에 board 한 줄의 칸 수인 `2`를 곱하면 범위가 `0...2`로 넓어지고, `0...1` 구간은 0번 칸, `1...2` 구간은 1번 칸으로 나눌 수 있습니다.
+
+                Note: 여기서 곱하는 `2`는 현재 board가 한 줄에 2칸이기 때문입니다. `x`가 `0.2`라면 `0.2 * 2 = 0.4`가 되고, 정수로 바꾸면 `0`번 column입니다. `x`가 `0.7`이라면 `0.7 * 2 = 1.4`가 되고, 정수로 바꾸면 `1`번 column입니다.
+
+                @Image(source: texture-coordinate-to-board-index.png, alt: "0에서 1 사이의 표면 좌표 범위를 0에서 2 사이의 2칸 board 범위로 넓혀 보는 그림.")
+            }
+
+            @Step {
+                `handleTap(at:in:)` 아래에 `boardPosition(from:)`이라는 작은 메서드를 추가합니다. 이 메서드는 SceneKit material 면 안의 좌표를 받아서, 2x2 SpriteKit board의 `row`, `column` 번호로 바꿉니다.
+
+                Note: `boardPosition(from:)` 안에서는 `textureCoordinate.x`로 column을 계산하고, `textureCoordinate.y`로 row를 계산합니다. `min`과 `max`는 `1.0 * 2`처럼 경계값이 들어왔을 때 결과가 `2`가 되어 board 바깥 번호로 넘어가지 않도록 잡아 둡니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "09-BoardPositionHelper.swift", previousFile: "09-TextureCoordinate.swift")
+            }
+
+            @Step {
+                `handleTap(at:in:)`에서 `boardPosition(from:)`을 호출합니다. 이제 화면 아래에는 표면 좌표 숫자 대신, SpriteKit board 기준의 `row`, `column`이 표시됩니다.
+
+                Note: `boardPosition(from:)`은 같은 계산을 이름 붙여 따로 빼 둔 작은 메서드입니다. 여기서는 `textureCoordinate`를 직접 출력하지 않고, board에서 사용할 칸 번호로 바꾼 결과를 확인합니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "09-BoardPosition.swift", previousFile: "09-BoardPositionHelper.swift")
+            }
+        }
+    }
+
+    @Section(title: "row와 column으로 tile 이름 만들기") {
+        @ContentAndMedia {
+            `GameStore`와 `GameScene`은 tile을 `"tile_0_0"` 같은 이름으로 구분합니다.
+
+            이 섹션에서는 큐브 표면에서 계산한 `row`, `column`을 기존 SpriteKit tile 이름 규칙에 맞는 문자열로 바꿉니다.
+        }
+
+        @Steps {
+            @Step {
+                먼저 현재 코드에서 얻은 값을 확인합니다. 여기까지 오면 `handleTap(at:in:)`은 SceneKit 표면 좌표를 `row`, `column`으로 바꾸고, 그 값을 화면 아래에 보여줍니다.
+
+                Note: SceneKit은 큐브 표면 안의 위치를 알려주고, SpriteKit board와 `GameStore`는 tile 이름으로 한 칸을 구분합니다. 그래서 다음에는 `row`, `column`을 `"tile_0_1"` 같은 문자열로 바꿉니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "09-BoardPosition.swift")
+            }
+
+            @Step {
+                `boardPosition(from:)` 아래에 `tileID(row:column:)`이라는 작은 메서드를 추가합니다. `handleTap(at:in:)`에서는 `row`, `column`으로 tile 이름을 만들고, 그 이름을 `debugText`에 표시합니다.
+
+                Note: `tileID(row:column:)`은 SceneKit 쪽 계산 결과를 SpriteKit board가 쓰는 이름으로 바꿉니다. 예를 들어 `row`가 `0`, `column`이 `1`이면 `"tile_0_1"`을 만듭니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "09-TileIDFromTextureCoordinate.swift", previousFile: "09-BoardPosition.swift")
+            }
+        }
+    }
+
+    @Section(title: "실행 확인") {
+        @ContentAndMedia {
+            큐브의 SpriteKit board 면을 눌렀을 때, 화면 아래 확인 문장에 tile 이름이 표시되어야 합니다.
+        }
+
+        @Steps {
+            @Step {
+                먼저 큐브의 board 면을 여러 지점에서 탭해 봅니다. 아래 확인 문장의 `row`, `column` 또는 tile 이름이 탭 위치에 따라 바뀌어야 합니다.
+
+                Note: 숫자가 바뀐다면 SceneKit 표면 좌표가 정상적으로 들어오고 있다는 뜻입니다. 같은 칸 안에서 조금 움직여 탭하면 같은 tile 이름이 유지되어야 합니다.
+            }
+
+            @Step {
+                네 칸을 하나씩 탭해서 `tile_0_0`, `tile_0_1`, `tile_1_0`, `tile_1_1` 중 하나가 표시되는지 확인합니다.
+
+                Note: 이 장의 흐름은 `아이폰 화면 탭 위치 -> SceneKit hitTest 결과 -> SceneKit textureCoordinate -> SpriteKit board row/column -> tile 이름`입니다. 화면에서 누른 지점을 게임 상태가 이해할 수 있는 tile 이름으로 바꾸는 것이 핵심입니다.
+            }
+        }
+    }
+}
