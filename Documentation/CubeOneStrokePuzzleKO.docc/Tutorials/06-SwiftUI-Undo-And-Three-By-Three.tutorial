@@ -48,9 +48,9 @@
 
                 Note: 실제 tile node를 만들기 전에, tile 크기를 이용해 가상의 2×2 board 영역을 계산합니다. `boardWidth`는 tile 두 개를 가로로 놓았을 때의 전체 너비입니다. 이 board가 scene 중앙에 오도록 왼쪽과 아래쪽 경계를 계산한 뒤, `SKShapeNode`의 위치가 사각형 중심을 기준으로 한다는 점을 반영해 tile 절반 크기만큼 안쪽으로 이동합니다. 이렇게 얻은 `startX`와 `startY`가 첫 번째 tile인 `tile_0_0`의 중심 좌표입니다. 이 단계에서는 실제 tile node를 만들지 않고, 반복문이 사용할 시작 위치만 계산합니다.
 
-                @Code(name: "GameScene.swift", file: "06-BoardLayoutValues.swift", previousFile: "06-BoardSizeValues.swift")
-
-                @Image(source: 06-board-layout-start-tile.png, alt: "가상의 2x2 board에서 첫 번째 tile 중심과 startX, startY 위치를 보여주는 그림.")
+                @Code(name: "GameScene.swift", file: "06-BoardLayoutValues.swift", previousFile: "06-BoardSizeValues.swift") {
+                    @Image(source: 06-board-layout-start-tile.png, alt: "가상의 2x2 board에서 첫 번째 tile 중심과 startX, startY 위치를 보여주는 그림.")
+                }
             }
 
             @Step {
@@ -58,9 +58,9 @@
 
                 Note: 바깥 반복문인 `row`는 아래에서 위로 이동할 때 사용하고, 안쪽 반복문인 `column`은 왼쪽에서 오른쪽으로 이동할 때 사용합니다. `column`이 0에서 1로 바뀌면 오른쪽으로 이동하고, `row`가 0에서 1로 바뀌면 위쪽으로 이동합니다. 반복문이 네 가지 조합을 만들기 때문에 `tile_0_0`, `tile_0_1`, `tile_1_0`, `tile_1_1` 네 위치가 계산됩니다. SpriteKit 위치 값은 `CGFloat`로 계산하므로 정수인 `row`, `column`을 `CGFloat(...)`로 바꿔 사용합니다.
 
-                @Code(name: "GameScene.swift", file: "06-BoardAddressLoop.swift", previousFile: "06-BoardLayoutValues.swift")
-
-                @Image(source: 06-board-layout-row-column.png, alt: "row와 column 값이 2x2 board의 tile 위치와 연결되는 구조를 보여주는 그림.")
+                @Code(name: "GameScene.swift", file: "06-BoardAddressLoop.swift", previousFile: "06-BoardLayoutValues.swift") {
+                    @Image(source: 06-board-layout-row-column.png, alt: "row와 column 값이 2x2 board의 tile 위치와 연결되는 구조를 보여주는 그림.")
+                }
             }
 
             @Step {
