@@ -40,7 +40,9 @@
 
                 Note: `tileSide`는 scene의 가로 길이를 2로 나눈 값입니다. 2×2 board에서는 tile 두 개가 가로로 들어가므로, 각 tile의 너비를 scene 가로의 절반으로 정합니다. 같은 값을 너비와 높이에 사용해 tile을 정사각형으로 만듭니다. `gap`은 tile 사이의 간격입니다. 네 칸이 떨어진 버튼이 아니라 하나의 연결된 board처럼 보이도록 `0`으로 둡니다. console에는 계산된 `tileSize`와 `gap`이 출력됩니다. Preview scene 크기가 `700 × 900`이라면 tile 하나는 `350 × 350`이고, tile 사이의 간격은 `0`입니다.
 
-                @Code(name: "GameScene.swift", file: "06-BoardSizeValues.swift", previousFile: "06-RemoveTitle.swift")
+                @Code(name: "GameScene.swift", file: "06-BoardSizeValues.swift", previousFile: "06-RemoveTitle.swift") {
+                    @Image(source: 06-board-size-values.png, alt: "700 x 700 크기의 2x2 board를 350 x 350 크기의 네 tile로 나눈 그림.")
+                }
             }
 
             @Step {
