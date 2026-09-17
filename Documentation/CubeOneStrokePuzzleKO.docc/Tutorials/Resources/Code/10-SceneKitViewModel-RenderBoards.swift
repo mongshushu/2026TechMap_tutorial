@@ -1,0 +1,44 @@
+private var currentTileID = TileID(row: 0, column: 0)
+private var pathTileIDs: [TileID] = [currentTileID]
+private var isStageComplete = false
+
+private func selectTile(_ tileID: TileID, textureCoordinate: CGPoint) {
+    if isStageComplete {
+        debugText = "이 퍼즐은 완료했어요."
+        return
+    }
+
+    let visitedTileIDs = Set(pathTileIDs)
+
+    if visitedTileIDs.contains(tileID) {
+        debugText = "이미 지나온 tile입니다."
+        return
+    }
+
+    let rowGap = abs(currentTileID.row - tileID.row)
+    let columnGap = abs(currentTileID.column - tileID.column)
+
+    if rowGap + columnGap != 1 {
+        debugText = "현재 tile에서 한 칸 이동할 수 없는 위치입니다."
+        return
+    }
+
+    currentTileID = tileID
+    pathTileIDs.append(tileID)
+
+    if pathTileIDs.count == 4 && tileID == TileID(row: 1, column: 1) {
+        isStageComplete = true
+    }
+
+    renderBoards()
+
+    let uvText = String(
+        format: "u: %.2f, v: %.2f",
+        textureCoordinate.x,
+        textureCoordinate.y
+    )
+
+    debugText = isStageComplete
+        ? "한붓그리기 성공: \(tileID.name) (\(uvText))"
+        : "선택: \(tileID.name) (\(uvText))"
+}

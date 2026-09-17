@@ -16,7 +16,8 @@ final class SceneKitPuzzleViewModel: ObservableObject {
         scene.background.contents = UIColor.systemBackground
 
         cameraNode.camera = SCNCamera()
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 5)
+        cameraNode.position = SCNVector3(x: 2.0, y: 1.4, z: 5.5)
+        cameraNode.look(at: SCNVector3(x: 0, y: 0, z: 0))
         scene.rootNode.addChildNode(cameraNode)
     }
 }

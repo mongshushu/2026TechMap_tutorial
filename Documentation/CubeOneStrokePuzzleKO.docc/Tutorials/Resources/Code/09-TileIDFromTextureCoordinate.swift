@@ -3,6 +3,19 @@ import SceneKit
 import SpriteKit
 import UIKit
 
+struct TileID: Hashable, CustomStringConvertible {
+    let row: Int
+    let column: Int
+
+    var name: String {
+        "tile_\(row)_\(column)"
+    }
+
+    var description: String {
+        name
+    }
+}
+
 @MainActor
 final class SceneKitPuzzleViewModel: ObservableObject {
     let scene = SCNScene()
@@ -74,7 +87,7 @@ final class SceneKitPuzzleViewModel: ObservableObject {
         let boardPosition = boardPosition(from: textureCoordinate)
         let tileID = tileID(row: boardPosition.row, column: boardPosition.column)
 
-        debugText = "터치한 tile: \(tileID)"
+        debugText = "터치한 tile: \(tileID.name)"
     }
 
     private func boardPosition(from textureCoordinate: CGPoint) -> (row: Int, column: Int) {
@@ -91,7 +104,7 @@ final class SceneKitPuzzleViewModel: ObservableObject {
         return (row, column)
     }
 
-    private func tileID(row: Int, column: Int) -> String {
-        "tile_\(row)_\(column)"
+    private func tileID(row: Int, column: Int) -> TileID {
+        TileID(row: row, column: column)
     }
 }

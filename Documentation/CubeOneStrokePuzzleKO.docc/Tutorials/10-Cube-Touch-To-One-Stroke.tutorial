@@ -1,0 +1,83 @@
+@Tutorial(time: 20) {
+    @Intro(title: "10. 큐브 터치를 한붓그리기 선택으로 연결하기") {
+        9장에서 만든 `TileID`를 실제 퍼즐 선택으로 연결합니다.
+
+        큐브에서 누른 위치를 tile로 바꾼 뒤, 현재 tile에서 한 칸 이동할 수 있는지 확인합니다. 이동이 유효할 때만 경로와 SpriteKit board의 색을 바꿉니다.
+    }
+
+    @Section(title: "tileID를 선택 처리로 전달하기") {
+        @ContentAndMedia {
+            큐브 표면에서 얻은 `tileID`를 선택 규칙을 담당하는 `selectTile`에 전달합니다.
+
+            앞에서는 SpriteKit scene 안의 `GameStore`가 선택 상태를 관리했습니다. 이제 큐브 터치를 받는 `SceneKitPuzzleViewModel`이 `TileID`와 경로를 관리하고, 큐브 면에 연결된 SpriteKit scene은 그 결과를 화면에 반영합니다.
+        }
+
+        @Steps {
+            @Step {
+                `handleTap(at:in:)`에서 만든 `TileID`와 표면 좌표를 `selectTile`에 넘깁니다. 화면에 tile 이름만 출력하던 줄은 선택 함수 호출로 바꿉니다.
+
+                Note: `TileID`는 큐브 표면의 좌표를 SpriteKit board의 한 칸 주소로 바꾼 결과입니다. 선택 함수에는 문자열 이름이 아니라 `row`와 `column`을 가진 이 주소를 전달합니다. 표면 좌표도 함께 넘기는 이유는 선택 결과를 확인할 때 원래 탭 위치를 debug 문장에 표시하기 위해서입니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "10-SceneKitViewModel-SelectEntry.swift")
+            }
+
+            @Step {
+                `selectTile(_:textureCoordinate:)` 안에서 먼저 현재 퍼즐의 선택 상태를 확인합니다.
+
+                Note: `selectTile`은 탭을 받았다는 이유만으로 tile을 선택하지 않습니다. 퍼즐이 이미 끝났는지, 이미 지나온 칸인지 먼저 확인하는 선택 전용 메서드입니다. 9장에서 좌표를 board 범위 안의 `TileID`로 바꾸었으므로, 여기서는 선택 순서에 필요한 조건을 이어서 확인합니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "10-SceneKitViewModel-SelectionChecks.swift", previousFile: "10-SceneKitViewModel-SelectEntry.swift")
+            }
+        }
+    }
+
+    @Section(title: "한 칸 이동만 경로에 추가하기") {
+        @ContentAndMedia {
+            7장에서 `GameStore`에 적용했던 이웃 규칙을 SceneKit 쪽 선택 흐름에도 적용합니다. 선택 가능한 tile만 현재 위치와 경로에 추가합니다.
+
+            현재 tile에서 가로 또는 세로로 맞닿은 한 칸으로 이동했을 때만 경로가 이어집니다. 대각선 이동이나 이미 방문한 tile은 경로에 들어가지 않습니다.
+        }
+
+        @Steps {
+            @Step {
+                `SceneKitPuzzleViewModel`이 받은 `TileID`의 `row`, `column` 차이를 확인합니다. 7장에서 `BoardModel`로 확인했던 것처럼, 가로 또는 세로로 한 칸 맞닿은 경우만 통과시키고 나머지는 메서드를 끝냅니다.
+
+                Note: 7장에서는 `GameStore`가 `BoardModel`의 이웃 목록을 사용해 이 규칙을 검사했습니다. 여기서는 SceneKit 터치와 선택 상태를 `SceneKitPuzzleViewModel`이 직접 처리하므로, `TileID`의 두 좌표 차이로 같은 규칙을 확인합니다. 가로로 한 칸 이동하면 `column`만 1만큼, 세로로 한 칸 이동하면 `row`만 1만큼 달라집니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "10-SceneKitViewModel-NeighborCheck.swift", previousFile: "10-SceneKitViewModel-SelectionChecks.swift")
+            }
+
+            @Step {
+                모든 검사를 통과한 tile을 `currentTileID`와 `pathTileIDs`에 기록합니다.
+
+                Note: `currentTileID`는 지금 서 있는 마지막 칸이고, `pathTileIDs`는 지금까지 선택한 순서입니다. 두 값을 함께 갱신해야 다음 선택이 새 위치에서 이어지고, 지나온 순서도 남습니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "10-SceneKitViewModel-UpdatePath.swift", previousFile: "10-SceneKitViewModel-NeighborCheck.swift")
+            }
+        }
+    }
+
+    @Section(title: "선택 결과를 SpriteKit 화면에 반영하기") {
+        @ContentAndMedia {
+            상태가 바뀐 뒤 `renderBoards()`를 호출해 큐브 면에 연결된 SpriteKit board의 색을 다시 그립니다.
+
+            선택된 현재 tile은 파란색으로, 지나온 tile은 청록색으로 보이므로, 큐브 터치가 화면 변화로 이어지는지 확인할 수 있습니다.
+        }
+
+        @Steps {
+            @Step {
+                경로를 갱신한 직후 `renderBoards()`를 호출합니다.
+
+                Note: `currentTileID`와 `pathTileIDs`는 선택 결과를 저장하는 값이고, `renderBoards()`는 그 값을 읽어 `faceScene`의 각 tile 색을 다시 정하는 메서드입니다. 값을 바꾸는 일과 화면을 다시 그리는 일은 서로 다른 작업이므로, 경로를 갱신한 직후 이 메서드를 호출합니다.
+
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "10-SceneKitViewModel-RenderBoards.swift", previousFile: "10-SceneKitViewModel-UpdatePath.swift")
+            }
+
+            @Step {
+                큐브의 현재 board 면에서 시작 tile을 누른 뒤, 옆 tile과 대각선 tile을 차례로 눌러 결과를 확인합니다.
+
+                Note: 옆 tile을 누르면 경로와 색이 바뀌고, 대각선 tile이나 이미 지나온 tile을 누르면 경로와 색이 그대로여야 합니다. 이것으로 `큐브 터치 -> tileID -> 선택 규칙 -> 경로 갱신 -> SpriteKit 화면 갱신` 흐름이 완성됩니다.
+            }
+        }
+    }
+}

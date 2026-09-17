@@ -24,9 +24,9 @@
             }
 
             @Step {
-                앞 Step에서 만든 `SceneKitPuzzleViewModel.swift`를 그대로 둔 채, `scene` 아래에 `cameraNode`를 추가합니다. 이어서 같은 파일의 `configureScene()` 안에 camera 설정과 `addChildNode(cameraNode)`를 추가합니다.
+                앞 Step에서 만든 `SceneKitPuzzleViewModel.swift`를 그대로 둔 채, `scene` 아래에 `cameraNode`를 추가합니다. 이어서 같은 파일의 `configureScene()` 안에 카메라를 큐브 정면에서 조금 비켜 배치하고, 큐브 중심을 바라보게 하는 설정을 추가합니다.
 
-                Note: 이 Step의 목적은 3D 장면을 볼 카메라를 하나 놓는 것입니다. SceneKit 장면은 3D 공간이라서 카메라가 있어야 어느 방향에서 cube를 볼지 정할 수 있습니다. `SCNVector3(x:y:z:)`는 3D 위치를 나타내는 타입이고, `z: 5`는 카메라를 scene 중심에서 z축 방향으로 5만큼 떨어진 위치에 둔다는 뜻입니다.
+                Note: SceneKit 장면은 카메라가 있는 위치와 바라보는 방향에 따라 cube의 앞면과 옆면이 다르게 보입니다. `SCNVector3(x:y:z:)`에서 x와 y를 조금 움직이면 정면에서 비껴선 시점이 되고, `cameraNode.look(at:)`은 카메라가 큐브 중심을 바라보게 합니다. `z: 5.5`는 카메라를 scene 중심에서 z축 방향으로 떨어뜨리는 거리입니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-SceneKitViewModel-Camera.swift", previousFile: "08-SceneKitViewModel-Scene.swift")
             }
@@ -48,7 +48,9 @@
             }
 
             @Step {
-                빈 `cubeNode`에 큐브 모양을 지정하고, 그 node를 SceneKit 장면에 추가합니다. `geometry` 자리에 `makeCubeGeometry()`가 만든 모양 데이터를 넣으면 `cubeNode`가 눈에 보이는 큐브 형태를 갖습니다. `scene.rootNode.addChildNode(cubeNode)`를 호출하면 그 큐브가 장면 안에 들어갑니다. `rootNode`는 SceneKit 장면의 가장 기본이 되는 node입니다.
+                빈 `cubeNode`에 큐브 모양과 처음 보이는 각도를 지정한 뒤, 그 node를 SceneKit 장면에 추가합니다. `geometry` 자리에 `makeCubeGeometry()`가 만든 모양 데이터를 넣으면 `cubeNode`가 눈에 보이는 큐브 형태를 갖습니다. 카메라를 정면에서 조금 비켜 둔 상태에서 `cubeNode.eulerAngles`에 작은 x축과 y축 회전값을 주면 앞면과 옆면의 경계가 더 잘 드러납니다. `scene.rootNode.addChildNode(cubeNode)`를 호출하면 그 큐브가 장면 안에 들어갑니다. `rootNode`는 SceneKit 장면의 가장 기본이 되는 node입니다.
+
+                Note: `cubeNode.eulerAngles`는 node의 회전 각도를 x, y, z축별로 정하는 property입니다. 여기서는 작은 값만 넣어 큐브의 옆면이 살짝 보이게 합니다. 이 값은 큐브의 처음 보이는 방향만 바꾸며, material이나 SpriteKit board의 내용은 바꾸지 않습니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-SceneKitViewModel-Cube.swift", previousFile: "08-SceneKitViewModel-CubeMaterials.swift")
             }
@@ -64,17 +66,17 @@
 
         @Steps {
             @Step {
-                새 Swift 파일을 만들고 이름을 `SceneKitCubeView.swift`로 정합니다. 이 파일에 SwiftUI에서 사용할 SceneKit 화면을 만듭니다. `makeUIView(context:)`에서는 `SCNView`를 처음 만들고, 그 view에 `viewModel.scene`을 연결합니다. `updateUIView(_:context:)`는 SwiftUI가 이미 만든 `SCNView`를 다시 맞출 때 실행되는 자리입니다.
+                새 Swift 파일을 만들고 이름을 `SceneKitCubeView.swift`로 정합니다. 이 파일에 SwiftUI에서 사용할 SceneKit 화면을 만들고, `isRotationEnabled` 값에 따라 큐브 회전 모드를 켜고 끕니다. `makeUIView(context:)`에서는 `SCNView`를 처음 만들고, 그 view에 `viewModel.scene`을 연결합니다. `updateUIView(_:context:)`는 SwiftUI가 이미 만든 `SCNView`의 회전 설정을 다시 맞출 때 실행되는 자리입니다.
 
-                Note: `SCNView`는 SceneKit 장면을 실제 화면에 그리는 view입니다. SwiftUI에서 직접 쓰는 view가 아니기 때문에 `UIViewRepresentable`로 감싸서 사용합니다. `makeUIView(context:)`와 `updateUIView(_:context:)`를 나누면, 처음 만들 때 필요한 설정과 이미 만든 view를 다시 맞출 때 필요한 설정을 구분할 수 있습니다.
+                Note: `SCNView`는 SceneKit 장면을 실제 화면에 그리는 view입니다. `allowsCameraControl`을 켜면 사용자가 드래그해서 카메라를 움직일 수 있습니다. SwiftUI의 토글이 바뀌면 `updateUIView(_:context:)`가 다시 호출되어 이 설정도 함께 바뀝니다.
 
                 @Code(name: "SceneKitCubeView.swift", file: "08-SceneKitCubeView-Basic.swift")
             }
 
             @Step {
-                `ContentView.swift`의 기존 `gameScene` property와 `SpriteView` 구조를 이번 코드로 교체합니다. 이제 `ContentView`는 `SceneKitPuzzleViewModel`을 만들고, 그 view model을 `SceneKitCubeView`에 넘깁니다.
+                `ContentView.swift`의 기존 `gameScene` property와 `SpriteView` 구조를 이번 코드로 교체합니다. `ContentView`에 `큐브 회전` 토글을 추가하고, 그 값을 `SceneKitCubeView`에 넘깁니다. 이제 토글이 꺼져 있으면 큐브 표면을 탭하는 모드로, 켜져 있으면 큐브를 드래그해 둘러보는 모드로 사용할 수 있습니다.
 
-                Note: `ContentView`가 `SceneKitPuzzleViewModel`을 생성하고 유지합니다. 이 ViewModel이 3D scene을 만들고, `SceneKitCubeView`는 그 scene을 화면에 보여줍니다. `@StateObject`는 SwiftUI view 안에서 reference type 상태 객체를 한 번 만들고 유지할 때 사용합니다.
+                Note: `ContentView`가 `SceneKitPuzzleViewModel`과 `isRotationEnabled` 상태를 만들고 유지합니다. `isRotationEnabled`가 바뀌면 `SceneKitCubeView`가 회전 가능 여부를 다시 설정합니다. 두 조작을 토글로 나누면 같은 동작에서 탭 선택과 드래그 회전이 서로 겹치지 않습니다.
 
                 @Code(name: "ContentView.swift", file: "08-ContentView-SceneKitBasic.swift", previousFile: "01-ContentView-SpriteViewBody.swift")
             }
@@ -140,9 +142,9 @@
             }
 
             @Step {
-                `SceneKitCubeView.swift`에서 `SCNView`가 탭을 받을 수 있게 만듭니다. `makeUIView(context:)` 안에서 `UITapGestureRecognizer`를 만들고, 이 recognizer를 `sceneView`에 추가합니다. 탭이 발생하면 `Coordinator.handleTap(_:)`이 호출되고, 여기서 탭 위치를 읽어 ViewModel의 `handleTap(at:in:)`으로 넘깁니다.
+                `SceneKitCubeView.swift`에서 `SCNView`가 탭을 받을 수 있게 만듭니다. `makeUIView(context:)` 안에서 `UITapGestureRecognizer`를 만들고, 회전 토글이 꺼져 있을 때만 활성화합니다. 이 recognizer를 `sceneView`에 추가하면 탭이 발생했을 때 `Coordinator.handleTap(_:)`이 호출되고, 여기서 탭 위치를 읽어 ViewModel의 `handleTap(at:in:)`으로 넘깁니다. `updateUIView(_:context:)`에서도 토글 상태에 맞춰 탭 인식기를 켜고 끕니다.
 
-                Note: `UITapGestureRecognizer`는 UIKit view에서 탭을 감지하는 객체입니다. `SCNView`는 UIKit 기반 view이므로 gesture recognizer를 직접 붙일 수 있습니다. `Coordinator`는 그 탭 이벤트를 받아 SwiftUI 쪽에서 만든 ViewModel로 넘기는 연결 역할을 합니다.
+                Note: `UITapGestureRecognizer`는 UIKit view에서 탭을 감지하는 객체입니다. 회전 토글이 켜지면 `sceneView.allowsCameraControl`은 드래그를 위해 켜지고, `tapRecognizer.isEnabled`는 꺼집니다. 반대로 토글이 꺼지면 드래그 회전은 꺼지고 탭 인식이 켜져, 두 조작이 같은 순간에 처리되지 않습니다. `Coordinator`는 탭 이벤트를 ViewModel로 넘기는 연결 역할을 합니다.
 
                 @Code(name: "SceneKitCubeView.swift", file: "08-SceneKitCubeView-Tap.swift", previousFile: "08-SceneKitCubeView-Basic.swift")
             }
@@ -164,7 +166,7 @@
 
         @Steps {
             @Step {
-                앱을 실행하고 큐브 한 면에 SpriteKit 퍼즐 화면이 붙어 있는지 확인합니다. 이때 큐브 표면에는 제목 없이, 타일 사이가 붙은 정사각형 2x2 board가 면의 비율에 맞게 보여야 합니다. 큐브를 탭하면 아래 확인 문장에 material index가 표시되어야 합니다.
+                앱을 실행하고 큐브 한 면에 SpriteKit 퍼즐 화면이 붙어 있는지 확인합니다. 큐브는 정면과 옆면이 함께 보이는 각도로 표시되고, 표면에는 제목 없이 타일 사이가 붙은 정사각형 2x2 board가 면의 비율에 맞게 보여야 합니다. `큐브 회전`을 켜면 큐브를 드래그해 다른 면을 둘러볼 수 있고, 끄면 큐브 표면을 탭해 아래 확인 문장에 material index가 표시되어야 합니다.
 
                 Note: 이 장의 최종 흐름은 `GameScene -> SCNMaterial -> SCNBox -> SCNView -> ContentView`입니다. `GameScene`은 2D board를 그리고, `SCNMaterial`은 그 board를 cube 표면으로 쓰고, `SCNView`는 3D 장면을 SwiftUI 화면 안에 보여줍니다.
             }
