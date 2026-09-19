@@ -45,6 +45,8 @@
         @Steps {
             @Step {
                 파란 tile과 흰 tile을 각각 눌러 보고, 두 tile의 이름이 서로 다르게 출력되는지 확인합니다.
+
+       @Image(source: preview-04-xcode-console.png, alt: "실제 Xcode 화면에서 Hello SpriteKit과 파란 tile·흰 tile, 그리고 파란 tile을 눌렀을 때 console에 Tapped tile: tile_0_0이 출력된 모습.")
             }
         }
     }
