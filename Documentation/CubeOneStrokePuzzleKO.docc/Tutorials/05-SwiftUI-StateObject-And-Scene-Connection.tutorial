@@ -69,6 +69,8 @@
         @Steps {
             @Step {
                 tile을 탭하고 console에 현재 tile과 path가 출력되는지 확인합니다.
+
+                @Image(source: preview-05-game-store-screen.png, alt: "실제 Xcode Preview에서 GameStore 연결 후에도 Hello SpriteKit 제목 아래에 파란 tile과 흰 tile이 보이는 화면.")
             }
         }
     }
