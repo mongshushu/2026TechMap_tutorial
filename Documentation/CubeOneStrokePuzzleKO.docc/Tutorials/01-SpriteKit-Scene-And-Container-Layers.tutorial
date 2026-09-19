@@ -38,7 +38,9 @@
 
                 Note: `GameScene: SKScene`에서 콜론 뒤의 `SKScene`은 `GameScene`이 SpriteKit scene의 기본 기능을 물려받는다는 뜻입니다. 그래서 빈 class처럼 보여도 SpriteKit이 화면으로 다룰 수 있고, 다음 Step에서 `backgroundColor`와 `addChild(...)` 같은 scene 기능을 사용할 수 있습니다. `#Preview`는 Xcode 캔버스에서 현재 코드를 빠르게 확인하기 위한 영역입니다.
 
-                @Code(name: "GameScene.swift", file: "01-GameScene-Shell.swift")
+                @Code(name: "GameScene.swift", file: "01-GameScene-Shell.swift") {
+                    @Image(source: preview-01-step-01-empty-scene.png, alt: "Xcode Preview에서 비어 있는 SpriteKit scene이 검은 화면으로 보이는 모습.")
+                }
             }
 
             @Step {
@@ -46,7 +48,9 @@
 
                 Note: `didMove(to:)`는 `GameScene`이 `SKView` 안으로 들어가 화면에 붙은 뒤 울리는 알람 같은 메서드입니다. 이런 식으로 프레임워크가 정해진 시점에 자동으로 불러주는 메서드를 lifecycle callback이라고 부릅니다. 여기서 `Move`는 label 같은 node가 움직였다는 뜻이 아니라, scene이 view에 붙었다는 뜻에 가깝습니다. `didMove(to:)`는 코드를 실행할 시점을 정하고, `backgroundColor = .systemGray6`는 실제로 scene의 배경색 값을 바꿉니다.
 
-                @Code(name: "GameScene.swift", file: "01-GameScene-DidMove.swift", previousFile: "01-GameScene-Shell.swift")
+                @Code(name: "GameScene.swift", file: "01-GameScene-DidMove.swift", previousFile: "01-GameScene-Shell.swift") {
+                    @Image(source: preview-01-step-02-gray-scene.png, alt: "Xcode Preview에서 연한 회색 배경만 보이는 GameScene 화면.")
+                }
             }
 
             @Step {
@@ -54,7 +58,9 @@
 
                 Note: `SKLabelNode`는 글자를 보여주는 node입니다. node를 만들기만 하면 화면에 자동으로 보이지 않고, `addChild(titleLabel)`로 scene의 자식 node로 넣어야 화면에 나타납니다. `size.width / 2`와 `size.height / 2`는 scene의 가운데 좌표를 구합니다.
 
-                @Code(name: "GameScene.swift", file: "01-GameScene-TitleLabel.swift", previousFile: "01-GameScene-DidMove.swift")
+                @Code(name: "GameScene.swift", file: "01-GameScene-TitleLabel.swift", previousFile: "01-GameScene-DidMove.swift") {
+                    @Image(source: preview-01-03-hello-spritekit.png, alt: "Xcode Preview에서 연한 회색 scene의 가운데에 Hello SpriteKit label이 보이는 화면.")
+                }
             }
         }
     }
@@ -68,7 +74,9 @@
             @Step {
                 `ContentView.swift` 파일 맨 위에서 `import SwiftUI` 아래에 SpriteKit import를 추가합니다. 기존 `ContentView` body는 아직 그대로 둡니다.
 
-                @Code(name: "ContentView.swift", file: "01-ContentView-ImportSpriteKit.swift", previousFile: "01-ContentView-BeforeSpriteKit.swift")
+                @Code(name: "ContentView.swift", file: "01-ContentView-ImportSpriteKit.swift", previousFile: "01-ContentView-BeforeSpriteKit.swift") {
+                    @Image(source: preview-01-contentview-hello-world.png, alt: "Xcode Preview에서 기존 SwiftUI ContentView의 Hello, world! 화면이 보이는 모습.")
+                }
             }
 
             @Step {
@@ -76,7 +84,9 @@
 
                 Note: `scaleMode = .resizeFill`은 `GameScene`이 `SpriteView`의 크기에 맞게 채워지도록 합니다. Preview에서 본 scene을 실제 앱 화면에도 같은 방식으로 올리기 위한 설정입니다.
 
-                @Code(name: "ContentView.swift", file: "01-ContentView-SceneProperty.swift", previousFile: "01-ContentView-ImportSpriteKit.swift")
+                @Code(name: "ContentView.swift", file: "01-ContentView-SceneProperty.swift", previousFile: "01-ContentView-ImportSpriteKit.swift") {
+                    @Image(source: preview-01-contentview-hello-world.png, alt: "Xcode Preview에서 GameScene을 준비하는 동안에도 기존 SwiftUI ContentView의 Hello, world! 화면이 보이는 모습.")
+                }
             }
 
             @Step {
@@ -84,7 +94,9 @@
 
                 Note: SwiftUI는 앱의 화면 틀을 맡고, SpriteKit은 그 안에서 node를 그리는 2D 무대를 맡습니다. `SpriteView(scene:)`는 이 둘을 이어주는 SwiftUI view입니다.
 
-                @Code(name: "ContentView.swift", file: "01-ContentView-SpriteViewBody.swift", previousFile: "01-ContentView-SceneProperty.swift")
+                @Code(name: "ContentView.swift", file: "01-ContentView-SpriteViewBody.swift", previousFile: "01-ContentView-SceneProperty.swift") {
+                    @Image(source: preview-01-contentview-hello-spritekit.png, alt: "Xcode Preview의 ContentView 화면에서 SpriteKit scene과 Hello SpriteKit label이 보이는 모습.")
+                }
             }
         }
     }
@@ -92,13 +104,13 @@
     @Section(title: "실행 확인") {
         @ContentAndMedia {
             Preview와 앱 실행 화면에서 SpriteKit scene이 보이고, 가운데에 `Hello SpriteKit` label이 보여야 합니다.
-
-            `GameScene.swift`에는 `didMove(to:)`, `SKLabelNode`, `addChild(titleLabel)` 코드가 있습니다. `ContentView.swift`에는 `SpriteView(scene:)`가 있습니다. 이 차이로 SpriteKit node 배치와 SwiftUI 화면 연결이 서로 다른 파일에서 시작된다는 점을 볼 수 있습니다.
         }
 
         @Steps {
             @Step {
-                먼저 `GameScene.swift`의 Preview에서 label을 확인하고, 그 다음 앱을 실행해서 같은 scene이 첫 화면에 보이는지 확인합니다.
+                Section 3 Step 3에서 `SpriteView(scene: gameScene)`으로 연결한 `ContentView`의 Preview를 확인합니다. 화면 전체에 SpriteKit scene이 보이고, 가운데에 `Hello SpriteKit` label이 있어야 합니다.
+
+                @Image(source: preview-01-contentview-hello-spritekit.png, alt: "Xcode Preview의 ContentView 화면에서 SpriteKit scene과 Hello SpriteKit label이 보이는 화면.")
             }
         }
     }

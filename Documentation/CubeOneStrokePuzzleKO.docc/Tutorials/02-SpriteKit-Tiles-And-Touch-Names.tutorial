@@ -49,6 +49,8 @@
         @Steps {
             @Step {
                 Preview나 앱 실행 화면에서 `Hello SpriteKit` label이 계속 보이는지 확인합니다. 코드에서는 `addChild(hudLayer)`와 `hudLayer.addChild(titleLabel)`이 모두 있어야 합니다.
+
+                @Image(source: preview-02-hud-layer-hello-spritekit.png, alt: "Xcode Preview에서 hudLayer 구조를 적용한 뒤에도 Hello SpriteKit label이 보이는 GameScene 화면.")
             }
         }
     }
