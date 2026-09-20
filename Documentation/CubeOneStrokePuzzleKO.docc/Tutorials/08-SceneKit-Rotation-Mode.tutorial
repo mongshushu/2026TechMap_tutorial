@@ -169,6 +169,8 @@
                 앱을 실행하고 큐브 한 면에 SpriteKit 퍼즐 화면이 붙어 있는지 확인합니다. 큐브는 정면과 옆면이 함께 보이는 각도로 표시되고, 표면에는 제목 없이 타일 사이가 붙은 정사각형 2x2 board가 면의 비율에 맞게 보여야 합니다. `큐브 회전`을 켜면 큐브를 드래그해 다른 면을 둘러볼 수 있고, 끄면 큐브 표면을 탭해 아래 확인 문장에 material index가 표시되어야 합니다.
 
                 Note: 이 장의 최종 흐름은 `GameScene -> SCNMaterial -> SCNBox -> SCNView -> ContentView`입니다. `GameScene`은 2D board를 그리고, `SCNMaterial`은 그 board를 cube 표면으로 쓰고, `SCNView`는 3D 장면을 SwiftUI 화면 안에 보여줍니다.
+
+                @Image(source: preview-08-final-xcode.png, alt: "실제 Xcode에서 실행한 앱 화면으로, SpriteKit board가 붙은 3D cube와 회전 모드 토글이 보이는 화면.")
             }
         }
     }
