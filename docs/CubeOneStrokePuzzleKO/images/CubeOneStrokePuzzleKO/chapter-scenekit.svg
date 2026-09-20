@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#111827"/>
+  <polygon points="400,150 610,260 400,370 190,260" fill="#0a84ff"/>
+  <polygon points="610,260 610,480 400,590 400,370" fill="#30b0c7"/>
+  <polygon points="190,260 400,370 400,590 190,480" fill="#64d2ff"/>
+  <text x="700" y="290" fill="#ffffff" font-family="Helvetica, Arial, sans-serif" font-size="72" font-weight="700">SceneKit</text>
+  <text x="700" y="370" fill="#b9c8d6" font-family="Helvetica, Arial, sans-serif" font-size="42">cube surface touch</text>
+</svg>

@@ -11,6 +11,8 @@
 
             이 섹션의 코드는 SwiftUI 화면을 직접 바꾸기보다, 회색 cube를 보여줄 수 있는 3D 장면 데이터를 먼저 준비합니다.
 
+            아직 `ContentView`가 이 장면을 `SCNView`에 연결하지 않았으므로, Step 1부터 Step 5까지 코드를 작성해도 화면은 이전 SpriteKit 화면 그대로입니다. 이 섹션에서는 화면보다 장면 안에 들어갈 `SCNScene`, camera, cube node, geometry와 material을 순서대로 준비합니다.
+
             SpriteKit과 SceneKit에는 모두 node가 있습니다. `SKNode`는 2D SpriteKit scene 안에 들어가는 node이고, `SCNNode`는 3D SceneKit scene 안에 들어가는 node입니다. 이 장에서 만드는 camera와 cube는 `SCNNode`입니다.
         }
 
@@ -40,9 +42,9 @@
             }
 
             @Step {
-                화면에 보이는 결과는 회색 큐브 그대로입니다. 하지만 코드에서는 여섯 면의 material 자리를 따로 나누어 둡니다. 같은 `makeCubeGeometry()` 안에서 `box.materials`를 여섯 칸짜리 배열로 바꿉니다.
+                Step 3에서 보이던 화면은 그대로 유지됩니다. 코드에서는 여섯 면의 material 자리를 따로 나누어 둡니다. 같은 `makeCubeGeometry()` 안에서 `box.materials`를 여섯 칸짜리 배열로 바꿉니다.
 
-                Note: 큐브 여섯 면의 material 자리를 분리합니다. `SCNBox`는 면마다 다른 material을 받을 수 있습니다. 지금은 같은 회색 material을 여섯 번 넣어 보이는 결과를 유지합니다.
+                Note: 큐브 여섯 면의 material 자리를 분리합니다. `SCNBox`는 면마다 다른 material을 받을 수 있습니다. 지금은 나중에 `cubeNode`를 장면에 연결해도 모든 면이 같은 회색으로 보이도록 같은 material을 여섯 번 넣습니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-SceneKitViewModel-CubeMaterials.swift", previousFile: "08-SceneKitViewModel-CubeGeometry.swift")
             }
@@ -62,6 +64,8 @@
             SceneKit 장면은 `SCNView`가 화면에 그립니다. SwiftUI 화면에서는 `UIViewRepresentable`로 `SCNView`를 감싸서 사용합니다.
 
             이 섹션이 끝나면 `ContentView`는 1장에서 쓰던 `SpriteView` 대신 `SceneKitCubeView`를 보여줍니다. 화면에는 회색 cube가 있는 3D 영역이 생깁니다.
+
+            Step 1에서는 SwiftUI와 SceneKit을 연결할 view만 준비하므로 화면이 바뀌지 않습니다. Step 2에서 `ContentView`가 이 view를 실제로 사용하기 시작할 때 회색 cube와 `큐브 회전` 토글이 처음 나타납니다.
         }
 
         @Steps {
@@ -78,7 +82,9 @@
 
                 Note: `ContentView`가 `SceneKitPuzzleViewModel`과 `isRotationEnabled` 상태를 만들고 유지합니다. `isRotationEnabled`가 바뀌면 `SceneKitCubeView`가 회전 가능 여부를 다시 설정합니다. 두 조작을 토글로 나누면 같은 동작에서 탭 선택과 드래그 회전이 서로 겹치지 않습니다.
 
-                @Code(name: "ContentView.swift", file: "08-ContentView-SceneKitBasic.swift", previousFile: "01-ContentView-SpriteViewBody.swift")
+                @Code(name: "ContentView.swift", file: "08-ContentView-SceneKitBasic.swift", previousFile: "01-ContentView-SpriteViewBody.swift") {
+                    @Image(source: preview-08-gray-cube-xcode.png, alt: "실제 Xcode Simulator에서 ContentView에 SceneKit 화면을 연결한 뒤, 회색 3D cube와 큐브 회전 토글이 보이는 화면.")
+                }
             }
         }
     }
@@ -88,6 +94,8 @@
             SceneKit에서 큐브의 겉면은 `SCNMaterial`이 정합니다. 이 material의 contents에 `GameScene`을 넣으면 SpriteKit에서 그린 board를 큐브 표면에 사용할 수 있습니다.
 
             6장에서 만든 2×2 board는 한붓그리기에서 선택할 tilemap입니다. 이제 이 연결된 board를 정사각형인 큐브 면에 material로 붙여, 큐브 표면에서도 같은 tile 구조를 볼 수 있게 합니다.
+
+            Step 1과 Step 2에서는 board를 큐브에 붙이기 위한 scene과 property만 준비하므로 화면은 회색 cube 그대로입니다. Step 3에서 `SCNMaterial`에 `faceScene`을 넣을 때 board가 처음 보입니다.
         }
 
         @Steps {
@@ -112,7 +120,9 @@
 
                 Note: 처음 보이는 cube 면만 SpriteKit 화면으로 바꿉니다. `SCNMaterial`은 3D geometry의 표면을 정하고, `diffuse.contents`에 `GameScene`을 넣으면 SpriteKit scene이 큐브 표면에 그려집니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-CubeWithSpriteKitMaterial.swift", previousFile: "08-SceneKitViewModel-FaceScene.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-CubeWithSpriteKitMaterial.swift", previousFile: "08-SceneKitViewModel-FaceScene.swift") {
+                    @Image(source: preview-08-board-xcode.png, alt: "실제 Xcode Simulator에서 3D cube의 한 면에 SpriteKit 2×2 board가 처음 붙은 화면.")
+                }
             }
         }
     }
@@ -122,6 +132,8 @@
             큐브를 탭하면 처음에는 아이폰 화면 위의 2D 위치만 알 수 있습니다. SceneKit에서 이 탭을 사용하려면, 그 화면 위치 아래에 3D 큐브 표면이 있는지 다시 검사해야 합니다.
 
             이 섹션에서는 `SCNView`에서 발생한 탭이 `SceneKitPuzzleViewModel`로 전달되고, `hitTest`를 통해 큐브의 material 면 정보로 바뀐 뒤, `debugText`로 화면에 표시되는 흐름을 만듭니다.
+
+            Step 1부터 Step 3까지는 탭을 처리하는 내부 흐름만 추가하므로 앱을 처음 실행한 화면은 그대로입니다. Step 4에서 `debugText`를 SwiftUI 화면에 연결한 뒤 큐브를 탭하면 확인 문장이 보입니다.
         }
 
         @Steps {
@@ -154,7 +166,9 @@
 
                 Note: `debugText`는 `@Published`로 선언되어 있습니다. 그래서 `handleTap(at:in:)`이 `debugText` 값을 바꾸면, `ContentView`는 그 변화를 감지하고 `Text(viewModel.debugText)`에 새 문장을 표시합니다.
 
-                @Code(name: "ContentView.swift", file: "08-ContentView-DebugText.swift", previousFile: "08-ContentView-SceneKitBasic.swift")
+                @Code(name: "ContentView.swift", file: "08-ContentView-DebugText.swift", previousFile: "08-ContentView-SceneKitBasic.swift") {
+                    @Image(source: preview-08-tap-debug-xcode.png, alt: "실제 Xcode Simulator에서 큐브의 앞면을 탭한 뒤 2×2 board와 선택된 tile, 표면 좌표 확인 문장이 보이는 화면.")
+                }
             }
         }
     }
@@ -170,7 +184,7 @@
 
                 Note: 이 장의 최종 흐름은 `GameScene -> SCNMaterial -> SCNBox -> SCNView -> ContentView`입니다. `GameScene`은 2D board를 그리고, `SCNMaterial`은 그 board를 cube 표면으로 쓰고, `SCNView`는 3D 장면을 SwiftUI 화면 안에 보여줍니다.
 
-                @Image(source: preview-08-final-xcode.png, alt: "실제 Xcode에서 실행한 앱 화면으로, SpriteKit board가 붙은 3D cube와 회전 모드 토글이 보이는 화면.")
+                @Image(source: preview-08-final-xcode.png, alt: "실제 Xcode Simulator에서 8장의 코드를 완성하고 회전 모드를 켠 뒤, 2×2 SpriteKit board와 회전 토글이 보이는 최종 화면.")
             }
         }
     }

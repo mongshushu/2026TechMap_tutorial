@@ -1,44 +1,133 @@
-private var currentTileID = TileID(row: 0, column: 0)
-private var pathTileIDs: [TileID] = [currentTileID]
-private var isStageComplete = false
+import Combine
+import SceneKit
+import SpriteKit
+import UIKit
 
-private func selectTile(_ tileID: TileID, textureCoordinate: CGPoint) {
-    if isStageComplete {
-        debugText = "이 퍼즐은 완료했어요."
-        return
+@MainActor
+final class SceneKitPuzzleViewModel: ObservableObject {
+    let scene = SCNScene()
+
+    @Published private(set) var debugText = ""
+
+    private let board = BoardModel.twoByTwo
+    private let cameraNode = SCNNode()
+    private let cubeNode = SCNNode()
+    private let faceScene = GameScene(size: CGSize(width: 700, height: 700))
+
+    private var currentTileID = TileID(row: 0, column: 0)
+    private var pathTileIDs = [TileID(row: 0, column: 0)]
+    private var isStageComplete = false
+
+    init() {
+        faceScene.setUpPuzzleScene()
+        configureScene()
+        renderBoards()
+        debugText = "앞면의 tile_0_0에서 시작하세요."
     }
 
-    let visitedTileIDs = Set(pathTileIDs)
+    func handleTap(at point: CGPoint, in sceneView: SCNView) {
+        let hitResults = sceneView.hitTest(
+            point,
+            options: [SCNHitTestOption.firstFoundOnly: true]
+        )
 
-    if visitedTileIDs.contains(tileID) {
-        debugText = "이미 지나온 tile입니다."
-        return
+        guard let hitResult = hitResults.first else {
+            debugText = "큐브를 터치하지 않았어요."
+            return
+        }
+
+        guard hitResult.node === cubeNode else {
+            debugText = "퍼즐 큐브가 아닌 곳을 터치했어요."
+            return
+        }
+
+        guard hitResult.geometryIndex == 0 else {
+            debugText = "SpriteKit board가 붙은 앞면을 터치하세요."
+            return
+        }
+
+        let textureCoordinate = hitResult.textureCoordinates(withMappingChannel: 0)
+
+        guard let tileID = board.tileID(from: textureCoordinate) else {
+            debugText = "터치 위치를 tile로 바꾸지 못했어요."
+            return
+        }
+
+        selectTile(tileID, textureCoordinate: textureCoordinate)
     }
 
-    let rowGap = abs(currentTileID.row - tileID.row)
-    let columnGap = abs(currentTileID.column - tileID.column)
+    private func configureScene() {
+        scene.background.contents = UIColor.systemBackground
 
-    if rowGap + columnGap != 1 {
-        debugText = "현재 tile에서 한 칸 이동할 수 없는 위치입니다."
-        return
+        cameraNode.camera = SCNCamera()
+        cameraNode.position = SCNVector3(x: 2.0, y: 1.4, z: 5.5)
+        cameraNode.look(at: SCNVector3(x: 0, y: 0, z: 0))
+        scene.rootNode.addChildNode(cameraNode)
+
+        cubeNode.name = "interactiveCube"
+        cubeNode.geometry = makeCubeGeometry()
+        cubeNode.eulerAngles = SCNVector3(x: -0.12, y: 0.16, z: 0)
+        scene.rootNode.addChildNode(cubeNode)
     }
 
-    currentTileID = tileID
-    pathTileIDs.append(tileID)
+    private func makeCubeGeometry() -> SCNBox {
+        let box = SCNBox(width: 2.3, height: 2.3, length: 2.3, chamferRadius: 0)
 
-    if pathTileIDs.count == 4 && tileID == TileID(row: 1, column: 1) {
-        isStageComplete = true
+        let boardMaterial = SCNMaterial()
+        boardMaterial.diffuse.contents = faceScene
+        boardMaterial.lightingModel = .constant
+
+        let grayMaterial = SCNMaterial()
+        grayMaterial.diffuse.contents = UIColor.systemGray5
+        grayMaterial.lightingModel = .constant
+
+        box.materials = [
+            boardMaterial,
+            grayMaterial,
+            grayMaterial,
+            grayMaterial,
+            grayMaterial,
+            grayMaterial
+        ]
+
+        return box
     }
 
-    renderBoards()
+    private func selectTile(_ tileID: TileID, textureCoordinate: CGPoint) {
+        guard isStageComplete == false else {
+            debugText = "한붓그리기를 완료했어요."
+            return
+        }
 
-    let uvText = String(
-        format: "u: %.2f, v: %.2f",
-        textureCoordinate.x,
-        textureCoordinate.y
-    )
+        guard pathTileIDs.contains(tileID) == false else {
+            debugText = "이미 지나온 tile입니다."
+            return
+        }
 
-    debugText = isStageComplete
-        ? "한붓그리기 성공: \(tileID.name) (\(uvText))"
-        : "선택: \(tileID.name) (\(uvText))"
+        guard board.isNeighbor(from: currentTileID, to: tileID) else {
+            debugText = "현재 tile에서 한 칸 이동할 수 없는 위치입니다."
+            return
+        }
+
+        currentTileID = tileID
+        pathTileIDs.append(tileID)
+        isStageComplete = pathTileIDs.count == board.tileIDs.count
+        renderBoards()
+
+        let coordinateText = String(
+            format: "u: %.2f, v: %.2f",
+            textureCoordinate.x,
+            textureCoordinate.y
+        )
+        debugText = isStageComplete
+            ? "한붓그리기 성공: \(tileID.name) (\(coordinateText))"
+            : "선택: \(tileID.name) (\(coordinateText))"
+    }
+
+    private func renderBoards() {
+        faceScene.render(
+            path: pathTileIDs,
+            current: currentTileID
+        )
+    }
 }

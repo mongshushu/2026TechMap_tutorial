@@ -3,19 +3,6 @@ import SceneKit
 import SpriteKit
 import UIKit
 
-struct TileID: Hashable, CustomStringConvertible {
-    let row: Int
-    let column: Int
-
-    var name: String {
-        "tile_\(row)_\(column)"
-    }
-
-    var description: String {
-        name
-    }
-}
-
 @MainActor
 final class SceneKitPuzzleViewModel: ObservableObject {
     let scene = SCNScene()
@@ -24,7 +11,7 @@ final class SceneKitPuzzleViewModel: ObservableObject {
 
     private let cameraNode = SCNNode()
     private let cubeNode = SCNNode()
-    private let faceScene = GameScene(size: CGSize(width: 700, height: 900))
+    private let faceScene = GameScene(size: CGSize(width: 700, height: 700))
 
     init() {
         faceScene.setUpPuzzleScene()
@@ -35,11 +22,13 @@ final class SceneKitPuzzleViewModel: ObservableObject {
         scene.background.contents = UIColor.systemBackground
 
         cameraNode.camera = SCNCamera()
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 5)
+        cameraNode.position = SCNVector3(x: 2.0, y: 1.4, z: 5.5)
+        cameraNode.look(at: SCNVector3(x: 0, y: 0, z: 0))
         scene.rootNode.addChildNode(cameraNode)
 
         cubeNode.name = "interactiveCube"
         cubeNode.geometry = makeCubeGeometry()
+        cubeNode.eulerAngles = SCNVector3(x: -0.12, y: 0.16, z: 0)
         scene.rootNode.addChildNode(cubeNode)
     }
 
