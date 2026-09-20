@@ -95,6 +95,8 @@
         @Steps {
             @Step {
                 대각선 tile과 이미 방문한 tile을 탭해도 색이 바뀌지 않는지 실행해서 확인합니다. `Hello SpriteKit` 제목이 다시 나타나거나, 네 칸 사이에 배경색 틈이 생기면 이전 단계의 board 모양이 되돌아간 것입니다.
+
+                @Image(source: preview-06-step-07.png, alt: "실제 Xcode Preview에서 제목 없이 간격 없이 붙은 2x2 board와 tile_0_0이 파란색으로 표시된 화면.")
             }
         }
     }
