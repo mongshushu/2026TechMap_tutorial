@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+  <rect width="1200" height="720" fill="#f5f5f7"/>
+  <rect x="360" y="90" width="480" height="480" fill="#ffffff" stroke="#1c1c1e" stroke-width="6"/>
+  <line x1="520" y1="90" x2="520" y2="570" stroke="#1c1c1e" stroke-width="4"/>
+  <line x1="680" y1="90" x2="680" y2="570" stroke="#1c1c1e" stroke-width="4"/>
+  <line x1="360" y1="250" x2="840" y2="250" stroke="#1c1c1e" stroke-width="4"/>
+  <line x1="360" y1="410" x2="840" y2="410" stroke="#1c1c1e" stroke-width="4"/>
+  <text x="440" y="177" text-anchor="middle" fill="#1c1c1e" font-family="Helvetica, Arial, sans-serif" font-size="28" font-weight="700">(2,0)</text>
+  <text x="600" y="337" text-anchor="middle" fill="#1c1c1e" font-family="Helvetica, Arial, sans-serif" font-size="28" font-weight="700">(1,1)</text>
+  <text x="760" y="497" text-anchor="middle" fill="#1c1c1e" font-family="Helvetica, Arial, sans-serif" font-size="28" font-weight="700">(0,2)</text>
+  <text x="600" y="640" text-anchor="middle" fill="#6e7781" font-family="Helvetica, Arial, sans-serif" font-size="28">tileLayer below labelLayer</text>
+</svg>

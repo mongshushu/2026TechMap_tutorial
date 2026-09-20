@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <rect width="960" height="540" fill="#f6f7f8"/>
+  <rect x="48" y="48" width="864" height="444" rx="18" fill="none" stroke="#b9c1c9" stroke-width="4" stroke-dasharray="18 14"/>
+  <path d="M388 260l58 58 84-112 94 126H336z" fill="#d7dde3"/>
+  <circle cx="398" cy="196" r="32" fill="#d7dde3"/>
+  <text x="480" y="410" text-anchor="middle" fill="#65717d" font-family="Helvetica, Arial, sans-serif" font-size="30">Preview image placeholder</text>
+</svg>
