@@ -49,6 +49,8 @@
                 @Code(name: "GameScene.swift", file: "06-BoardSizeValues.swift", previousFile: "06-RemoveTitle.swift") {
                     @Image(source: 06-board-size-values.png, alt: "700 x 700 크기의 2x2 board를 350 x 350 크기의 네 tile로 나눈 그림.")
                 }
+
+                @Image(source: preview-06-step-04.png, alt: "실제 iPhone Simulator에서 tile node를 만들기 전이므로 배경만 보이는 빈 scene 화면.")
             }
 
             @Step {
@@ -59,6 +61,8 @@
                 @Code(name: "GameScene.swift", file: "06-BoardLayoutValues.swift", previousFile: "06-BoardSizeValues.swift") {
                     @Image(source: 06-board-layout-start-tile.png, alt: "가상의 2x2 board에서 첫 번째 tile 중심과 startX, startY 위치를 보여주는 그림.")
                 }
+
+                @Image(source: preview-06-step-05.png, alt: "실제 iPhone Simulator에서 tile node를 만들기 전이므로 배경만 보이는 빈 scene 화면.")
             }
 
             @Step {
@@ -69,6 +73,8 @@
                 @Code(name: "GameScene.swift", file: "06-BoardAddressLoop.swift", previousFile: "06-BoardLayoutValues.swift") {
                     @Image(source: 06-board-layout-row-column.png, alt: "row와 column 값이 2x2 board의 tile 위치와 연결되는 구조를 보여주는 그림.")
                 }
+
+                @Image(source: preview-06-step-06.png, alt: "실제 iPhone Simulator에서 반복문으로 tile node를 만들기 전이므로 배경만 보이는 빈 scene 화면.")
             }
 
             @Step {
