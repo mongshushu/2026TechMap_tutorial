@@ -22,6 +22,7 @@ final class SceneKitPuzzleViewModel: ObservableObject {
         scene.rootNode.addChildNode(cameraNode)
 
         cubeNode.geometry = makeCubeGeometry()
+        cubeNode.eulerAngles = SCNVector3(x: -0.12, y: 0.16, z: 0)
         scene.rootNode.addChildNode(cubeNode)
     }
 

@@ -2,10 +2,10 @@
     @Intro(title: "큐브 한붓그리기 퍼즐") {
         SpriteKit으로 작은 2D 퍼즐을 먼저 만들고, GameStore로 상태와 규칙을 분리한 뒤, 나중에 SceneKit 큐브로 확장하는 한국어 튜토리얼입니다.
 
-        정규 트랙은 1-10장입니다. 약 110분 안에 2D SpriteKit 퍼즐을 만들고, 그 화면을 SceneKit 큐브 한 면에 붙인 뒤, 큐브 표면 터치를 한붓그리기 선택으로 연결합니다.
+        1장부터 10장까지 진행하며, 약 110분 안에 2D SpriteKit 퍼즐을 만들고, 그 화면을 SceneKit 큐브 한 면에 붙인 뒤, 큐브 표면 터치를 한붓그리기 선택으로 연결합니다.
     }
 
-    @Chapter(name: "정규 트랙 A: SpriteKit 첫 화면") {
+    @Chapter(name: "SpriteKit 화면과 board 만들기") {
         @Image(source: chapter-spritekit.svg, alt: "SpriteKit 타일 네 개와 SpriteKit 텍스트.")
 
         SwiftUI 안에 SpriteKit scene을 올리고, layer와 tile, touch 흐름을 작은 화면에서 익힙니다.
@@ -16,14 +16,21 @@
         @TutorialReference(tutorial: "doc:04-Foundation-GameStore-And-Neighbor-Rule")
     }
 
-    @Chapter(name: "정규 트랙 B: 상태와 큐브 첫 연결") {
+    @Chapter(name: "상태와 2D 규칙 만들기") {
         @Image(source: chapter-foundation.svg, alt: "퍼즐 데이터 규칙을 나타내는 연결된 원.")
 
-        tile 선택 상태를 저장하고, 2x2 board 규칙을 만든 뒤, SpriteKit face를 SceneKit 큐브에 붙이고, 큐브 표면 터치를 한붓그리기 선택으로 연결합니다.
+        tile 선택 상태를 저장하고, 2x2 board와 2D 이웃 규칙을 만듭니다.
 
         @TutorialReference(tutorial: "doc:05-SwiftUI-StateObject-And-Scene-Connection")
         @TutorialReference(tutorial: "doc:06-SwiftUI-Undo-And-Three-By-Three")
         @TutorialReference(tutorial: "doc:07-SceneKit-Cube-Material-And-Texture-Touch")
+    }
+
+    @Chapter(name: "SceneKit 큐브와 퍼즐 연결하기") {
+        @Image(source: chapter-scenekit.svg, alt: "SpriteKit 퍼즐 화면이 붙은 SceneKit 큐브.")
+
+        SpriteKit face를 SceneKit 큐브에 붙이고, 큐브 표면 터치를 한붓그리기 선택으로 연결합니다.
+
         @TutorialReference(tutorial: "doc:08-SceneKit-Rotation-Mode")
         @TutorialReference(tutorial: "doc:09-Cube-Touch-To-Tile-Name")
         @TutorialReference(tutorial: "doc:10-Cube-Touch-To-One-Stroke")

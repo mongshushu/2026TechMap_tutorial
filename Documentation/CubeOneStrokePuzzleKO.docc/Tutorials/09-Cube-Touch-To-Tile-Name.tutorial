@@ -26,7 +26,7 @@
             @Step {
                 `SceneKitPuzzleViewModel.swift`의 `handleTap(at:in:)` 마지막 부분을 바꿉니다. `geometryIndex`를 바로 출력하는 대신, `textureCoordinates(withMappingChannel:)`로 큐브 material 면 안의 좌표를 읽어 `debugText`에 표시합니다.
 
-                Note: `textureCoordinate.x`는 SceneKit material 면의 가로 위치입니다. `0`은 한쪽 가로 끝, `1`은 반대쪽 가로 끝입니다. `textureCoordinate.y`는 세로 위치이고, `0`과 `1`은 서로 반대쪽 세로 끝입니다. 이 값은 아직 SpriteKit tile 이름이 아니라, 큐브 표면 안에서의 위치입니다.
+                Note: `withMappingChannel: 0`의 `0`은 첫 번째 texture-coordinate mapping channel을 선택한다는 뜻입니다. `textureCoordinate.x`는 SceneKit material 면의 가로 위치입니다. `0`은 한쪽 가로 끝, `1`은 반대쪽 가로 끝입니다. `textureCoordinate.y`는 세로 위치이고, `0`과 `1`은 서로 반대쪽 세로 끝입니다. 이 값은 아이폰 화면 좌표가 아니라 큐브 표면 안의 위치이며, 아직 SpriteKit tile 이름도 아닙니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "09-TextureCoordinate.swift", previousFile: "08-SceneKitViewModel-HitTest.swift") {
                     @Image(source: preview-09-texture-coordinate-xcode.png, alt: "실제 Xcode Simulator에서 큐브의 board 면을 탭한 뒤 표면 좌표 x와 y가 확인 문장으로 표시된 화면.")

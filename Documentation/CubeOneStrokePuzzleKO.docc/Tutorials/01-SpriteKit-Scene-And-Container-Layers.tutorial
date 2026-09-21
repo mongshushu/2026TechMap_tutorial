@@ -46,7 +46,7 @@
             @Step {
                 `GameScene.swift`의 `GameScene` class 안에 `didMove(to:)`를 추가하고, 그 안에서 scene의 배경색을 정합니다.
 
-                Note: `didMove(to:)`는 `GameScene`이 `SKView` 안으로 들어가 화면에 붙은 뒤 울리는 알람 같은 메서드입니다. 이런 식으로 프레임워크가 정해진 시점에 자동으로 불러주는 메서드를 lifecycle callback이라고 부릅니다. 여기서 `Move`는 label 같은 node가 움직였다는 뜻이 아니라, scene이 view에 붙었다는 뜻에 가깝습니다. `didMove(to:)`는 코드를 실행할 시점을 정하고, `backgroundColor = .systemGray6`는 실제로 scene의 배경색 값을 바꿉니다.
+                Note: `didMove(to:)`는 `GameScene`이 `SKView`에 연결된 뒤 SpriteKit이 호출하는 lifecycle callback입니다. `didMove(to:)`는 코드를 실행할 시점을 정하고, `backgroundColor = .systemGray6`는 실제로 scene의 배경색 값을 바꿉니다.
 
                 @Code(name: "GameScene.swift", file: "01-GameScene-DidMove.swift", previousFile: "01-GameScene-Shell.swift") {
                     @Image(source: preview-01-step-02-gray-scene.png, alt: "Xcode Preview에서 연한 회색 배경만 보이는 GameScene 화면.")
@@ -92,7 +92,7 @@
             @Step {
                 이제 `ContentView`의 기존 `body`를 교체합니다. `SpriteView(scene:)`에 `gameScene`을 넘겨 SwiftUI 화면 안에 SpriteKit scene을 올립니다.
 
-                Note: SwiftUI는 앱의 화면 틀을 맡고, SpriteKit은 그 안에서 node를 그리는 2D 무대를 맡습니다. `SpriteView(scene:)`는 이 둘을 이어주는 SwiftUI view입니다.
+                Note: `ContentView.body`가 `SpriteView(scene: gameScene)`을 반환하면 SwiftUI가 SpriteKit scene을 화면에 놓습니다. `gameScene`의 `didMove(to:)`가 실행된 뒤 `addChild(titleLabel)`로 추가한 `Hello SpriteKit`이 표시됩니다.
 
                 @Code(name: "ContentView.swift", file: "01-ContentView-SpriteViewBody.swift", previousFile: "01-ContentView-SceneProperty.swift") {
                     @Image(source: preview-01-contentview-hello-spritekit.png, alt: "Xcode Preview의 ContentView 화면에서 SpriteKit scene과 Hello SpriteKit label이 보이는 모습.")

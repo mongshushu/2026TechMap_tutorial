@@ -9,9 +9,9 @@
         @ContentAndMedia {
             `SceneKitPuzzleViewModel`은 3D 장면인 `SCNScene`을 만들고, 그 안에 camera와 cube node를 올립니다.
 
-            이 섹션의 코드는 SwiftUI 화면을 직접 바꾸기보다, 회색 cube를 보여줄 수 있는 3D 장면 데이터를 먼저 준비합니다.
+            이 섹션의 코드는 SwiftUI 화면을 직접 바꾸기보다, 회색 cube를 보여줄 수 있는 3D 장면 데이터를 먼저 준비합니다. Step 4에서 큐브가 처음 나타나고, Step 5에서 처음 보이는 각도를 지정합니다.
 
-            아직 `ContentView`가 이 장면을 `SCNView`에 연결하지 않았으므로, Step 1부터 Step 5까지 코드를 작성해도 화면은 이전 SpriteKit 화면 그대로입니다. 이 섹션에서는 화면보다 장면 안에 들어갈 `SCNScene`, camera, cube node, geometry와 material을 순서대로 준비합니다.
+            아직 `ContentView`가 이 장면을 `SCNView`에 연결하지 않았으므로, 이 섹션의 코드를 작성해도 화면은 이전 SpriteKit 화면 그대로입니다. 이 섹션에서는 화면보다 장면 안에 들어갈 `SCNScene`, camera, cube node, geometry와 material을 순서대로 준비합니다.
 
             SpriteKit과 SceneKit에는 모두 node가 있습니다. `SKNode`는 2D SpriteKit scene 안에 들어가는 node이고, `SCNNode`는 3D SceneKit scene 안에 들어가는 node입니다. 이 장에서 만드는 camera와 cube는 `SCNNode`입니다.
         }
@@ -20,41 +20,53 @@
             @Step {
                 새 Swift 파일을 만들고 이름을 `SceneKitPuzzleViewModel.swift`로 정합니다. 이 파일에 `SCNScene`을 가진 `SceneKitPuzzleViewModel` class를 만듭니다.
 
-                Note: SceneKit이 그릴 3D 장면 객체를 먼저 만듭니다. `SCNScene`은 SceneKit의 3D 장면입니다. 여기서는 장면을 담을 가장 바깥 데이터를 준비합니다.
+                Note: SceneKit이 그릴 3D 장면 객체를 먼저 만듭니다. `SCNScene`은 SceneKit의 3D 장면입니다. 여기서는 장면을 담을 가장 바깥 데이터를 준비합니다. `@MainActor`는 SwiftUI가 관찰하는 상태와 화면용 장면을 메인 실행 흐름에서 다루도록 표시합니다. 이 Step에서는 화면이 바뀌지 않습니다. `SCNScene`은 3D 장면 데이터를 담는 객체이고, 장면을 확인하려면 카메라와 Preview 화면 연결이 필요합니다. 아래 Preview 전용 연결은 같은 `scene`을 Xcode Canvas에 보여주며, 실제 앱 화면에 SceneKit을 연결하는 방법은 다음 섹션에서 다룹니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-SceneKitViewModel-Scene.swift")
             }
 
             @Step {
+                Xcode Canvas에서 현재 `scene`을 확인할 수 있도록 Preview 전용 Swift 파일을 만듭니다. 이 파일은 최종 앱 화면에 SceneKit을 연결하는 코드가 아니라, 지금 작성 중인 장면 데이터를 확인하기 위한 연결입니다.
+
+                Note: `SceneView`는 같은 `SCNScene`을 SwiftUI Preview에 표시합니다. 이후 `SceneKitPuzzleViewModel`을 수정하면 이 Preview도 같은 장면 데이터를 다시 표시하므로, 큐브가 장면에 추가되는 시점을 바로 확인할 수 있습니다.
+
+                @Code(name: "SceneKitPreview.swift", file: "08-SceneKitPreview.swift")
+            }
+
+            @Step {
                 앞 Step에서 만든 `SceneKitPuzzleViewModel.swift`를 그대로 둔 채, `scene` 아래에 `cameraNode`를 추가합니다. 이어서 같은 파일의 `configureScene()` 안에 카메라를 큐브 정면에서 조금 비켜 배치하고, 큐브 중심을 바라보게 하는 설정을 추가합니다.
 
-                Note: SceneKit 장면은 카메라가 있는 위치와 바라보는 방향에 따라 cube의 앞면과 옆면이 다르게 보입니다. `SCNVector3(x:y:z:)`에서 x와 y를 조금 움직이면 정면에서 비껴선 시점이 되고, `cameraNode.look(at:)`은 카메라가 큐브 중심을 바라보게 합니다. `z: 5.5`는 카메라를 scene 중심에서 z축 방향으로 떨어뜨리는 거리입니다.
+                Note: SceneKit 장면은 카메라가 있는 위치와 바라보는 방향에 따라 cube의 앞면과 옆면이 다르게 보입니다. `SCNVector3(x:y:z:)`에서 x와 y를 조금 움직이면 정면에서 비껴선 시점이 되고, `cameraNode.look(at:)`은 카메라가 큐브 중심을 바라보게 합니다. `z: 5.5`는 카메라를 scene 중심에서 z축 방향으로 떨어뜨리는 거리입니다. 이 Step에서는 아직 `cubeNode`를 장면에 추가하지 않았으므로, 카메라 위치를 바꾸어도 큐브 크기 변화가 화면에 나타나지 않습니다. 다음 Step에서 큐브를 추가한 뒤 이 카메라 설정이 적용된 결과를 확인합니다.
 
                 @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-SceneKitViewModel-Camera.swift", previousFile: "08-SceneKitViewModel-Scene.swift")
             }
 
             @Step {
-                지금까지 작성한 `SceneKitPuzzleViewModel.swift`의 `cameraNode` 아래에 `cubeNode`를 추가합니다. 그리고 `configureScene()` 아래쪽에 `makeCubeGeometry()`를 새로 만들어, material 하나를 가진 회색 `SCNBox`를 준비합니다.
+                지금까지 작성한 `SceneKitPuzzleViewModel.swift`의 `cameraNode` 아래에 `cubeNode`를 추가합니다. `makeCubeGeometry()`로 material 하나를 가진 회색 `SCNBox`를 만들고, 그 geometry를 `cubeNode`에 지정한 뒤 장면에 추가합니다. 이제 Preview에서 회색 큐브가 처음 보입니다.
 
-                Note: 먼저 모든 면이 같은 회색 큐브를 만듭니다. `SCNBox`는 큐브 모양의 geometry이고, `SCNMaterial`은 그 표면에 사용할 재질입니다. material을 하나만 넣으면 큐브의 모든 면이 같은 회색으로 보입니다.
+                Note: `SCNBox`는 큐브 모양의 geometry이고, `SCNMaterial`은 그 표면에 사용할 재질입니다. geometry를 만드는 것만으로는 장면에 큐브가 나타나지 않으므로, `cubeNode.geometry`에 모양을 지정하고 `scene.rootNode.addChildNode(cubeNode)`로 장면에 넣습니다. material을 하나만 넣으면 큐브의 모든 면이 같은 회색으로 보입니다. 큐브가 화면에서 작게 보일 수 있지만 `SCNBox`의 크기가 줄어든 것은 아닙니다. Step 3에서 설정한 카메라의 거리와 비껴선 위치가 같은 큐브를 더 멀고 기울어진 시점으로 보여주기 때문입니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-SceneKitViewModel-CubeGeometry.swift", previousFile: "08-SceneKitViewModel-Camera.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-SceneKitViewModel-CubeGeometry.swift", previousFile: "08-SceneKitViewModel-Camera.swift") {
+                    @Image(source: preview-08-section1-gray-cube-simulator.png, alt: "회전 토글 없이 회색 큐브만 보이는 실제 Simulator 화면")
+                }
             }
 
             @Step {
-                Step 3에서 보이던 화면은 그대로 유지됩니다. 코드에서는 여섯 면의 material 자리를 따로 나누어 둡니다. 같은 `makeCubeGeometry()` 안에서 `box.materials`를 여섯 칸짜리 배열로 바꿉니다.
+                Step 4에서 회색 큐브가 나타난 뒤, 처음 보이는 방향을 정합니다. `cubeNode.eulerAngles`에 작은 x축과 y축 회전값을 추가하면 앞면과 옆면의 경계가 더 잘 드러납니다. 이 코드는 사용자가 드래그해서 큐브를 돌리는 기능이 아니라, 화면에 처음 나타날 각도를 지정하는 코드입니다.
 
-                Note: 큐브 여섯 면의 material 자리를 분리합니다. `SCNBox`는 면마다 다른 material을 받을 수 있습니다. 지금은 나중에 `cubeNode`를 장면에 연결해도 모든 면이 같은 회색으로 보이도록 같은 material을 여섯 번 넣습니다.
+                Note: `cubeNode.eulerAngles`는 node의 회전 각도를 x, y, z축별로 정하는 property입니다. 여기서는 작은 값만 넣어 큐브의 옆면이 살짝 보이게 합니다. 이 값은 큐브의 처음 보이는 방향만 바꾸며, geometry와 material은 바꾸지 않습니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-SceneKitViewModel-CubeMaterials.swift", previousFile: "08-SceneKitViewModel-CubeGeometry.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-SceneKitViewModel-CubeRotation.swift", previousFile: "08-SceneKitViewModel-CubeGeometry.swift") {
+                    @Image(source: preview-08-section1-gray-cube-rotated-simulator.png, alt: "회전 각도만 적용한 회색 큐브의 실제 Simulator 화면")
+                }
             }
 
             @Step {
-                빈 `cubeNode`에 큐브 모양과 처음 보이는 각도를 지정한 뒤, 그 node를 SceneKit 장면에 추가합니다. `geometry` 자리에 `makeCubeGeometry()`가 만든 모양 데이터를 넣으면 `cubeNode`가 눈에 보이는 큐브 형태를 갖습니다. 카메라를 정면에서 조금 비켜 둔 상태에서 `cubeNode.eulerAngles`에 작은 x축과 y축 회전값을 주면 앞면과 옆면의 경계가 더 잘 드러납니다. `scene.rootNode.addChildNode(cubeNode)`를 호출하면 그 큐브가 장면 안에 들어갑니다. `rootNode`는 SceneKit 장면의 가장 기본이 되는 node입니다.
+                Step 5에서 정한 큐브의 처음 보이는 방향은 그대로 두고, 여섯 면에 각각 material을 넣을 자리를 만듭니다. 같은 `makeCubeGeometry()` 안에서 `box.materials`를 여섯 칸짜리 배열로 바꿉니다.
 
-                Note: `cubeNode.eulerAngles`는 node의 회전 각도를 x, y, z축별로 정하는 property입니다. 여기서는 작은 값만 넣어 큐브의 옆면이 살짝 보이게 합니다. 이 값은 큐브의 처음 보이는 방향만 바꾸며, material이나 SpriteKit board의 내용은 바꾸지 않습니다.
+                Note: `SCNBox`는 면마다 다른 material을 받을 수 있습니다. 지금은 같은 회색 material을 여섯 번 넣으므로 화면에는 새로운 변화가 없습니다. 다음 단계에서 특정 면에 다른 장면을 넣을 수 있도록 material의 자리를 먼저 나눕니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-SceneKitViewModel-Cube.swift", previousFile: "08-SceneKitViewModel-CubeMaterials.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-SceneKitViewModel-CubeMaterials.swift", previousFile: "08-SceneKitViewModel-CubeRotation.swift")
             }
         }
     }
@@ -65,7 +77,7 @@
 
             이 섹션이 끝나면 `ContentView`는 1장에서 쓰던 `SpriteView` 대신 `SceneKitCubeView`를 보여줍니다. 화면에는 회색 cube가 있는 3D 영역이 생깁니다.
 
-            Step 1에서는 SwiftUI와 SceneKit을 연결할 view만 준비하므로 화면이 바뀌지 않습니다. Step 2에서 `ContentView`가 이 view를 실제로 사용하기 시작할 때 회색 cube와 `큐브 회전` 토글이 처음 나타납니다.
+            Step 1에서는 SwiftUI와 SceneKit을 연결할 view만 준비하므로 화면이 바뀌지 않습니다. Step 2에서 `ContentView`가 이 view를 실제로 사용하기 시작할 때 회색 cube와 `큐브 회전` 토글이 처음 나타납니다. 이 토글은 Section 1의 처음 보이는 각도를 바꾸는 코드와 달리, 사용자의 드래그 회전을 켜고 끄는 입력 모드입니다.
         }
 
         @Steps {
@@ -95,7 +107,7 @@
 
             6장에서 만든 2×2 board는 한붓그리기에서 선택할 tilemap입니다. 이제 이 연결된 board를 정사각형인 큐브 면에 material로 붙여, 큐브 표면에서도 같은 tile 구조를 볼 수 있게 합니다.
 
-            Step 1과 Step 2에서는 board를 큐브에 붙이기 위한 scene과 property만 준비하므로 화면은 회색 cube 그대로입니다. Step 3에서 `SCNMaterial`에 `faceScene`을 넣을 때 board가 처음 보입니다.
+            Step 1과 Step 2에서는 board를 큐브에 붙이기 위한 scene과 property만 준비하므로 화면은 회색 cube 그대로입니다. 화면이 실제로 바뀌는 지점은 `SCNMaterial`에 `faceScene`을 넣는 Step 3입니다. 이때부터 큐브의 한 면에 SpriteKit board가 보입니다.
         }
 
         @Steps {
@@ -110,9 +122,9 @@
             @Step {
                 앞에서 만든 `SceneKitPuzzleViewModel.swift`를 이어서 수정합니다. `cubeNode` 아래에 `faceScene` property를 추가하고, 나머지 scene/camera/cube 코드는 그대로 둡니다. 이 `faceScene`은 큐브 한 면에 붙일 SpriteKit scene입니다.
 
-                Note: `GameScene`을 큐브 표면에 붙일 SpriteKit scene으로 준비합니다. `faceScene`은 2D 퍼즐 화면 데이터를 가진 `GameScene`이고, `faceScene.setUpPuzzleScene()`은 그 안에 2x2 board tile node를 미리 만들어 둡니다. 큐브의 한 면과 같은 정사각형 비율을 사용하기 위해 `faceScene`도 정사각형 크기로 만듭니다.
+                Note: `GameScene`을 큐브 표면에 붙일 SpriteKit scene으로 준비합니다. `faceScene`은 2D 퍼즐 화면 데이터를 가진 `GameScene`이고, `faceScene.setUpPuzzleScene()`은 그 안에 2x2 board tile node를 미리 만들어 둡니다. 큐브의 정사각형 면에 넣기 위해 `faceScene`의 크기는 `700 × 700`으로 고정합니다.
 
-                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-SceneKitViewModel-FaceScene.swift", previousFile: "08-SceneKitViewModel-Cube.swift")
+                @Code(name: "SceneKitPuzzleViewModel.swift", file: "08-SceneKitViewModel-FaceScene.swift", previousFile: "08-SceneKitViewModel-CubeMaterials.swift")
             }
 
             @Step {
