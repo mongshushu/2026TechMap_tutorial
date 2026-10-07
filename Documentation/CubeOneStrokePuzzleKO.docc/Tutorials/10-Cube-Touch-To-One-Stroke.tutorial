@@ -40,7 +40,7 @@
             @Step {
                 `BoardModel`에 `tileID(from:)`를 추가합니다. 이 메서드는 SceneKit 표면 좌표를 2x2 board의 `TileID`로 바꿉니다.
 
-                Note: SceneKit이 알려주는 표면 좌표와 퍼즐이 사용하는 tile 주소는 서로 다른 값입니다. 변환을 `BoardModel` 안에 두면 `SceneKitPuzzleViewModel`은 좌표를 직접 계산하지 않고 board에 변환을 요청할 수 있습니다.
+                Note: 이 파일에서 사용하는 `CGPoint`는 Core Graphics가 제공하는 좌표 타입입니다. `tileID(from:)`의 `textureCoordinate` 매개변수와 `x`, `y` 좌표 계산에 `CGPoint`를 사용하므로 `CoreGraphics`를 import합니다. SceneKit이 알려주는 표면 좌표와 퍼즐이 사용하는 tile 주소는 서로 다른 값이므로, 변환을 `BoardModel` 안에 둡니다.
 
                 @Code(name: "BoardModel.swift", file: "10-BoardModel-TextureCoordinate.swift", previousFile: "10-BoardModel-TileID.swift")
             }
@@ -55,11 +55,11 @@
         }
     }
 
-    @Section(title: "tileID를 선택 처리로 전달하기") {
+    @Section(title: "큐브 탭을 selectTile에 연결하기") {
         @ContentAndMedia {
-            이 섹션이 끝나면 큐브를 탭한 결과가 tile 이름 출력에서 선택 처리 흐름으로 들어갑니다. 아직 선택 규칙이나 board 색은 바꾸지 않습니다.
+            이 Section이 끝나면 큐브를 탭했을 때 계산한 `TileID`가 `selectTile` 함수의 입력으로 전달됩니다. 아직 이동 가능 여부를 확인하거나 board 색을 바꾸지는 않습니다.
 
-            `SceneKitPuzzleViewModel`은 `BoardModel`에서 큐브 표면 좌표를 `TileID`로 바꾸고, 그 값을 `selectTile`에 전달합니다. 이후 선택 상태와 경로도 이 ViewModel에서 이어서 관리합니다.
+            `handleTap(at:in:)`은 큐브 표면 좌표를 `TileID`로 바꾼 뒤 `selectTile`을 호출합니다. `selectTile`은 전달받은 tile을 퍼즐 상태에 반영하는 함수입니다.
         }
 
         @Steps {
