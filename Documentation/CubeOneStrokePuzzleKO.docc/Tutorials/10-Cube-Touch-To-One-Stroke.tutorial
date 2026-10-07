@@ -2,7 +2,57 @@
     @Intro(title: "10. 큐브 터치를 한붓그리기 선택으로 연결하기") {
         9장에서 만든 `TileID`를 실제 퍼즐 선택으로 연결합니다.
 
-        큐브에서 누른 위치를 tile로 바꾼 뒤, 현재 tile에서 한 칸 이동할 수 있는지 확인합니다. 이동이 유효할 때만 경로와 SpriteKit board의 색을 바꿉니다.
+        먼저 7장과 8장에서 사용한 문자열 기반 tile 상태를 `TileID` 기반으로 통일합니다. 그 다음 큐브에서 누른 위치를 tile로 바꾸고, 현재 tile에서 한 칸 이동할 수 있는지 확인합니다. 이동이 유효할 때만 경로와 SpriteKit board의 색을 바꿉니다.
+    }
+
+    @Section(title: "TileID를 기존 퍼즐 코드에 연결하기") {
+        @ContentAndMedia {
+            9장에서는 큐브 표면의 좌표를 `TileID`로 바꾸는 방법을 만들었습니다. 기존 `BoardModel`, `GameStore`, `GameScene`은 아직 문자열을 tile 주소로 사용하고 있으므로, 먼저 세 파일이 같은 `TileID`를 사용하도록 맞춥니다.
+
+            이 Section을 끝내도 화면 모양은 이전 장과 같습니다. 화면을 바꾸는 작업이 아니라, 다음 Section의 SceneKit 선택 코드가 같은 tile 주소를 사용할 수 있도록 데이터 타입을 연결하는 작업입니다.
+        }
+
+        @Steps {
+            @Step {
+                `BoardModel`이 tile 주소로 `String` 대신 `TileID`를 사용하도록 바꿉니다. 이 Step부터 다음 Step까지 세 파일의 타입을 차례로 맞춘 뒤 실행합니다.
+
+                Note: `TileID`는 row와 column을 함께 가진 tile 주소입니다. 먼저 `BoardModel`의 이웃 관계가 `TileID` 사이의 관계를 저장하도록 바꿉니다. 이 Step만으로는 화면이 바뀌지 않습니다.
+
+                @Code(name: "BoardModel.swift", file: "10-BoardModel-TileID.swift", previousFile: "07-BoardModel.swift")
+            }
+
+            @Step {
+                `GameStore`의 현재 tile과 방문 경로도 `TileID`를 사용하도록 바꿉니다. `BoardModel`을 바꾼 직후 이 파일을 이어서 교체합니다.
+
+                Note: `GameStore`가 같은 `TileID`를 사용해야 SceneKit에서 만든 tile 주소를 문자열로 다시 바꾸지 않고 선택 규칙에 전달할 수 있습니다. 이 Step에서도 화면 모양은 바뀌지 않습니다.
+
+                @Code(name: "GameStore.swift", file: "10-GameStore-TileID.swift", previousFile: "07-GameStoreNeighbor.swift")
+            }
+
+            @Step {
+                `GameScene`의 tile dictionary와 선택 처리도 `TileID`를 사용하도록 바꿉니다. node의 화면 이름은 계속 `tile_0_0`처럼 보이지만, 내부 key는 `TileID`입니다.
+
+                Note: `GameScene`이 `TileID`를 key로 사용하면 `GameStore`가 전달하는 주소와 화면 node를 같은 값으로 찾을 수 있습니다. 이 Step까지 적용해도 2x2 board의 모양은 이전과 같습니다.
+
+                @Code(name: "GameScene.swift", file: "10-GameScene-TileID.swift", previousFile: "08-GameScene-SetUpPuzzleScene.swift")
+            }
+
+            @Step {
+                `BoardModel`에 `tileID(from:)`를 추가합니다. 이 메서드는 SceneKit 표면 좌표를 2x2 board의 `TileID`로 바꿉니다.
+
+                Note: SceneKit이 알려주는 표면 좌표와 퍼즐이 사용하는 tile 주소는 서로 다른 값입니다. 변환을 `BoardModel` 안에 두면 `SceneKitPuzzleViewModel`은 좌표를 직접 계산하지 않고 board에 변환을 요청할 수 있습니다.
+
+                @Code(name: "BoardModel.swift", file: "10-BoardModel-TextureCoordinate.swift", previousFile: "10-BoardModel-TileID.swift")
+            }
+
+            @Step {
+                `GameScene`에 `render(path:current:)`를 추가합니다. 이 메서드는 SceneKit ViewModel이 전달한 경로를 읽어 현재 tile과 지나온 tile의 색을 다시 칠합니다.
+
+                Note: `GameScene`은 tile을 직접 선택하는 코드와 큐브의 선택 상태를 함께 관리하지 않습니다. 여기서는 전달받은 `TileID` 경로를 SpriteKit 화면에 표시하는 역할만 추가합니다. 화면은 기존 2x2 board와 같고, 다음 Section부터 SceneKit 선택 결과를 이 메서드로 반영합니다.
+
+                @Code(name: "GameScene.swift", file: "10-GameScene-Render.swift", previousFile: "10-GameScene-TileID.swift")
+            }
+        }
     }
 
     @Section(title: "tileID를 선택 처리로 전달하기") {
