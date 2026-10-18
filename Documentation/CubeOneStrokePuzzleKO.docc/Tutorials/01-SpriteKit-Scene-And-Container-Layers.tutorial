@@ -1,4 +1,4 @@
-@Tutorial(time: 25) {
+@Tutorial(time: 18) {
     @Intro(title: "01. SpriteKit scene을 올리고 첫 node 만들기") {
         이번 장에서는 SwiftUI 화면 안에 SpriteKit 무대를 올리고, 그 안에 첫 node인 `Hello SpriteKit` label을 표시합니다.
 

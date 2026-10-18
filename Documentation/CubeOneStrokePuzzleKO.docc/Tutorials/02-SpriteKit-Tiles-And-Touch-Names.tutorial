@@ -1,4 +1,4 @@
-@Tutorial(time: 12) {
+@Tutorial(time: 8) {
     @Intro(title: "02. HUD layer로 화면 구조 잡기") {
         이번 장에서는 1장에서 만든 `titleLabel`을 `hudLayer` 안으로 옮깁니다.
 

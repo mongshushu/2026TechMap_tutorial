@@ -1,4 +1,4 @@
-@Tutorial(time: 20) {
+@Tutorial(time: 14) {
     @Intro(title: "10. 큐브 터치를 한붓그리기 선택으로 연결하기") {
         9장에서 만든 `TileID`를 실제 퍼즐 선택으로 연결합니다.
 

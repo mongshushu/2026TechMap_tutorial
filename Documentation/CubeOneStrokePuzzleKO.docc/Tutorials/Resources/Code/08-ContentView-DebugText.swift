@@ -7,6 +7,7 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 12) {
             Toggle("큐브 회전", isOn: $isRotationEnabled)
+                .padding(.horizontal)
 
             SceneKitCubeView(
                 viewModel: viewModel,

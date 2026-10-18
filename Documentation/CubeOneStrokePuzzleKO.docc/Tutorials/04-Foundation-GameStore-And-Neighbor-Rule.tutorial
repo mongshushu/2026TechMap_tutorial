@@ -1,4 +1,4 @@
-@Tutorial(time: 15) {
+@Tutorial(time: 11) {
     @Intro(title: "04. tile 터치 이름 읽기") {
         이번 장에서는 tile에 숨은 이름을 붙이고, 터치한 tile의 이름을 console에 출력합니다.
 

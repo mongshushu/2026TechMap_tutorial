@@ -1,4 +1,4 @@
-@Tutorial(time: 24) {
+@Tutorial(time: 17) {
     @Intro(title: "09. 큐브에서 누른 tile 이름 읽기") {
         이번 장에서는 SceneKit 큐브 표면을 탭했을 때, 그 탭이 SpriteKit board의 어느 tile에 해당하는지 계산합니다.
 
