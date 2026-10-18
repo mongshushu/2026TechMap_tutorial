@@ -1,8 +1,6 @@
 @Tutorials(name: "Cube One-Stroke Puzzle KO") {
     @Intro(title: "큐브 한붓그리기 퍼즐") {
-        SpriteKit으로 작은 2D 퍼즐을 먼저 만들고, GameStore로 상태와 규칙을 분리한 뒤, 나중에 SceneKit 큐브로 확장하는 한국어 튜토리얼입니다.
-
-        1장부터 10장까지 진행하며, 다음 시간 안내는 총 160분 기준으로 기존 비율을 유지해 대략 계산할 수 있습니다. 각 장의 예상 시간은 `18, 8, 13, 11, 15, 20, 17, 27, 17, 14분`이며, 파트 합계는 약 50분, 52분, 58분으로 총 160분입니다. 2D SpriteKit 퍼즐을 만들고, 그 화면을 SceneKit 큐브 한 면에 붙인 뒤, 큐브 표면 터치를 한붓그리기 선택으로 연결합니다.
+        Swift와 SwiftUI로 앱 화면을 만들고, SpriteKit으로 2D 퍼즐을 구현합니다. GameStore에서 선택 상태와 규칙을 관리한 뒤, SceneKit 큐브에 퍼즐 화면을 적용하고 큐브 표면 터치를 퍼즐 선택으로 연결하는 튜토리얼입니다.
     }
 
     @Chapter(name: "SpriteKit 화면과 board 만들기") {
