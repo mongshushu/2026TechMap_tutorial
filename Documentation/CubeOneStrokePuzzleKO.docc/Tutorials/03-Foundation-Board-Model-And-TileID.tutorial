@@ -1,4 +1,4 @@
-@Tutorial(time: 13) {
+@Tutorial(time: 8) {
     @Intro(title: "03. 사각형 tile 두 개 그리기") {
         이번 장에서는 `tileLayer`를 만들고, 그 안에 각진 사각형 tile 두 개를 올립니다.
 

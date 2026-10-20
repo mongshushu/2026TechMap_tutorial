@@ -1,4 +1,4 @@
-@Tutorial(time: 27) {
+@Tutorial(time: 17) {
     @Intro(title: "08. SpriteKit face를 SceneKit 큐브에 붙이기") {
         이번 장에서는 SpriteKit에서 그린 퍼즐 화면을 SceneKit 큐브 한 면의 material로 붙입니다.
 

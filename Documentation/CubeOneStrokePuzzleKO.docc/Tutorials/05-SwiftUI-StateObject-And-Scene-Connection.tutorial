@@ -1,4 +1,4 @@
-@Tutorial(time: 15) {
+@Tutorial(time: 9) {
     @Intro(title: "05. GameStore로 선택 상태 저장하기") {
         이번 장에서는 게임이 기억해야 할 값을 `GameStore`로 분리합니다.
 

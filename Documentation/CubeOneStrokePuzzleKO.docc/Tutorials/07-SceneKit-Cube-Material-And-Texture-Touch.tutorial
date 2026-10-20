@@ -1,4 +1,4 @@
-@Tutorial(time: 17) {
+@Tutorial(time: 11) {
     @Intro(title: "07. BoardModel과 이웃 규칙 추가하기") {
         이번 장에서는 아무 tile이나 선택되는 상태를 막고, 현재 tile의 이웃 tile만 선택되게 만듭니다.
 
